@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #dbe5f8db;
+}
+
+.container {
+    display: flex;
+    width: 70%;
+    height: 75%;
+    overflow: hidden;
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.1);
+}
+
+.left-panel {
+    background-color: #001f54;
+    color: white;
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    
+}
+
+.left-panel h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    margin-bottom: 80px;
+}
+
+.left-panel img {
+    width: 100%;
+    max-width: 500px;
+}
+
+.right-panel {
+    background-color: white;
+    width: 40%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: left;
+    border-radius: 10px;
+}
+
+.right-panel .logo {
+    width: 250px; /* Adjust the width as needed */
+    height: auto;
+    margin-top: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.right-panel h2 {
+    color: #001f54;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    width: 100%;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input {
+    width: 90%;
+    padding: 8px;
+    border: 1px solid #78A4D2;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+
+button {
+    width: 90%;
+    padding: 15px;
+    background-color: #4796BD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10;
+    font-size: 1em; /* Adjust the font size here */
+}
+
+button:hover {
+    background-color: #215188;
+}
+
+.sign-up {
+    text-align: center; /* Center-align the text */
+}
+
+.sign-up p {
+    color: #555;
+}
+
+.sign-up a {
+    color: #1c69b1;
+    text-decoration: none;
+    font-weight: bold;
+    align-items: center;
+}
+
+.sign-up a:hover {
+    text-decoration: underline;
+}
+.input-group2 {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 90%; /* Matches the width of other input fields */
+}
+
+.input-group2 label {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group2 select {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #78A4D2;
+    border-radius: 4px;
+    color: #333;
+    appearance: none;
+    width: 100%;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effects */
+}
+
+.input-group2 select:focus {
+    border-color: #4796BD; /* Matches the button color on focus */
+    outline: none;
+}
+
+.input-group2 select:hover {
+    border-color: #215188; /* Darker border color on hover */
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+}

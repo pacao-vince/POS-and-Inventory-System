@@ -1,0 +1,405 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f4f4;
+}
+
+.custom-container {
+    width: 100%;
+    height: 100%;
+    padding: 5px;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: fixed;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: rgb(33, 126, 189);
+    border-radius: 5px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-left: 15px;
+}
+
+.cashier-profile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.cashier-profile:hover{
+    background-color: rgb(17, 111, 174);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.cashier-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px; 
+}
+
+.cashier-profile span {
+    color: #fff;
+    font-size: large;
+    margin-right: 15px;
+}
+
+/* Align the dropdown with the entire profile */
+.profile-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0; /* Ensure it covers the entire width of the profile */
+    background-color: #fff;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px;
+    border-radius: 5px;
+    min-width: 130px; /* You can adjust this if needed */
+}
+
+.profile-dropdown:hover{
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.profile-dropdown a {
+    text-decoration: none;
+    color: #333;
+    padding: 8px 16px;
+    display: block;
+    font-size: 20px;
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+
+.main-content {
+    display: flex;
+    gap: 20px;
+    flex-grow: 1;
+}
+
+.left-panel {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    background-color: white;
+    border-radius: 5px;
+    position: relative;
+}
+
+.table-section {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.pos-table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-left: 20px;
+}
+
+.pos-table th {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    background-color: #9bc1e2;
+}
+.pos-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: center;
+    
+}
+
+.pos-table tbody tr.highlight {
+    background-color: #a7d9ff;
+    cursor: pointer;
+}
+
+.pos-table tbody tr.highlight:hover {
+    background-color: #76b6e6;
+}
+
+
+.search-section {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    border-top: 1px solid #ccc;
+}
+
+.search-bar {
+    position: relative;
+    margin-left: 15px;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #005fa3;
+}
+
+.search-bar input {
+    width: 75%;
+    padding: 10px 10px 10px 35px;
+    font-size: 16px;
+    border: 1px solid #7cbff2;
+    border-radius: 5px;
+}
+
+#date-time {
+    position: fixed;
+    bottom: 10px; /* Adjust this value to set the distance from the bottom */
+    left: 10px; /* Adjust this value to set the distance from the left */
+    font-size: 20px;
+    color: #f9f9f9;
+    background-color:#00a1fe;
+    padding: 5px 10px; 
+    border-radius: 4px; /* Rounded corners */
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /*Shadow for better visibility */
+}
+
+.divider {
+    width: 3px;
+    background-color: #ccc;
+    margin: 0 10px;
+}
+
+.right-panel {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.totals-section {
+    font-size: 20px;
+    background-color: #e6eaecf0;
+    font-weight: bold;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.totals-section div {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.input-group {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-group label {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.input-group input {
+    width: 20%;
+    padding: 5px;
+    font-size: 20px;
+    border: 1px solid #575a5c;
+    border-radius: 4px;
+    background-color:#e6eaecf0;
+    text-align: right;
+    font-weight: bold ;
+    color: #005fa3;
+}
+
+.actions-section {
+    display: flex;
+    gap: 25px;
+    justify-content: right;
+    margin-right: 40px;
+    margin-right: 90px;
+}
+
+.actions-section button {
+    padding: 15px 20px;
+    font-size: 16px;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Popup Styles */
+.popup {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 350px;
+    max-height: 300px; /* Limits the height if there are many results */
+    overflow-y: auto; /* Adds scroll if content exceeds max height */
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    
+}
+
+#searchResultsTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#searchResultsTable th {
+    padding: 10px;
+    background-color: #007bff; /* Accent color for header */
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+}
+
+#searchResultsTable td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+    color: #333333;
+    text-align: center;
+}
+
+#searchResultsTable tr:last-child td {
+    border-bottom: none; /* Remove bottom border for the last row */
+}
+
+#searchResultsTable tr:hover {
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+/* Scrollbar styling for the popup */
+.popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+.popup::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 8px;
+}
+
+/* Search Input Styles */
+.search-section {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#searchForm {
+    display: flex;
+    align-items: center;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+#searchForm button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#searchForm button:hover {
+    background-color: #0056b3;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 10px; /* Distance from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust horizontal position */
+    z-index: 1050; /* Make sure it is above other elements */
+    opacity: 0; /* Start hidden for fade-in effect */
+    transition: opacity 0.3s ease; /* Smooth transition for fade effect */
+    max-width: 90%; /* Prevents the alert from being too wide on small screens */
+    padding: 19px 40px; /* Adjust padding: vertical | horizontal */
+    font-size: 1.28em; /* Set font size */
+    border-radius: 5px; /* Optional: round the corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
+    text-align: center; /* Center text inside the alert */
+}
+
+.custom-alert {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    z-index: 9999;
+    opacity: 0;
+    border-radius: 5px;
+    transition: opacity 0.3s ease;
+    font-size: 16px;
+    margin: 0;
+}
+
+#saveSaleConfirmationModal {
+    padding: 20px;
+}

@@ -1,0 +1,97 @@
+:root {
+	font-size: 62.5%;
+}
+/* Sidebar Styles */
+body {
+	font-size: 1.6rem;
+}
+.sidebar {
+	width: 240px;
+	background-color: #2c3e50;
+	height: 100vh;
+	color: white;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding-top: 20px;
+	position: fixed;
+	transition: transform 0.3s ease;
+	box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.logo img {
+	width: 120px;
+	margin-bottom: 10px;
+}
+
+.logo h2 {
+	font-weight: bold;
+	margin: 0;
+}
+
+.sidebar ul {
+	list-style-type: none;
+	padding: 0;
+	width: 100%;
+}
+
+.sidebar ul li {
+	width: 100%;
+	flex: 1;
+}
+
+.sidebar ul li a {
+	display: flex;
+	align-items: center;
+	padding: 14px 20px;
+	color: white;
+	text-decoration: none;
+}
+
+.sidebar ul li a img.sidebar-icon {
+	margin-right: 16px;
+}
+
+.sidebar ul li a:hover {
+	background-color: #34495e;
+}
+
+.custom-tooltip {
+	position: absolute;
+	background-color: #2c3e50; /* Background color of the tooltip */
+	color: white; /* Text color */
+	padding: 8px 0; /* Padding around the text */
+	border-radius: 4px; /* Rounded corners */
+	opacity: 1; /* Make sure tooltip is visible */
+	transition: opacity 0.2s; /* Smooth transition for appearance */
+	z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.tooltip-link {
+	font-size: 1.4rem;
+	display: block; /* Make the links block-level elements */
+	padding: 8px 16px; /* Padding around each link */
+	text-decoration: none; /* Remove underline from links */
+	color: white; /* Text color for links */
+}
+
+.tooltip-link:hover {
+	background-color: #34495e; /* Optional: Change background on hover */
+	color: white;
+}
+
+/* Logout Link Styling */
+.logout {
+	width: 100%;
+	text-align: center; /* Center the logout link */
+	padding: 10px 0; /* Adjust padding as needed */
+	position: absolute; /* Positioning relative to the sidebar */
+	bottom: 0; /* Stick to the bottom */
+}
