@@ -40,7 +40,7 @@ header h1 {
 	flex-grow: 1;
 	background-color: #ecf0f1;
 	padding: 20px;
-	margin-left: 240px;
+	margin-left: 200px;
 	transition: margin-left 0.3s ease;
 	min-height: 100vh;
 }
@@ -64,25 +64,32 @@ header h1 {
 #filters input[type="text"],
 #filters input[type="date"],
 #filters select {
-	font-size: 1.4rem; /* Adjust the font size as needed */
-	color: #333; /* Text color */
-	padding: 8px; /* Add padding for better spacing */
-	border: 1px solid #ccc; /* Border color */
-	border-radius: 4px; /* Rounded corners */
-	box-sizing: border-box; /* Ensure padding doesn't affect the width */
+	font-size: 1.4rem;
+	/* Adjust the font size as needed */
+	color: #333;
+	/* Text color */
+	padding: 8px;
+	/* Add padding for better spacing */
+	border: 1px solid #ccc;
+	/* Border color */
+	border-radius: 4px;
+	/* Rounded corners */
+	box-sizing: border-box;
+	/* Ensure padding doesn't affect the width */
 }
 
 /* Style the dropdown arrow */
 #filters select {
 	font-style: normal;
-	-webkit-appearance: none; /* Remove default styling */
+	-webkit-appearance: none;
+	/* Remove default styling */
 	-moz-appearance: none;
 	appearance: none;
-	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSA0NSIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMjBweCIgZmlsbD0iIzMzMyI+PHBhdGggZD0iTTguNSAxNS41bDEyIDEyIDEyLTEyIiAvPjwvc3ZnPg==")
-		no-repeat right 10px center;
+	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSA0NSIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMjBweCIgZmlsbD0iIzMzMyI+PHBhdGggZD0iTTguNSAxNS41bDEyIDEyIDEyLTEyIiAvPjwvc3ZnPg==") no-repeat right 10px center;
 	background-size: 10px;
 	height: fit-content;
-	padding: 8px; /* Add padding for better spacing */
+	padding: 8px;
+	/* Add padding for better spacing */
 	padding-right: 25px;
 }
 
@@ -120,12 +127,15 @@ header h1 {
 /* Buttons in Actions Column */
 .product-list td .editBtn,
 .deleteBtn {
-	display: inline-block; /* Ensures buttons stay inline */
-	margin-right: 8px; /* Adds spacing between buttons */
+	display: inline-block;
+	/* Ensures buttons stay inline */
+	margin-right: 0;
+	/* Adds spacing between buttons */
 }
 
 .product-list td .custom-btn:last-child {
-	margin-right: 0; /* Removes the right margin from the last button */
+	margin-right: 0;
+	/* Removes the right margin from the last button */
 }
 
 .product-list tr:hover {
@@ -135,38 +145,58 @@ header h1 {
 #categoryDropdown:hover,
 #categoryDropdown:focus,
 #categoryDropdown:active {
-	outline: none; /* Remove focus outline */
-	box-shadow: none; /* Remove any shadow that might create a border effect */
-	border: none; /* Ensure no border appears */
+	outline: none;
+	/* Remove focus outline */
+	box-shadow: none;
+	/* Remove any shadow that might create a border effect */
+	border: none;
+	/* Ensure no border appears */
 }
+
 /* Modal Styles */
 .modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	/* Stay in place */
+	z-index: 1;
+	/* Sit on top */
 	left: 0;
 	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-	justify-content: center; /* Center the modal horizontally */
-	align-items: center; /* Center the modal vertically */
+	width: 100%;
+	/* Full width */
+	height: 100%;
+	/* Full height */
+	overflow: auto;
+	/* Enable scroll if needed */
+	background-color: rgba(0, 0, 0, 0.4);
+	/* Black w/ opacity */
+	justify-content: center;
+	/* Center the modal horizontally */
+	align-items: center;
+	/* Center the modal vertically */
 }
 
 .modal-content {
 	background-color: #fefefe;
-	margin: auto; /* Center modal */
+	margin: auto;
+	/* Center modal */
 	padding: 20px 20px 0px 20px;
 	border: 1px solid #888;
-	width: 400px; /* Fixed width for the modal */
-	border-radius: 8px; /* Rounded corners */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-	animation: fadeIn 0.3s; /* Fade in animation */
+	width: 400px;
+	/* Fixed width for the modal */
+	border-radius: 8px;
+	/* Rounded corners */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	/* Shadow for depth */
+	animation: fadeIn 0.3s;
+	/* Fade in animation */
 }
+
 .modal-title {
 	font-weight: 600;
 }
+
 /* Form Styles */
 form label {
 	display: block;
@@ -175,11 +205,13 @@ form label {
 }
 
 form input {
-	width: calc(100% - 20px); /* Full width minus padding */
+	width: calc(100% - 20px);
+	/* Full width minus padding */
 	padding: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #ddd;
-	border-radius: 4px; /* Rounded corners */
+	border-radius: 4px;
+	/* Rounded corners */
 }
 
 .form-control,
@@ -194,6 +226,7 @@ option,
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}
@@ -248,14 +281,18 @@ option,
 }
 
 .modal-backdrop {
-	z-index: 1040; /* Ensures it's below the modal */
+	z-index: 1040;
+	/* Ensures it's below the modal */
 }
 
 .modal {
-	z-index: 1050; /* Modal above backdrop */
+	z-index: 1050;
+	/* Modal above backdrop */
 }
+
 .modal-dialog {
-	z-index: 1051; /* Make this slightly higher than the modal */
+	z-index: 1051;
+	/* Make this slightly higher than the modal */
 }
 
 .modal-header {
@@ -268,7 +305,8 @@ option,
 
 .modal-footer {
 	display: flex;
-	justify-content: center; /* Centers the button horizontally */
+	justify-content: center;
+	/* Centers the button horizontally */
 	padding: 10px 8px;
 }
 
@@ -302,13 +340,20 @@ button.custom-btn:hover {
 .custom-btn-color {
 	line-height: 1.2;
 	background-color: #52b2e1;
-	border: none; /* Remove border */
-	color: white; /* Set the text color */
-	padding: 8px 12px; /* Add padding for a better look */
-	border-radius: 5px; /* Add rounded corners */
-	font-size: 16px; /* Adjust font size */
-	cursor: pointer; /* Show pointer on hover */
-	transition: background-color 0.3s ease; /* Smooth color change on hover */
+	border: none;
+	/* Remove border */
+	color: white;
+	/* Set the text color */
+	padding: 8px 12px;
+	/* Add padding for a better look */
+	border-radius: 5px;
+	/* Add rounded corners */
+	font-size: 16px;
+	/* Adjust font size */
+	cursor: pointer;
+	/* Show pointer on hover */
+	transition: background-color 0.3s ease;
+	/* Smooth color change on hover */
 }
 
 .custom-btn-color:hover {
@@ -316,21 +361,31 @@ button.custom-btn:hover {
 }
 
 #alert-container {
-	position: fixed; /* Fix the position */
-	top: 0; /* Place at the very top */
-	left: 50%; /* Center horizontally */
-	transform: translateX(-50%); /* Center align the element */
-	z-index: 9999; /* Make sure it's above other elements */
-	width: auto; /* Adjust width as needed */
-	text-align: center; /* Center text */
-	margin: 0; /* Remove any default margin */
-	padding: 10px; /* Add some padding for aesthetics */
+	position: fixed;
+	/* Fix the position */
+	top: 0;
+	/* Place at the very top */
+	left: 50%;
+	/* Center horizontally */
+	transform: translateX(-50%);
+	/* Center align the element */
+	z-index: 9999;
+	/* Make sure it's above other elements */
+	width: auto;
+	/* Adjust width as needed */
+	text-align: center;
+	/* Center text */
+	margin: 0;
+	/* Remove any default margin */
+	padding: 10px;
+	/* Add some padding for aesthetics */
 }
 
 .hide {
 	opacity: 0;
 	transition: opacity 1.5s ease;
 }
+
 /*
 /* Responsive Styles 
 @media screen and (max-width: 768px) {

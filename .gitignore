@@ -1,0 +1,38 @@
+# Build output
+dist/
+build/
+*.o
+*.class
+*.exe
+*.out
+
+# Environment variables
+.env
+*.env.local
+
+# Logs
+logs/
+*.log
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+
+# Operating system files
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.bak
+
+# Coverage reports
+coverage/
+
+# Miscellaneous
+*.orig
+
+# FiveServer configuration file
+fiveserver.config.js

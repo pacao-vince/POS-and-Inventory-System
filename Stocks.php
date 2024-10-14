@@ -13,19 +13,8 @@ if ($_SESSION['user_type'] !== 'admin') {
     exit();
 }
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+include_once 'sidebar.html'; 
+include_once 'db_connection.php';
 
 // Pagination settings
 $records_per_page = 10; // Set the number of records you want to display per page
@@ -79,9 +68,6 @@ $lowStockJson = json_encode($lowStockProducts);
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
-
-    <?php include 'sidebar.php'; ?>
-
     <div class="main-content" id="main-content">
         <header>
             <h1>Reports</h1>

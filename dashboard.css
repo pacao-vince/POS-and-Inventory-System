@@ -1,6 +1,7 @@
 :root {
 	font-size: 62.5%;
 }
+
 body {
 	font-family: Arial, sans-serif;
 	font-size: 1.6rem;
@@ -12,11 +13,12 @@ body {
 h2 {
 	font-weight: 600;
 }
+
 .main-content {
 	flex-grow: 1;
 	background-color: #ecf0f1;
 	padding: 20px;
-	margin-left: 240px;
+	margin-left: 200px;
 	transition: margin-left 0.3s ease;
 }
 

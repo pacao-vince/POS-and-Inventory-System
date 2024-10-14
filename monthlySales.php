@@ -27,6 +27,8 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+include 'sidebar.html';
+
 // Pagination settings
 $records_per_page = 10; // Set the number of records you want to display per page
 
@@ -66,8 +68,6 @@ $monthly_sales_total_pages = ceil($monthly_sales_total_data['total'] / $records_
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
-
-    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>
