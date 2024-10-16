@@ -84,4 +84,18 @@ document.addEventListener("DOMContentLoaded", function() {
         .catch(error => {
             console.error('Error fetching bestseller data:', error);
         });
-});
+    });
+    
+    document.addEventListener('DOMContentLoaded', function () {
+        const statItems = document.querySelectorAll('.stat-item');
+        
+        statItems.forEach(item => {
+            item.addEventListener('click', function () {
+                const href = this.getAttribute('data-href');
+                if (href) {
+                    window.location.href = href;
+                }
+            });
+        });
+    });
+    

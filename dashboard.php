@@ -1,19 +1,11 @@
 <?php 
-include 'sidebar.html'; 
-    /*
     include('auth.php');
-    if (!isset($_SESSION['username'])) {
-        // Redirect to login page if not logged in
-        header('Location: login.php');
-        exit();
-    }
-    
+     
     // Only allow Admin access
     if ($_SESSION['user_type'] !== 'admin') {
         header('Location: login.php');
         exit();
     }
-        */
     $username = "root"; 
     $password = ""; 
     $database = "pos&inventory"; 
@@ -27,13 +19,13 @@ include 'sidebar.html';
     <title>POS System Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="dashboard.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
+
+    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>
@@ -46,7 +38,7 @@ include 'sidebar.html';
             
         <div class="dashboard-content">
             <div class="stats">
-                <div class="stat-item">
+                <div class="stat-item"  data-href="dailySales.php">
                     <div class="stat-icon">
                         <img src="images/sales-up-graph-svgrepo-com.png" alt="Sales Icon">
                     </div>
@@ -75,7 +67,7 @@ include 'sidebar.html';
                     </div>
                 </div>
 
-                <div class="stat-item">
+                <div class="stat-item"  data-href="categories.php">
                     <div class="stat-icon">
                         <img src="images/category-svgrepo-com.png" alt="Categories Icon">
                     </div>
@@ -95,9 +87,9 @@ include 'sidebar.html';
                     </div>
                 </div>
 
-                <div class="stat-item">
+                <div class="stat-item"  data-href="monthlySales.php">
                     <div class="stat-icon">
-                        <img src="images/monthlySales.png" alt="Products Icon">
+                        <img src="images/monthlySales.png" alt="Monthly Sales Icon">
                     </div>
                     <div class="stat-info">
                     <h2>
@@ -125,7 +117,7 @@ include 'sidebar.html';
                     </div>
                 </div>
 
-                <div class="stat-item">
+                <div class="stat-item"  data-href="products.php">
                     <div class="stat-icon">
                         <img src="images/product-svgrepo-com.png" alt="Products Icon">
                     </div>
