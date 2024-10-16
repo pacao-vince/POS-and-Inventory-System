@@ -36,7 +36,7 @@
                 <tbody>
                     <!-- PHP code for displaying categories -->
                     <?php 
-                        /*
+                        
                         session_start();
                         if (!isset($_SESSION['username'])) {
                             header('Location: login.php');
@@ -47,7 +47,7 @@
                             header('Location: login.php');
                             exit();
                         }
-                        */
+                        
 
                         $category_per_page = 10;
                         $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;

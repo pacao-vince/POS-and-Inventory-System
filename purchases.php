@@ -1,4 +1,18 @@
-<?php include 'sidebar.html'; ?>
+<?php
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header('Location: login.php');
+        exit();
+    }
+
+    if ($_SESSION['user_type'] !== 'admin') {
+        header('Location: login.php');
+        exit();
+    }
+
+    
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,11 +21,13 @@
     <title>POS System Purchases Management</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="main.css">
    
    
 </head>
 <body>
+    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>
@@ -22,123 +38,140 @@
             </div>
         </header>
 
-        <section class="product-list">
-            <button class="btn btn-primary add-purchase-btn custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Supplier</th>
-                        <th>Date</th>
-                        <th>Amount</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-                    /*                
-                    session_start();
-                    if (!isset($_SESSION['username'])) {
-                        // Redirect to login page if not logged in
-                        header('Location: login.php');
-                        exit();
-                    }
+        <div class="products-content" id="products">
+            <section class="product-list">
+                <h1>Purchases Management</h1>
+                <button class="btn btn-primary add-purchase-btn custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
+                <table class="productTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+							<th>Product Name</th>
+							<th>Supplier</th>
+							<th>Date</th>
+                            <th>Quantity</th>
+							<th>Amount</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                                             
+                        // Database connection
+                        $servername = "localhost";
+                        $username = "root";
+                        $password = "";
+                        $dbname = "pos&inventory"; // Changed to a valid DB name
 
-                    // Only allow Admin access
-                    if ($_SESSION['user_type'] !== 'admin') {
-                        header('Location: login.php');
-                        exit();
-                    }
-                    */
-                    // Database connection
-                    include_once 'db_connection.php';
+                        // Create connection
+                        $conn = new mysqli($servername, $username, $password, $dbname);
 
-                    // Pagination variables
-                    $purchases_per_page = 10; // Number of products per page
-                    $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                    $offset = ($current_page - 1) * $purchases_per_page;
-
-                    // Fetch total number of products for pagination
-                    $total_purchases_sql = "SELECT COUNT(*) AS total FROM purchases";
-                    $total_result = $conn->query($total_purchases_sql);
-                    $total_row = $total_result->fetch_assoc();
-                    $total_purchases = $total_row['total'];
-                    $total_pages = ceil($total_purchases / $purchases_per_page);
-
-                    // Fetch products once and store in a variable
-                    $sql = "SELECT * FROM products";
-                    $product_result = $conn->query($sql);
-                    $products = [];
-                    if ($product_result->num_rows > 0) {
-                        while ($product = $product_result->fetch_assoc()) {
-                            $products[] = $product;
+                        // Check connection
+                        if ($conn->connect_error) {
+                            die("Connection failed: " . $conn->connect_error);
                         }
-                    } else {
-                        $products = null; // Handle case where no products are found
-                    }
 
-                    // Process form submission for adding a new purchase
-                    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_purchase'])) {
-                        $product_id = $_POST['product_id'];
-                        $supplier = $_POST['supplier'];
-                        $date = $_POST['date'];
-                        $purchase_amount = $_POST['purchase_amount'];
+                        // Pagination variables
+                        $purchases_per_page = 10; // Number of products per page
+                        $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        $offset = ($current_page - 1) * $purchases_per_page;
 
-                        // Handle new product
-                        if (is_numeric($product_id)) {
-                            // Existing product
-                            $product_id = intval($product_id);
+                        // Fetch total number of products for pagination
+                        $total_purchases_sql = "SELECT COUNT(*) AS total FROM purchases";
+                        $total_result = $conn->query($total_purchases_sql);
+                        $total_row = $total_result->fetch_assoc();
+                        $total_purchases = $total_row['total'];
+                        $total_pages = ceil($total_purchases / $purchases_per_page);
+
+                        // Fetch products once and store in a variable
+                        $sql = "SELECT * FROM products";
+                        $product_result = $conn->query($sql);
+                        $products = [];
+                        if ($product_result->num_rows > 0) {
+                            while ($product = $product_result->fetch_assoc()) {
+                                $products[] = $product;
+                            }
                         } else {
-                            // New product
-                            $product_name = $_POST['new_product']; // From hidden input
-                            $stmt = $conn->prepare("INSERT INTO products (product_name) VALUES (?)");
-                            $stmt->bind_param('s', $product_name);
-                            $stmt->execute();
-                            $product_id = $stmt->insert_id; // Get the inserted product ID
+                            $products = null; // Handle case where no products are found
                         }
-                        // Prepare and bind
-                        $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier, date, purchase_amount) VALUES (?, ?, ?, ?)");
-                        $stmt->bind_param("issd", $product_id, $supplier, $date, $purchase_amount);
 
-                        if ($stmt->execute()) {
-                            echo "<script>window.location.href = 'purchases.php';</script>";
+                        // Process form submission for adding a new purchase
+                        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_purchase'])) {
+                            $product_id = $_POST['product_id'];
+                            $supplier = $_POST['supplier'];
+                            $date = $_POST['date'];
+                            $purchase_quantity = $_POST['purchase_quantity'];
+                            $purchase_amount = $_POST['purchase_amount'];
+
+                            // Handle new product
+                            if (is_numeric($product_id)) {
+                                // Existing product
+                                $product_id = intval($product_id);
+                            } else {
+                                // New product
+                                $product_name = $_POST['new_product']; // From hidden input
+                                $stmt = $conn->prepare("INSERT INTO products (product_name) VALUES (?)");
+                                $stmt->bind_param('s', $product_name);
+                                $stmt->execute();
+                                $product_id = $stmt->insert_id; // Get the inserted product ID
+                            }
+                            // Prepare and bind
+                            $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier, date, purchase_quantity, purchase_amount) VALUES (?, ?, ?, ?)");
+                            $stmt->bind_param("issid", $product_id, $supplier, $date, $purchase_quantity, $purchase_amount);
+
+                            if ($stmt->execute()) {
+                                // Trigger JavaScript alert for successful addition
+                                echo "<script>
+                                    window.onload = function() {
+                                        showAlert('Purchase added successfully!', 'success');
+                                    };
+                                    setTimeout(function() {
+                                        window.location.href = 'purchases.php'; // Redirect after 3 seconds
+                                    }, 3000);
+                                </script>";
+                            } else {
+                                // Show error alert in case of failure
+                                echo "<script>
+                                    window.onload = function() {
+                                        showAlert('Error: Could not add purchase.', 'danger');
+                                    };
+                                </script>";
+                            }
+                        
+                            $stmt->close();
+                        }
+
+                        // Fetch products from database
+                        $sql = "SELECT 
+                                    purchases.purchase_id,
+                                    products.product_name,
+                                    purchases.supplier,
+                                    purchases.date,
+                                    purchase_quantity,
+                                    purchases.purchase_amount
+                                FROM purchases 
+                                JOIN products ON purchases.product_id = products.product_id
+                                ORDER BY purchase_id DESC LIMIT $offset, $purchases_per_page";
+                        $result = $conn->query($sql);
+
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                                echo "<tr data-purchase-id='" . htmlspecialchars($row["purchase_id"]) . "'>
+                                        <td>" . htmlspecialchars($row["purchase_id"]) . "</td>
+                                        <td>" . htmlspecialchars($row["product_name"]) . "</td>
+                                        <td>" . htmlspecialchars($row["supplier"]) . "</td>
+                                        <td>" . htmlspecialchars($row["date"]) . "</td>
+                                        <td>" . htmlspecialchars($row["purchase_quantity"]) . "</td>
+                                        <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
+                                        <td>
+                                            <button class='btn btn-success editBtn font-size' data-id='" . $row['purchase_id'] . "'>Edit</button> |
+                                            <button class='btn btn-danger deleteBtn font-size' data-id='" . $row['purchase_id'] . "'>Delete</button>
+                                        </td>
+                                    </tr>";
+                            }
                         } else {
-                            echo "Error: " . $stmt->error;
+                            echo "<tr><td colspan='7'>No purchases found.</td></tr>";
                         }
-
-                        $stmt->close();
-                    }
-
-                    // Fetch products from database
-                    $sql = "SELECT 
-                                purchases.purchase_id,
-                                products.product_name,
-                                purchases.supplier,
-                                purchases.date,
-                                purchases.purchase_amount
-                            FROM purchases 
-                            JOIN products ON purchases.product_id = products.product_id
-                            ORDER BY purchase_id DESC LIMIT $offset, $purchases_per_page";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                            echo "<tr data-purchase-id='" . htmlspecialchars($row["purchase_id"]) . "'>
-                                    <td>" . htmlspecialchars($row["purchase_id"]) . "</td>
-                                    <td>" . htmlspecialchars($row["product_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["supplier"]) . "</td>
-                                    <td>" . htmlspecialchars($row["date"]) . "</td>
-                                    <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
-                                    <td>
-                                        <button class='btn btn-success editBtn font-size' data-id='" . $row['purchase_id'] . "'>Edit</button> |
-                                        <button class='btn btn-danger deleteBtn font-size' data-id='" . $row['purchase_id'] . "'>Delete</button>
-                                    </td>
-                                </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='6'>No purchases found.</td></tr>";
-                    }
 
                     ?>
                 </tbody>
@@ -150,10 +183,11 @@
                     <span class="disabled">Previous</span>
                 <?php endif; ?>
 
-                <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                    <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
-                <?php endfor; ?>
 
+                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                        <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
+                    <?php endfor; ?>
+              
                 <?php if ($current_page < $total_pages): ?>
                     <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
                 <?php else: ?>
@@ -161,6 +195,7 @@
                 <?php endif; ?>
             </div>
         </section>
+
     </div>
 
     <!-- Add  Modal -->
@@ -197,6 +232,10 @@
                         <input type="date" class="form-control" id="date" name="date" required>
                     </div>
                     <div class="mb-3">
+                        <label for="purchase_quantity" class="form-label">Quantity:</label>
+                        <input type="number" class="form-control" id="purchase_quantity" name="purchase_quantity" required>
+                    </div>
+                    <div class="mb-3">
                         <label for="purchase_amount" class="form-label">Amount:</label>
                         <input type="number" class="form-control" id="purchase_amount" name="purchase_amount" step="0.01" required>
                     </div>
@@ -208,8 +247,6 @@
         </div>
     </div>
 </div>
-
-<div id="alert-container"></div>
 
 <!-- Edit  Modal -->
 <div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
@@ -245,6 +282,10 @@
                     <div class="mb-3">
                         <label for="edit_date" class="form-label">Date:</label>
                         <input type="date" class="form-control" id="edit_date" name="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_purchase_quantity" class="form-label">Quantity:</label>
+                        <input type="number" class="form-control" id="edit_purchase_quantity" name="purchase_quantity" required>
                     </div>
                     <div class="mb-3">
                         <label for="edit_purchase_amount" class="form-label">Amount:</label>

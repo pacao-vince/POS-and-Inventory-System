@@ -1,4 +1,26 @@
 document.addEventListener('DOMContentLoaded', function () {
+        // Show alert function with fade-in and fade-out effect
+        function showAlert(message, type = 'success') {
+            const alertBox = document.createElement('div');
+            alertBox.className = `alert alert-${type} custom-alert`;
+            alertBox.innerText = message;
+            document.body.appendChild(alertBox);
+    
+            // Add a fade-in effect
+            alertBox.style.opacity = '0';
+            setTimeout(() => {
+                alertBox.style.opacity = '1';
+            }, 0); // Delay to allow the element to be added to the DOM
+    
+            // Remove alert after 3 seconds
+            setTimeout(() => {
+                alertBox.style.opacity = '0'; // Fade out effect
+                setTimeout(() => {
+                    document.body.removeChild(alertBox);
+                }, 300); // Wait for fade-out to complete
+            }, 3000); // Remove after 3 seconds
+        }
+    
     // Edit button click event listener
     document.querySelectorAll('.editBtn').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -39,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Show alert after the modal is fully hidden
                     editModalEl.addEventListener('hidden.bs.modal', function () {
-                        showAlert('success', data.message); // Show success message using custom alert
+                        showAlert('User updated successfully.','success'); // Show success message using custom alert
                     }, { once: true });
 
                     // Optionally, refresh the page to reflect changes after a slight delay
@@ -47,12 +69,12 @@ document.addEventListener('DOMContentLoaded', function () {
                         location.reload(); // Refresh page to reflect changes
                     }, 2000);
                 } else {
-                    showAlert('danger', data.message); // Show error message using custom alert
+                    showAlert('Error occured will updating the user.','danger'); // Show error message using custom alert
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showAlert('danger', 'An unexpected error occurred.');
+                showAlert('An unexpected error occurred.','danger');
             });
     });
 
@@ -98,39 +120,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             // Show alert after the modal is fully hidden
                             deleteModalEl.addEventListener('hidden.bs.modal', function () {
-                                showAlert('success', 'User deleted successfully.');
+                                showAlert('User deleted successfully.', 'success');
                             }, { once: true });
                         }
                     } else {
-                        showAlert('danger', 'Error deleting user: ' + data.message);
+                        showAlert('Error deleting user. ', 'danger');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showAlert('danger', 'An unexpected error occurred.');
+                    showAlert('An unexpected error occurred.', 'danger');
                 });
         });
-    }
-
-    function showAlert(type, message) {
-        const alertContainer = document.getElementById('alert-container');
-    
-        const alertHtml = `
-            <div class="alert alert-${type} alert-dismissible fade show" role="alert" style="margin: 0 auto; text-align: center;">
-                ${message}
-            </div>
-        `;
-    
-        alertContainer.innerHTML = alertHtml;
-
-        // Automatically hide the alert after 3 seconds
-        setTimeout(() => {
-            const alert = document.querySelector('.alert');
-            if (alert) {
-                alert.classList.remove('show');
-                alert.classList.add('hide');
-                alert.addEventListener('transitionend', () => alert.remove());
-            }
-        }, 3000);
     }
 });

@@ -6,10 +6,10 @@
 body {
 	font-family: Arial, sans-serif;
 	font-size: 1.6rem;
-	line-height: 1.2;
 	margin: 0;
 	padding: 0;
 	display: flex;
+	background-color: #ecf0f1;
 }
 
 /* Header Styles */
@@ -21,7 +21,6 @@ header {
 }
 
 header h1 {
-	font-weight: bold;
 	margin: 0;
 }
 
@@ -38,16 +37,17 @@ header h1 {
 
 .main-content {
 	flex-grow: 1;
-	background-color: #ecf0f1;
 	padding: 20px;
 	margin-left: 200px;
 	transition: margin-left 0.3s ease;
-	min-height: 100vh;
 }
 
 /* Product List Styles */
-.product-list {
+.products-content {
 	margin-top: 20px;
+}
+
+.product-list {
 	margin-bottom: 20px;
 	background-color: #fff;
 	padding: 20px;
@@ -56,7 +56,7 @@ header h1 {
 }
 
 .product-list h1 {
-	margin-bottom: 20px;
+	margin-bottom: 10px;
 	font-weight: bold;
 }
 
@@ -93,6 +93,7 @@ header h1 {
 	padding-right: 25px;
 }
 
+
 .product-list table {
 	width: 100%;
 	border-collapse: collapse;
@@ -100,19 +101,9 @@ header h1 {
 
 .product-list th,
 .product-list td {
-	font-size: 1.4rem;
-	padding: 12px 8px;
+	padding: 12px;
 	border-bottom: 1px solid #ddd;
-}
-
-.product-list th {
-	background-color: #3498db;
-	color: white;
-	text-align: left;
-}
-
-.product-list td {
-	text-align: left;
+	text-align: center;
 }
 
 .dropdown-toggle {
@@ -133,15 +124,6 @@ header h1 {
 	/* Adds spacing between buttons */
 }
 
-.product-list td .custom-btn:last-child {
-	margin-right: 0;
-	/* Removes the right margin from the last button */
-}
-
-.product-list tr:hover {
-	background-color: #f1f1f1;
-}
-
 #categoryDropdown:hover,
 #categoryDropdown:focus,
 #categoryDropdown:active {
@@ -152,6 +134,7 @@ header h1 {
 	border: none;
 	/* Ensure no border appears */
 }
+
 
 /* Modal Styles */
 .modal {
@@ -201,7 +184,7 @@ header h1 {
 form label {
 	display: block;
 	margin-bottom: 5px;
-	font-weight: 500;
+	font-weight: medium;
 }
 
 form input,
@@ -218,8 +201,7 @@ form option {
 
 .form-control,
 .form-select,
-option,
-.dropdown-menu {
+option {
 	font-size: 1.6rem;
 }
 
@@ -238,15 +220,34 @@ option,
 .high-stock {
 	background-color: green;
 	color: white;
-	padding: 8px 12px;
+	padding: 5px 8px;
 	border-radius: 4px;
 }
 
 .low-stock {
 	background-color: red;
 	color: white;
-	padding: 8px 12px;
+	padding: 5px 8px;
 	border-radius: 4px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+	.sidebar {
+		transform: translateX(-100%);
+	}
+
+	.sidebar.active {
+		transform: translateX(0);
+	}
+
+	.main-content {
+		margin-left: 0;
+	}
+
+	.main-content.active {
+		margin-left: 250px;
+	}
 }
 
 .pagination {
@@ -257,8 +258,7 @@ option,
 
 .pagination a,
 .pagination span {
-	line-height: 1.2;
-	padding: 8px 16px;
+	padding: 8px 12px;
 	margin: 0 4px;
 	text-decoration: none;
 	background-color: #f4f4f4;
@@ -314,15 +314,14 @@ option,
 
 /* Custom Button Styles */
 button.custom-btn {
-	font-size: 1.4rem;
-	line-height: 1.2;
+	font-size: 1.6rem;
 	background-color: #2980b9;
 	color: white;
-	padding: 8px 12px;
+	padding: 5px 8px;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	margin-bottom: 16px;
+	margin-bottom: 20px;
 }
 
 .editBtn,
@@ -330,9 +329,8 @@ button.custom-btn {
 .btn-close,
 .btn.btn-danger,
 .btn.btn-secondary {
-	font-size: 1.4rem;
-	line-height: 1.2;
-	padding: 8px 12px;
+	font-size: 1.6rem;
+	padding: 5px 8px;
 }
 
 button.custom-btn:hover {
@@ -340,56 +338,40 @@ button.custom-btn:hover {
 }
 
 .custom-btn-color {
-	line-height: 1.2;
 	background-color: #52b2e1;
+	border: none; /* Remove border */
+	color: white; /* Set the text color */
+	padding: 5px 8px; /* Add padding for a better look */
+	border-radius: 5px; /* Add rounded corners */
+	font-size: 16px; /* Adjust font size */
+	cursor: pointer; /* Show pointer on hover */
+	transition: background-color 0.3s ease; /* Smooth color change on hover */
 	border: none;
-	/* Remove border */
-	color: white;
-	/* Set the text color */
-	padding: 8px 12px;
-	/* Add padding for a better look */
-	border-radius: 5px;
-	/* Add rounded corners */
-	font-size: 16px;
-	/* Adjust font size */
-	cursor: pointer;
-	/* Show pointer on hover */
-	transition: background-color 0.3s ease;
-	/* Smooth color change on hover */
 }
 
 .custom-btn-color:hover {
 	background-color: #4796bd;
 }
 
-#alert-container {
-	position: fixed;
-	/* Fix the position */
-	top: 0;
-	/* Place at the very top */
-	left: 50%;
-	/* Center horizontally */
-	transform: translateX(-50%);
-	/* Center align the element */
-	z-index: 9999;
-	/* Make sure it's above other elements */
-	width: auto;
-	/* Adjust width as needed */
-	text-align: center;
-	/* Center text */
-	margin: 0;
-	/* Remove any default margin */
-	padding: 10px;
-	/* Add some padding for aesthetics */
-}
+.custom-alert {
+	position: fixed; /* Fix the position */
+	top: 10px; /* Place at the very top */
+	left: 50%; /* Center horizontally */
+	transform: translateX(-50%); /* Center align the element */
+	z-index: 9999; /* Make sure it's above other elements */
+	width: auto; /* Adjust width as needed */
+	text-align: center; /* Center text */
+	margin: 0; /* Remove any default margin */
+	padding: 15px; /* Add some padding for aesthetics */
+	border: 5px;
 
 .hide {
 	opacity: 0;
 	transition: opacity 1.5s ease;
 }
 
-/*
-/* Responsive Styles 
+
+ Responsive Styles 
 @media screen and (max-width: 768px) {
 	.sidebar {
 		transform: translateX(-100%);
@@ -407,4 +389,5 @@ button.custom-btn:hover {
 		margin-left: 250px;
 	}
 }
-*/
+
+

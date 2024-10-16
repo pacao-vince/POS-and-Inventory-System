@@ -8,6 +8,7 @@ body {
 	margin: 0;
 	padding: 0;
 	display: flex;
+	background-color: #ecf0f1;
 }
 
 h2 {
@@ -16,7 +17,6 @@ h2 {
 
 .main-content {
 	flex-grow: 1;
-	background-color: #ecf0f1;
 	padding: 20px;
 	margin-left: 200px;
 	transition: margin-left 0.3s ease;
@@ -53,8 +53,8 @@ header h1 {
 
 .stats {
 	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+	justify-content: space-evenly;
+	margin-bottom: 20px;
 }
 
 .stat-item {
@@ -64,19 +64,16 @@ header h1 {
 	padding: 20px;
 	border-radius: 8px;
 	display: flex;
-	flex-grow: 0;
 	align-items: center;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	min-width: 200.5px;
-	margin-bottom: 20px;
-	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);	
 }
 
-.stat-item:hover {
-	transform: scale(1.033);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-
+.stat-item:hover{
+    cursor: pointer;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
 }
+
 
 .stat-icon {
 	width: 50px;
@@ -87,6 +84,7 @@ header h1 {
 	justify-content: center;
 	align-items: center;
 	margin-right: 10px;
+	
 }
 
 .stat-icon img {
@@ -105,8 +103,9 @@ header h1 {
 
 .charts {
 	display: flex;
-	flex-wrap: wrap;
+	flex-grow: 1;
 	justify-content: space-between;
+	margin-bottom: 20px;
 }
 
 .sales-graph,
@@ -119,14 +118,12 @@ header h1 {
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	margin-right: 10px;
 	margin-bottom: 20px;
 	min-width: 414px;
 }
 
 .recently-added-products {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
 	background-color: white;
 	padding: 20px;
 	border-radius: 8px;
@@ -164,6 +161,6 @@ header h1 {
 	}
 
 	.main-content.active {
-		margin-left: 240px;
+		margin-left: 250px;
 	}
 }

@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Add a fade-in effect
         alertBox.style.opacity = '0';
-        setTimeout(() => {
+        setTimeout(() => { 
             alertBox.style.opacity = '1';
         }, 0); // Delay to allow the element to be added to the DOM
 

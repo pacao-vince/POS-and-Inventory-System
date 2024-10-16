@@ -17,7 +17,7 @@ if (isset($_GET['purchase_id'])) {
     $purchase_id = $_GET['purchase_id'];
 
     // Prepare and bind
-    $stmt = $conn->prepare("SELECT purchase_id, product_name, supplier, date, purchase_amount FROM purchases WHERE purchase_id = ?");
+    $stmt = $conn->prepare("SELECT purchase_id, product_name, supplier, date, purchase_quantity, purchase_amount FROM purchases WHERE purchase_id = ?");
     $stmt->bind_param("i", $purchase_id);
 
     if ($stmt->execute()) {

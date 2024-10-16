@@ -1,23 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Function to show alerts
-    function showAlert(type, message) {
-        const alertContainer = document.getElementById('alert-container');
-        const alertHtml = `
-            <div class="alert alert-${type} alert-dismissible fade show" role="alert" style="margin: 0 auto; text-align: center;">
-                ${message}
-            </div>
-        `;
-        alertContainer.innerHTML = alertHtml;
+      // Show alert function with fade-in and fade-out effect
+      function showAlert(message, type = 'success') {
+        const alertBox = document.createElement('div');
+        alertBox.className = `alert alert-${type} custom-alert`;
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
 
-        // Automatically hide the alert after 3 seconds
+        // Add a fade-in effect
+        alertBox.style.opacity = '0';
         setTimeout(() => {
-            const alert = document.querySelector('.alert');
-            if (alert) {
-                alert.classList.remove('show');
-                alert.classList.add('hide');
-                alert.addEventListener('transitionend', () => alert.remove());
-            }
-        }, 3000);
+            alertBox.style.opacity = '1';
+        }, 0); // Delay to allow the element to be added to the DOM
+
+        // Remove alert after 3 seconds
+        setTimeout(() => {
+            alertBox.style.opacity = '0'; // Fade out effect
+            setTimeout(() => {
+                document.body.removeChild(alertBox);
+            }, 300); // Wait for fade-out to complete
+        }, 3000); // Remove after 3 seconds
     }
 
     // Function to open the edit modal with pre-filled data
@@ -48,72 +49,69 @@ document.addEventListener("DOMContentLoaded", function () {
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show(); // Show the delete confirmation modal
         }
-    });
 
-    // Handle form submission for editing  via AJAX
-    document.getElementById("editForm").addEventListener("submit", function (event) {
-        event.preventDefault();
+        document.getElementById("editForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent the default form submission
+        
+            const formData = new FormData(this);
+            fetch('update_category.php', {
+                method: 'POST',
+                body: formData
+            })
 
-        const formData = new FormData(this);
-        fetch('update_category.php', {
-            method: 'POST',
-            body: formData
-        })
             .then(response => response.json())
             .then(data => {
                 const editModalEl = document.getElementById('editModal');
                 const editModal = bootstrap.Modal.getInstance(editModalEl);
-
+        
                 if (data.success) {
                     editModal.hide();
                     editModalEl.addEventListener('hidden.bs.modal', function () {
-                        showAlert('success', 'Category updated successfully.');
-                        setTimeout(() => location.reload(), 2000);
+                        showAlert('Category updated successfully.', 'success');
+                        setTimeout(() => location.reload(), 2000); // Reload after success
                     }, { once: true });
                 } else {
-                    showAlert('danger', 'Error updating category: ' + data.message);
+                    showAlert('Error occurred while updating the category.', 'danger');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showAlert('danger', 'An unexpected error occurred.');
+
+                showAlert('An unexpected error occurred.', 'danger');
             });
-    });
+        });
 
     // Confirm delete button listener
     document.getElementById('confirmDeleteBtn').addEventListener('click', function (event) {
         event.preventDefault(); // Prevent default button action (form submission)
 
-        const categoryId = document.getElementById('delete_category_id').value;
+    // Ensure categoryId is valid before making the fetch request
+    if (!categoryId || isNaN(categoryId)) {
+        showAlert ('Invalid category ID.','danger');
+        return;
+    }
 
-        // Ensure categoryId is valid before making the fetch request
-        if (!categoryId || isNaN(categoryId)) {
-            showAlert('danger', 'Invalid category ID.');
-            return;
+    fetch(`delete_category.php?category_id=${categoryId}`, { method: 'GET' }) // Use category_id
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const deleteModalEl = document.getElementById('deleteModal');
+            const deleteModal = bootstrap.Modal.getInstance(deleteModalEl);
+
+            deleteModal.hide();
+            deleteModalEl.addEventListener('hidden.bs.modal', function () {
+                showAlert ('Category deleted successfully.', 'success');
+                setTimeout(() => location.reload(), 2000);
+            }, { once: true });
+        } else {
+            showAlert('Error deleting category. ', 'danger');
         }
-
-        fetch(`delete_category.php?category_id=${categoryId}`, { method: 'GET' }) // Use category_id
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    const deleteModalEl = document.getElementById('deleteModal');
-                    const deleteModal = bootstrap.Modal.getInstance(deleteModalEl);
-
-                    deleteModal.hide();
-                    deleteModalEl.addEventListener('hidden.bs.modal', function () {
-                        showAlert('success', 'Category deleted successfully.');
-                        setTimeout(() => location.reload(), 2000);
-                    }, { once: true });
-                } else {
-                    showAlert('danger', 'Error deleting category: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showAlert('danger', 'An unexpected error occurred.');
-            });
-    });
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        showAlert('An unexpected error occurred.', 'danger');
+})
+})
 
 
 
-});
