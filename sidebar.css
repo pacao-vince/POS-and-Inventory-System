@@ -1,14 +1,17 @@
 :root {
 	font-size: 62.5%;
 }
+
 /* Sidebar Styles */
 body {
 	font-size: 1.6rem;
 }
+
 .sidebar {
-	width: 240px;
+	width: 200px;
 	background-color: #2c3e50;
 	height: 100vh;
+	font-size: 1.4rem;
 	color: white;
 	display: flex;
 	flex-direction: column;
@@ -50,13 +53,17 @@ body {
 .sidebar ul li a {
 	display: flex;
 	align-items: center;
-	padding: 14px 20px;
+	padding: 10px 15px;
 	color: white;
 	text-decoration: none;
 }
 
 .sidebar ul li a img.sidebar-icon {
 	margin-right: 16px;
+	width: 20px;
+	/* Adjusted icon size */
+	height: 20px;
+	/* Adjusted icon size */
 }
 
 .sidebar ul li a:hover {
@@ -65,33 +72,49 @@ body {
 
 .custom-tooltip {
 	position: absolute;
-	background-color: #2c3e50; /* Background color of the tooltip */
-	color: white; /* Text color */
-	padding: 8px 0; /* Padding around the text */
-	border-radius: 4px; /* Rounded corners */
-	opacity: 1; /* Make sure tooltip is visible */
-	transition: opacity 0.2s; /* Smooth transition for appearance */
-	z-index: 1000; /* Ensure it appears above other elements */
+	background-color: #2c3e50;
+	/* Background color of the tooltip */
+	color: white;
+	/* Text color */
+	padding: 6px 0;
+	/* Padding around the text */
+	border-radius: 4px;
+	/* Rounded corners */
+	opacity: 1;
+	/* Make sure tooltip is visible */
+	transition: opacity 0.2s;
+	/* Smooth transition for appearance */
+	z-index: 1000;
+	/* Ensure it appears above other elements */
 }
 
 .tooltip-link {
 	font-size: 1.4rem;
-	display: block; /* Make the links block-level elements */
-	padding: 8px 16px; /* Padding around each link */
-	text-decoration: none; /* Remove underline from links */
-	color: white; /* Text color for links */
+	display: block;
+	/* Make the links block-level elements */
+	padding: 8px 16px;
+	/* Padding around each link */
+	text-decoration: none;
+	/* Remove underline from links */
+	color: white;
+	/* Text color for links */
 }
 
 .tooltip-link:hover {
-	background-color: #34495e; /* Optional: Change background on hover */
+	background-color: #34495e;
+	/* Optional: Change background on hover */
 	color: white;
 }
 
 /* Logout Link Styling */
 .logout {
 	width: 100%;
-	text-align: center; /* Center the logout link */
-	padding: 10px 0; /* Adjust padding as needed */
-	position: absolute; /* Positioning relative to the sidebar */
-	bottom: 0; /* Stick to the bottom */
+	text-align: center;
+	/* Center the logout link */
+	padding: 10px 0;
+	/* Adjust padding as needed */
+	position: absolute;
+	/* Positioning relative to the sidebar */
+	bottom: 0;
+	/* Stick to the bottom */
 }

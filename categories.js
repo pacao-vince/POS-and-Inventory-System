@@ -49,7 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
             deleteModal.show(); // Show the delete confirmation modal
         }
-        document.getElementById("editCategoryForm").addEventListener("submit", function (event) {
+
+        document.getElementById("editForm").addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent the default form submission
         
             const formData = new FormData(this);
@@ -57,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: 'POST',
                 body: formData
             })
+
             .then(response => response.json())
             .then(data => {
                 const editModalEl = document.getElementById('editModal');
@@ -74,16 +76,14 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .catch(error => {
                 console.error('Error:', error);
+
                 showAlert('An unexpected error occurred.', 'danger');
             });
         });
-        
 
     // Confirm delete button listener
-document.getElementById('confirmDeleteBtn').addEventListener('click', function (event) {
-    event.preventDefault(); // Prevent default button action (form submission)
-
-    const categoryId = document.getElementById('delete_category_id').value;
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent default button action (form submission)
 
     // Ensure categoryId is valid before making the fetch request
     if (!categoryId || isNaN(categoryId)) {
@@ -110,8 +110,8 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function (
     .catch(error => {
         console.error('Error:', error);
         showAlert('An unexpected error occurred.', 'danger');
-    });
-});
+})
+})
 
-})
-})
+
+

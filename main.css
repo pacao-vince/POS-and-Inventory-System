@@ -38,7 +38,7 @@ header h1 {
 .main-content {
 	flex-grow: 1;
 	padding: 20px;
-	margin-left: 240px;
+	margin-left: 200px;
 	transition: margin-left 0.3s ease;
 }
 
@@ -60,6 +60,40 @@ header h1 {
 	font-weight: bold;
 }
 
+/* Style the text inside the input boxes and dropdown */
+#filters input[type="text"],
+#filters input[type="date"],
+#filters select {
+	font-size: 1.4rem;
+	/* Adjust the font size as needed */
+	color: #333;
+	/* Text color */
+	padding: 8px;
+	/* Add padding for better spacing */
+	border: 1px solid #ccc;
+	/* Border color */
+	border-radius: 4px;
+	/* Rounded corners */
+	box-sizing: border-box;
+	/* Ensure padding doesn't affect the width */
+}
+
+/* Style the dropdown arrow */
+#filters select {
+	font-style: normal;
+	-webkit-appearance: none;
+	/* Remove default styling */
+	-moz-appearance: none;
+	appearance: none;
+	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSA0NSIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMjBweCIgZmlsbD0iIzMzMyI+PHBhdGggZD0iTTguNSAxNS41bDEyIDEyIDEyLTEyIiAvPjwvc3ZnPg==") no-repeat right 10px center;
+	background-size: 10px;
+	height: fit-content;
+	padding: 8px;
+	/* Add padding for better spacing */
+	padding-right: 25px;
+}
+
+
 .product-list table {
 	width: 100%;
 	border-collapse: collapse;
@@ -72,54 +106,80 @@ header h1 {
 	text-align: center;
 }
 
-.product-list th {
+.dropdown-toggle {
+	font-size: 1.4rem;
+	line-height: 1.2;
 	background-color: #3498db;
-	color: white;
+	border: none;
+	font-weight: 600;
+	transition: none;
 }
 
 /* Buttons in Actions Column */
 .product-list td .editBtn,
 .deleteBtn {
-	display: inline-block; /* Ensures buttons stay inline */
-	margin-right: 8px; /* Adds spacing between buttons */
+	display: inline-block;
+	/* Ensures buttons stay inline */
+	margin-right: 0;
+	/* Adds spacing between buttons */
 }
 
-.product-list td .custom-btn:last-child {
-	margin-right: 0; /* Removes the right margin from the last button */
+#categoryDropdown:hover,
+#categoryDropdown:focus,
+#categoryDropdown:active {
+	outline: none;
+	/* Remove focus outline */
+	box-shadow: none;
+	/* Remove any shadow that might create a border effect */
+	border: none;
+	/* Ensure no border appears */
 }
 
-.product-list tr:hover {
-	background-color: #f1f1f1;
-}
 
 /* Modal Styles */
 .modal {
-	display: none; /* Hidden by default */
-	position: fixed; /* Stay in place */
-	z-index: 1; /* Sit on top */
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	/* Stay in place */
+	z-index: 1;
+	/* Sit on top */
 	left: 0;
 	top: 0;
-	width: 100%; /* Full width */
-	height: 100%; /* Full height */
-	overflow: auto; /* Enable scroll if needed */
-	background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-	justify-content: center; /* Center the modal horizontally */
-	align-items: center; /* Center the modal vertically */
+	width: 100%;
+	/* Full width */
+	height: 100%;
+	/* Full height */
+	overflow: auto;
+	/* Enable scroll if needed */
+	background-color: rgba(0, 0, 0, 0.4);
+	/* Black w/ opacity */
+	justify-content: center;
+	/* Center the modal horizontally */
+	align-items: center;
+	/* Center the modal vertically */
 }
 
 .modal-content {
 	background-color: #fefefe;
-	margin: auto; /* Center modal */
+	margin: auto;
+	/* Center modal */
 	padding: 20px 20px 0px 20px;
 	border: 1px solid #888;
-	width: 400px; /* Fixed width for the modal */
-	border-radius: 8px; /* Rounded corners */
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-	animation: fadeIn 0.3s; /* Fade in animation */
+	width: 400px;
+	/* Fixed width for the modal */
+	border-radius: 8px;
+	/* Rounded corners */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	/* Shadow for depth */
+	animation: fadeIn 0.3s;
+	/* Fade in animation */
 }
+
 .modal-title {
 	font-weight: 600;
 }
+
 /* Form Styles */
 form label {
 	display: block;
@@ -127,12 +187,16 @@ form label {
 	font-weight: medium;
 }
 
-form input {
-	width: calc(100% - 20px); /* Full width minus padding */
+form input,
+form select,
+form option {
+	width: calc(100% - 20px);
+	/* Full width minus padding */
 	padding: 10px;
 	margin-bottom: 10px;
 	border: 1px solid #ddd;
-	border-radius: 4px; /* Rounded corners */
+	border-radius: 4px;
+	/* Rounded corners */
 }
 
 .form-control,
@@ -146,6 +210,7 @@ option {
 	from {
 		opacity: 0;
 	}
+
 	to {
 		opacity: 1;
 	}
@@ -218,14 +283,18 @@ option {
 }
 
 .modal-backdrop {
-	z-index: 1040; /* Ensures it's below the modal */
+	z-index: 1040;
+	/* Ensures it's below the modal */
 }
 
 .modal {
-	z-index: 1050; /* Modal above backdrop */
+	z-index: 1050;
+	/* Modal above backdrop */
 }
+
 .modal-dialog {
-	z-index: 1051; /* Make this slightly higher than the modal */
+	z-index: 1051;
+	/* Make this slightly higher than the modal */
 }
 
 .modal-header {
@@ -238,7 +307,8 @@ option {
 
 .modal-footer {
 	display: flex;
-	justify-content: center; /* Centers the button horizontally */
+	justify-content: center;
+	/* Centers the button horizontally */
 	padding: 10px 8px;
 }
 
@@ -276,6 +346,7 @@ button.custom-btn:hover {
 	font-size: 16px; /* Adjust font size */
 	cursor: pointer; /* Show pointer on hover */
 	transition: background-color 0.3s ease; /* Smooth color change on hover */
+	border: none;
 }
 
 .custom-btn-color:hover {
@@ -293,9 +364,30 @@ button.custom-btn:hover {
 	margin: 0; /* Remove any default margin */
 	padding: 15px; /* Add some padding for aesthetics */
 	border: 5px;
-}
 
 .hide {
 	opacity: 0;
 	transition: opacity 1.5s ease;
 }
+
+
+ Responsive Styles 
+@media screen and (max-width: 768px) {
+	.sidebar {
+		transform: translateX(-100%);
+	}
+
+	.sidebar.active {
+		transform: translateX(0);
+	}
+
+	.main-content {
+		margin-left: 0;
+	}
+
+	.main-content.active {
+		margin-left: 250px;
+	}
+}
+
+

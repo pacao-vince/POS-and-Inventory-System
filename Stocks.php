@@ -1,5 +1,5 @@
 <?php
-
+/*
 session_start();
 if (!isset($_SESSION['username'])) {
     // Redirect to login page if not logged in
@@ -12,20 +12,9 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+*/
+include_once 'sidebar.html'; 
+include_once 'db_connection.php';
 
 // Pagination settings
 $records_per_page = 10; // Set the number of records you want to display per page
@@ -75,13 +64,9 @@ $lowStockJson = json_encode($lowStockProducts);
     <title>POS System Reports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
-
-    <?php include 'sidebar.php'; ?>
-
     <div class="main-content" id="main-content">
         <header>
             <h1>Reports</h1>
@@ -124,6 +109,8 @@ $lowStockJson = json_encode($lowStockProducts);
                 <div class="pagination">
                     <?php if ($out_of_stock_page > 1): ?>
                         <a href="?out_of_stock_page=<?php echo $out_of_stock_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
                     <?php endif; ?>
 
                     <?php for ($i = 1; $i <= $out_of_stock_total_pages; $i++): ?>
@@ -132,6 +119,8 @@ $lowStockJson = json_encode($lowStockProducts);
 
                     <?php if ($out_of_stock_page < $out_of_stock_total_pages): ?>
                         <a href="?out_of_stock_page=<?php echo $out_of_stock_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
                     <?php endif; ?>
                 </div>
             </section>

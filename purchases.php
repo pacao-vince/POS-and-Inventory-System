@@ -31,7 +31,7 @@
 
     <div class="main-content" id="main-content">
         <header>
-            <h2></h2>
+            <h1>Purchases Management</h1>
             <div class="admin-profile">
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                 <span>Administrator</span>
@@ -173,24 +173,29 @@
                             echo "<tr><td colspan='7'>No purchases found.</td></tr>";
                         }
 
-                        ?>
-                    </tbody>
-                </table>
-                <div class="pagination">
-                    <?php if ($current_page > 1): ?>
-                        <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
-                    <?php endif; ?>
+                    ?>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <?php if ($current_page > 1): ?>
+                    <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
+                <?php else: ?>
+                    <span class="disabled">Previous</span>
+                <?php endif; ?>
+
 
                     <?php for ($page = 1; $page <= $total_pages; $page++): ?>
                         <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
                     <?php endfor; ?>
+              
+                <?php if ($current_page < $total_pages): ?>
+                    <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
+                <?php else: ?>
+                    <span class="disabled">Next</span>
+                <?php endif; ?>
+            </div>
+        </section>
 
-                    <?php if ($current_page < $total_pages): ?>
-                        <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
-                    <?php endif; ?>
-                </div>
-            </section>
-        </div>
     </div>
 
     <!-- Add  Modal -->
@@ -202,9 +207,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addForm" action="purchases.php" method="POST">
+                <form id="addForm" action="create_purchase.php" method="POST">
                 <div class="mb-3">
-                    <label for="product" class="form-label">Product:</label>
+                    <label for="product_id" class="form-label">Product:</label>
                         <select class="form-control" id="product_id" name="product_id" required>
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>
