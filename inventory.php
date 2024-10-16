@@ -107,7 +107,7 @@
 
     <div class="main-content" id="main-content">
         <header>
-            <h2></h2>
+            <h1>Inventory Management</h1>
             <div class="admin-profile">
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                 <span>Administrator</span>
@@ -115,7 +115,6 @@
         </header>
 
         <div class="product-list" id="tableToPrint">
-            <h1>Inventory Management</h1>
             <button id="printBtn" onclick="printTable()">Print</button>
             <table>
                 <thead>

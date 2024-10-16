@@ -15,7 +15,7 @@
 
     <div class="main-content" id="main-content">
         <header>
-            <h2></h2>
+            <h1>Purchases Management</h1>
             <div class="admin-profile">
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                 <span>Administrator</span>
@@ -23,7 +23,6 @@
         </header>
 
         <section class="product-list">
-            <h1>Purchases Management</h1>
             <button class="btn btn-primary add-purchase-btn custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
             <table>
                 <thead>
@@ -53,18 +52,7 @@
                     }
                     */
                     // Database connection
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "";
-                    $dbname = "pos&inventory"; // Changed to a valid DB name
-
-                    // Create connection
-                    $conn = new mysqli($servername, $username, $password, $dbname);
-
-                    // Check connection
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
+                    include_once 'db_connection.php';
 
                     // Pagination variables
                     $purchases_per_page = 10; // Number of products per page
@@ -158,6 +146,8 @@
             <div class="pagination">
                 <?php if ($current_page > 1): ?>
                     <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
+                <?php else: ?>
+                    <span class="disabled">Previous</span>
                 <?php endif; ?>
 
                 <?php for ($page = 1; $page <= $total_pages; $page++): ?>
@@ -166,6 +156,8 @@
 
                 <?php if ($current_page < $total_pages): ?>
                     <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
+                <?php else: ?>
+                    <span class="disabled">Next</span>
                 <?php endif; ?>
             </div>
         </section>
@@ -180,9 +172,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="addForm" action="purchases.php" method="POST">
+                <form id="addForm" action="create_purchase.php" method="POST">
                 <div class="mb-3">
-                    <label for="product" class="form-label">Product:</label>
+                    <label for="product_id" class="form-label">Product:</label>
                         <select class="form-control" id="product_id" name="product_id" required>
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>

@@ -20,6 +20,7 @@ h2 {
 	padding: 20px;
 	margin-left: 200px;
 	transition: margin-left 0.3s ease;
+	min-height: 100vh;
 }
 
 header {
@@ -53,12 +54,13 @@ header h1 {
 .stats {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
+	justify-content: space-between;
 }
 
 .stat-item {
 	background-color: white;
-	width: 22%;
+	width: 23%;
+	/* aspect-ratio: 16/9; */
 	padding: 20px;
 	border-radius: 8px;
 	display: flex;
@@ -66,8 +68,14 @@ header h1 {
 	align-items: center;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	min-width: 200.5px;
-
 	margin-bottom: 20px;
+	transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-item:hover {
+	transform: scale(1.033);
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+
 }
 
 .stat-icon {
@@ -105,14 +113,12 @@ header h1 {
 .bestseller-products {
 	display: flex;
 	flex-wrap: wrap;
-	flex-grow: 1;
 	flex-direction: column;
 	background-color: white;
-	width: 48%;
+	width: 49%;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	margin-right: 10px;
 	margin-bottom: 20px;
 	min-width: 414px;
 }

@@ -108,11 +108,11 @@ header h1 {
 .product-list th {
 	background-color: #3498db;
 	color: white;
-	text-align: center;
+	text-align: left;
 }
 
 .product-list td {
-	text-align: right;
+	text-align: left;
 }
 
 .dropdown-toggle {
@@ -204,7 +204,9 @@ form label {
 	font-weight: 500;
 }
 
-form input {
+form input,
+form select,
+form option {
 	width: calc(100% - 20px);
 	/* Full width minus padding */
 	padding: 10px;

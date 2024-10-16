@@ -1,5 +1,5 @@
 <?php
-
+/*
 session_start();
 if (!isset($_SESSION['username'])) {
     // Redirect to login page if not logged in
@@ -12,21 +12,9 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-
+*/
 // Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
+include_once 'db_connection.php';
 include 'sidebar.html';
 
 // Pagination settings
@@ -55,7 +43,6 @@ $daily_sales_total_pages = ceil($daily_sales_total_data['total'] / $records_per_
     <title>POS System Reports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>

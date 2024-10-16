@@ -1,5 +1,5 @@
 <?php
-
+/*
 session_start();
 if (!isset($_SESSION['username'])) {
     // Redirect to login page if not logged in
@@ -12,7 +12,7 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-
+*/
 include_once 'sidebar.html'; 
 include_once 'db_connection.php';
 
@@ -64,7 +64,6 @@ $lowStockJson = json_encode($lowStockProducts);
     <title>POS System Reports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
@@ -110,6 +109,8 @@ $lowStockJson = json_encode($lowStockProducts);
                 <div class="pagination">
                     <?php if ($out_of_stock_page > 1): ?>
                         <a href="?out_of_stock_page=<?php echo $out_of_stock_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
                     <?php endif; ?>
 
                     <?php for ($i = 1; $i <= $out_of_stock_total_pages; $i++): ?>
@@ -118,6 +119,8 @@ $lowStockJson = json_encode($lowStockProducts);
 
                     <?php if ($out_of_stock_page < $out_of_stock_total_pages): ?>
                         <a href="?out_of_stock_page=<?php echo $out_of_stock_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
                     <?php endif; ?>
                 </div>
             </section>
