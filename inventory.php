@@ -1,4 +1,16 @@
-<?php include 'sidebar.html'; ?>
+<?php
+    session_start();
+    if (!isset($_SESSION['username'])) {
+        header('Location: login.php');
+        exit();
+    }
+
+    if ($_SESSION['user_type'] !== 'admin') {
+        header('Location: login.php');
+        exit();
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +19,7 @@
     <title>POS System Inventory</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="main.css">
     <script>
         function printTable() {
@@ -31,16 +44,15 @@
     <style>
         /* Print Button Style */
         #printBtn {
-            font-size: 1.4rem;
-            line-height: 1.2;
             background-color: #28a745;
             color: #ffffff;
             border: none;
-            padding: 8px 12px;
+            padding: 5px 8px;
+            font-size: 1.6rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
             border-radius: 4px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             float: right;
         }
 
@@ -71,8 +83,8 @@
         }
 
         table, th, td {
-            border-bottom: 1px solid black;
-            padding: 12px 8px;
+            border: 1px solid black;
+            padding: 8px;
             text-align: left;
         }
 
@@ -104,6 +116,8 @@
     </style>
 </head>
 <body>
+    
+    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>
@@ -114,93 +128,97 @@
             </div>
         </header>
 
-        <div class="product-list" id="tableToPrint">
-            <button id="printBtn" onclick="printTable()">Print</button>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Product Name</th>
-                        <th>Category</th>
-                        <th>Purchases</th>
-                        <th>Sales</th>
-                        <th>Stocks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                        <?php
-                        // Database connection parameters
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "pos&inventory";
+        <div class="table-content" id="tableToPrint">
+            <div class="table-list">
+                <h1>Inventory Management</h1>
+                <button id="printBtn" onclick="printTable()">Print</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Purchases</th>
+                            <th>Sales</th>
+                            <th>Stocks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <?php
+                            // Database connection parameters
+                            $servername = "localhost";
+                            $username = "root";
+                            $password = "";
+                            $dbname = "pos&inventory";
 
-                        // Create connection
-                        $conn = new mysqli($servername, $username, $password, $dbname);
 
-                        // Check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
-                        }
+                            // Create connection
+                            $conn = new mysqli($servername, $username, $password, $dbname);
 
-                        // Fetch products from database
-                        $sql = "SELECT 
-                                    p.product_id, 
-                                    p.product_name, 
-                                    c.category_name,
-                                    p.stocks,
-                                    p.threshold,
-                                    COALESCE(SUM(sp.amount), 0) AS total_sales,
-                                    COALESCE(SUM(pr.purchase_amount), 0) AS total_purchases
-                                FROM 
-                                    products p
-                                JOIN
-                                    category c
-                                    ON p.category_id = c.category_id
-                                LEFT JOIN 
-                                    sales_products sp 
-                                    ON p.product_id = sp.product_id
-                                LEFT JOIN 
-                                    purchases pr 
-                                    ON p.product_id = pr.product_id
-                                GROUP BY 
-                                    p.product_id, 
-                                    p.product_name, 
-                                    c.category_name,
-                                    p.stocks,
-                                    p.threshold;
-                                ";
-
-                        $result = $conn->query($sql);
-
-                        // Check if the query was successful
-                        if ($result === false) {
-                            echo "Error: " . $conn->error;
-                        } else {
-                            // Check if there are any rows
-                            if ($result->num_rows > 0) {
-                                // Output data of each row
-                                while ($row = $result->fetch_assoc()) {
-                                    // Set the threshold value for low stock
-                                    $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
-                                    echo "<tr>
-                                            <td>" . htmlspecialchars($row["product_id"]) . "</td>
-                                            <td>" . htmlspecialchars($row["product_name"]) . "</td>
-                                            <td>" . htmlspecialchars($row["category_name"]) . "</td>
-                                            <td>₱" . number_format($row["total_purchases"], 2) . "</td>
-                                            <td>₱" . number_format($row["total_sales"], 2) . "</td>
-                                            <td><span class='$stockClass'>" . htmlspecialchars($row["stocks"]) . "</span></td>
-                                        </tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='6'>No products found</td></tr>";
+                            // Check connection
+                            if ($conn->connect_error) {
+                                die("Connection failed: " . $conn->connect_error);
                             }
-                        }
 
-                        $conn->close();
-                        ?>
-                </tbody>
-            </table>
+                            // Fetch products from database
+                            $sql = "SELECT 
+                                        p.product_id, 
+                                        p.product_name, 
+                                        c.category_name,
+                                        p.stocks,
+                                        p.threshold,
+                                        COALESCE(SUM(sp.amount), 0) AS total_sales,
+                                        COALESCE(SUM(pr.purchase_amount), 0) AS total_purchases
+                                    FROM 
+                                        products p
+                                    JOIN
+                                        category c
+                                        ON p.category_id = c.category_id
+                                    LEFT JOIN 
+                                        sales_products sp 
+                                        ON p.product_id = sp.product_id
+                                    LEFT JOIN 
+                                        purchases pr 
+                                        ON p.product_id = pr.product_id
+                                    GROUP BY 
+                                        p.product_id, 
+                                        p.product_name, 
+                                        c.category_name,
+                                        p.stocks,
+                                        p.threshold;
+                                    ";
+
+                            $result = $conn->query($sql);
+
+                            // Check if the query was successful
+                            if ($result === false) {
+                                echo "Error: " . $conn->error;
+                            } else {
+                                // Check if there are any rows
+                                if ($result->num_rows > 0) {
+                                    // Output data of each row
+                                    while ($row = $result->fetch_assoc()) {
+                                        // Set the threshold value for low stock
+                                        $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
+                                        echo "<tr>
+                                                <td>" . htmlspecialchars($row["product_id"]) . "</td>
+                                                <td>" . htmlspecialchars($row["product_name"]) . "</td>
+                                                <td>" . htmlspecialchars($row["category_name"]) . "</td>
+                                                <td>₱" . number_format($row["total_purchases"], 2) . "</td>
+                                                <td>₱" . number_format($row["total_sales"], 2) . "</td>
+                                                <td><span class='$stockClass'>" . htmlspecialchars($row["stocks"]) . "</span></td>
+                                            </tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='6'>No products found</td></tr>";
+                                }
+                            }
+
+                            $conn->close();
+                            ?>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </body>

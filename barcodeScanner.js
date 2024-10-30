@@ -3,6 +3,27 @@ document.addEventListener('DOMContentLoaded', function () {
     let barcodeTimeout;
     const barcodeProcessingTime = 100; // Time to wait before processing input as barcode
 
+    function showAlert(message, type = 'success') {
+        const alertBox = document.createElement('div');
+        alertBox.className = `alert alert-${type} custom-alert`;
+        alertBox.innerText = message;
+        document.body.appendChild(alertBox);
+
+        // Add a fade-in effect
+        alertBox.style.opacity = '0';
+        setTimeout(() => { 
+            alertBox.style.opacity = '1';
+        }, 0); // Delay to allow the element to be added to the DOM
+
+        // Remove alert after 3 seconds
+        setTimeout(() => {
+            alertBox.style.opacity = '0'; // Fade out effect
+            setTimeout(() => {
+                document.body.removeChild(alertBox);
+            }, 300); // Wait for fade-out to complete
+        }, 3000); // Remove after 3 seconds
+    }
+
     document.addEventListener('keydown', function (event) {
         const key = event.key;
 
@@ -37,12 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (data && Object.keys(data).length > 0) {
                     addProductToTable(data);
                 } else {
-                    alert('Product not found');
+                    showAlert('Product not found', 'danger');
                 }
             })
             .catch(error => {
                 console.error('Error fetching or parsing data:', error);
-                alert('An error occurred while processing the barcode.');
+                showAlert('An error occurred while processing the barcode.', 'danger');
             });
     }
 

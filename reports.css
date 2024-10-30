@@ -92,29 +92,35 @@ header h1 {
 .monthly-sales-report p {
 	margin: 5px 0;
 }
-
 .pagination {
 	display: flex;
 	justify-content: center;
 	margin-top: 20px;
 }
 
-.pagination a {
+.pagination a, .pagination span {
 	font-size: 1.4rem;
 	line-height: 1.2;
-	padding: 8px 12px;
-	margin: 0 4px;
+	padding: 8px 16px;
+	margin: 0 2px;
 	background-color: #f1f1f1;
 	border: 1px solid #ddd;
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
+	border-radius: 2px;
 }
 
 .pagination a.active {
 	background-color: #04619f;
 	color: white;
-	border: 1px solid #04619f;
+	border: 1px solid #04619f;	
+}
+
+.pagination a.disabled, 
+.pagination span.disabled {
+    color: #999;
+    cursor: not-allowed;
 }
 
 .pagination a.disabled {
@@ -167,6 +173,7 @@ button.custom-btn-gen {
     padding: 15px;
     text-align: center !important;
     cursor: pointer;
+	box-shadow: 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .card-body-card:hover {

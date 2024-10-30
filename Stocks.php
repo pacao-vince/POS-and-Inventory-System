@@ -125,28 +125,6 @@ $lowStockJson = json_encode($lowStockProducts);
                 </div>
             </section>
 
-            <?php
-                // Query to check for products below the threshold
-                $sql = "SELECT product_name, stocks FROM products WHERE stocks < ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $threshold);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                // Initialize an array to hold products below the threshold
-                $lowStockProducts = [];
-
-                while ($row = $result->fetch_assoc()) {
-                    $lowStockProducts[] = [
-                        'name' => $row['product_name'],
-                        'stocks' => $row['stocks']
-                    ];
-                }
-
-                // Pass the low stock products to JavaScript as a JSON object
-                $lowStockJson = json_encode($lowStockProducts);
-            ?>
-
         <script>
             // Pass the PHP variable to JavaScript
             var lowStockProducts = <?php echo $lowStockJson; ?>;
