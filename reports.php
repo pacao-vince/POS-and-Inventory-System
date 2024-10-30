@@ -1,5 +1,5 @@
 <?php
-
+/*
 session_start();
 if (!isset($_SESSION['username'])) {
     // Redirect to login page if not logged in
@@ -12,7 +12,7 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-
+*/
 // Database connection
 $servername = "localhost";
 $username = "root";
@@ -268,7 +268,6 @@ $result = $stmt->get_result();
 
 // Initialize an array to hold products below the threshold
 $lowStockProducts = [];
-
 while ($row = $result->fetch_assoc()) {
     $lowStockProducts[] = [
         'name' => $row['product_name'],
@@ -276,17 +275,43 @@ while ($row = $result->fetch_assoc()) {
     ];
 }
 
-// Pass the low stock products to JavaScript as a JSON object
-$lowStockJson = json_encode($lowStockProducts);
+// Read or initialize notification history for today
+$notificationFile = "notifications.json";
+$today = date("Y-m-d");
+$notifications = file_exists($notificationFile) ? json_decode(file_get_contents($notificationFile), true) : [];
+file_put_contents($notificationFile, json_encode($notifications));
+if (!file_exists($notificationFile)) {
+    file_put_contents($notificationFile, json_encode([]));
+}
+if (file_put_contents($notificationFile, json_encode($notifications)) === false) {
+    error_log("Error: Unable to write to $notificationFile. Check permissions.");
+}
+
+// Initialize a list of products that need notifications
+$productsToNotify = [];
+
+// Filter products that haven't had a reminder today
+foreach ($lowStockProducts as $product) {
+    $productName = $product['name'];
+    if (!isset($notifications[$today][$productName])) {
+        // Mark the product for notification
+        $productsToNotify[] = $product;
+        // Log the notification in history
+        $notifications[$today][$productName] = true;
+    }
+}
+
+// Update the notifications file
+file_put_contents($notificationFile, json_encode($notifications));
+
+$productsToNotifyJson = json_encode($productsToNotify);
 ?>
 
 <script>
-    // Pass the PHP variable to JavaScript
-    var lowStockProducts = <?php echo $lowStockJson; ?>;
+    var productsToNotify = <?php echo $productsToNotifyJson; ?>;
 
-    if (lowStockProducts.length > 0) {
-        // Iterate through the products and trigger voice notifications
-        lowStockProducts.forEach(product => {
+    if (productsToNotify.length > 0) {
+        productsToNotify.forEach(product => {
             var message = `Warning! Stock for ${product.name} is below threshold. Only ${product.stocks} left.`;
             speak(message);
         });
@@ -295,12 +320,10 @@ $lowStockJson = json_encode($lowStockProducts);
     // Function to speak a message using Web Speech API
     function speak(message) {
         var speech = new SpeechSynthesisUtterance(message);
-
-        speech.pitch = 2;  // Set the pitch (range: 0 to 2)
-        speech.rate = 1;   // Set the rate of speech (range: 0.1 to 10)
-        speech.voice = window.speechSynthesis.getVoices()[0]; // Set a specific voice
-
-        speech.lang = 'en-US'; // Set the language
+        speech.pitch = 2;
+        speech.rate = 1;
+        speech.voice = window.speechSynthesis.getVoices()[0];
+        speech.lang = 'en-US';
         window.speechSynthesis.speak(speech);
     }
 </script>

@@ -1,11 +1,13 @@
 <?php 
+include 'sidebar.php'; 
+/*
     include('auth.php');
-     
+
     // Only allow Admin access
     if ($_SESSION['user_type'] !== 'admin') {
         header('Location: login.php');
         exit();
-    }
+    }*/
     $username = "root"; 
     $password = ""; 
     $database = "pos&inventory"; 
@@ -19,13 +21,10 @@
     <title>POS System Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
-    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>
@@ -184,6 +183,5 @@
 
 </body>
 </html>
-<?php
-$conn->close();
-?>
+
+<?php $conn->close(); ?>

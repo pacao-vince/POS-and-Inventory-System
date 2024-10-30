@@ -1,19 +1,5 @@
 <?php
-/*
-session_start();
-if (!isset($_SESSION['username'])) {
-    // Redirect to login page if not logged in
-    header('Location: login.php');
-    exit();
-}
-
-// Only allow Admin access
-if ($_SESSION['user_type'] !== 'admin') {
-    header('Location: login.php');
-    exit();
-}
-*/
-include_once 'sidebar.html'; 
+include_once 'sidebar.php'; 
 include_once 'db_connection.php';
 
 // Pagination settings
@@ -23,8 +9,8 @@ $records_per_page = 10; // Set the number of records you want to display per pag
 $out_of_stock_page = isset($_GET['out_of_stock_page']) ? $_GET['out_of_stock_page'] : 1;
 $out_of_stock_offset = ($out_of_stock_page - 1) * $records_per_page;
 
-// Fetch out-of-stock products based on the threshold defined in the products table
-$out_of_stock_sql = "SELECT product_id, product_name, stocks 
+// Fetch out-of-stock products based on their thresholds
+$out_of_stock_sql = "SELECT product_id, product_name, stocks, threshold 
                      FROM products 
                      WHERE stocks <= threshold 
                      LIMIT $records_per_page OFFSET $out_of_stock_offset";
@@ -38,19 +24,37 @@ $out_of_stock_total_result = $conn->query($out_of_stock_total_sql);
 $out_of_stock_total_data = $out_of_stock_total_result->fetch_assoc();
 $out_of_stock_total_pages = ceil($out_of_stock_total_data['total'] / $records_per_page);
 
+// Path for notification tracking file
+$notificationFile = 'notifications.json';
+
+// Load existing notifications or initialize
+$notifications = file_exists($notificationFile) ? json_decode(file_get_contents($notificationFile), true) : [];
+
+// Get today's date
+$today = date('Y-m-d');
 
 // Query to check for products below the threshold
-$low_stock_sql = "SELECT product_name, stocks FROM products WHERE stocks <= threshold";
+$low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks < threshold";
 $low_stock_result = $conn->query($low_stock_sql);
 
 // Initialize an array to hold products below the threshold
 $lowStockProducts = [];
 while ($row = $low_stock_result->fetch_assoc()) {
-    $lowStockProducts[] = [
-        'name' => $row['product_name'],
-        'stocks' => $row['stocks']
-    ];
+    // Check if notification has already been sent today for this product
+    $productId = $row['product_id'];
+    if (!isset($notifications[$productId]) || $notifications[$productId] !== $today) {
+        // Update notifications to mark as notified today
+        $notifications[$productId] = $today;
+        // Add to low stock products array
+        $lowStockProducts[] = [
+            'name' => $row['product_name'],
+            'stocks' => $row['stocks']
+        ];
+    }
 }
+
+// Save updated notifications back to the file
+file_put_contents($notificationFile, json_encode($notifications));
 
 // Pass the low stock products to JavaScript as a JSON object
 $lowStockJson = json_encode($lowStockProducts);
@@ -124,28 +128,6 @@ $lowStockJson = json_encode($lowStockProducts);
                     <?php endif; ?>
                 </div>
             </section>
-
-            <?php
-                // Query to check for products below the threshold
-                $sql = "SELECT product_name, stocks FROM products WHERE stocks < ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $threshold);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                // Initialize an array to hold products below the threshold
-                $lowStockProducts = [];
-
-                while ($row = $result->fetch_assoc()) {
-                    $lowStockProducts[] = [
-                        'name' => $row['product_name'],
-                        'stocks' => $row['stocks']
-                    ];
-                }
-
-                // Pass the low stock products to JavaScript as a JSON object
-                $lowStockJson = json_encode($lowStockProducts);
-            ?>
 
         <script>
             // Pass the PHP variable to JavaScript

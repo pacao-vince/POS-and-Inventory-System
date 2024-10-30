@@ -1,4 +1,6 @@
 <?php
+include 'sidebar.php'; 
+/*
     session_start();
     if (!isset($_SESSION['username'])) {
         header('Location: login.php');
@@ -9,7 +11,7 @@
         header('Location: login.php');
         exit();
     }
-
+*/
     
 ?>
 
@@ -21,13 +23,12 @@
     <title>POS System Purchases Management</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
+
     <link rel="stylesheet" href="main.css">
    
    
 </head>
 <body>
-    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>
@@ -40,8 +41,7 @@
 
         <div class="products-content" id="products">
             <section class="product-list">
-                <h1>Purchases Management</h1>
-                <button class="btn btn-primary add-purchase-btn custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
+                <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
                 <table class="productTable">
                     <thead>
                         <tr>
@@ -164,8 +164,8 @@
                                         <td>" . htmlspecialchars($row["purchase_quantity"]) . "</td>
                                         <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
                                         <td>
-                                            <button class='btn btn-success editBtn font-size' data-id='" . $row['purchase_id'] . "'>Edit</button> |
-                                            <button class='btn btn-danger deleteBtn font-size' data-id='" . $row['purchase_id'] . "'>Delete</button>
+                                            <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'>Edit</button> |
+                                            <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'>Delete</button>
                                         </td>
                                     </tr>";
                             }
@@ -210,7 +210,7 @@
                 <form id="addForm" action="create_purchase.php" method="POST">
                 <div class="mb-3">
                     <label for="product_id" class="form-label">Product:</label>
-                        <select class="form-control" id="product_id" name="product_id" required>
+                        <select class="form-select" id="product_id" name="product_id" required>
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>
                                     <option value="<?php echo htmlspecialchars($product['product_id']); ?>">
@@ -262,7 +262,7 @@
                     <div class="mb-3">
 
                     <label for="product" class="form-label">Product:</label>
-                        <select class="form-control" id="edit_product_id" name="product_id" required>
+                        <select class="form-select" id="edit_product_id" name="product_id" required>
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>
                                     <option value="<?php echo htmlspecialchars($product['product_id']); ?>">

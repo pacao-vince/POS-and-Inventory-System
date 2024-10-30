@@ -1,4 +1,5 @@
 <?php
+include 'sidebar.php';
 /*
 session_start();
 if (!isset($_SESSION['username'])) {
@@ -10,7 +11,7 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-
+*/
 $servername = "localhost";
 $username = "root";
 $password = "";

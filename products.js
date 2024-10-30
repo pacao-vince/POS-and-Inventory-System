@@ -1,5 +1,59 @@
 document.addEventListener("DOMContentLoaded", function () {
     const editButtons = document.querySelectorAll(".editBtn");
+    const searchInput = document.getElementById("searchInput")
+    const categoryDropdown = document.getElementById("categoryDropdown")
+    const categoryFilterItems = document.querySelectorAll(
+        "#categoryFilter .dropdown-item"
+    )
+    const productsTable = document.getElementById("productsTable")
+    const tableRows = productsTable
+        .getElementsByTagName("tbody")[0]
+        .getElementsByTagName("tr")
+
+    // Function to filter products based on search and category
+    function filterProducts() {
+        const searchTerm = searchInput.value.toLowerCase()
+        const selectedCategory =
+            categoryDropdown.getAttribute("data-selected-category") || ""
+
+        Array.from(tableRows).forEach((row) => {
+            const productName = row
+                .querySelector(".product-name")
+                .textContent.toLowerCase()
+            const category = row.cells[3].textContent.toLowerCase()
+
+            const matchesSearch = productName.includes(searchTerm)
+            const matchesCategory =
+                !selectedCategory || category === selectedCategory
+
+            row.style.display = matchesSearch && matchesCategory ? "" : "none"
+        })
+    }
+
+    // Event Listener for Search Input
+    searchInput.addEventListener("input", filterProducts)
+
+    // Event Listener for Category Dropdown
+    categoryFilterItems.forEach((item) => {
+        item.addEventListener("click", function (event) {
+            event.preventDefault() // Prevent default link behavior
+            const selectedCategory = item
+                .getAttribute("data-value")
+                .toLowerCase()
+            const selectedCategoryText = item.textContent
+
+            // Update button text and data attribute
+            categoryDropdown.querySelector("span.me-1").textContent =
+                selectedCategoryText
+            categoryDropdown.setAttribute(
+                "data-selected-category",
+                selectedCategory
+            )
+
+            // Filter products based on the new selection
+            filterProducts()
+        })
+    })
 
     // Function to show alerts
     function showAlert(message, type = 'success') {
@@ -63,31 +117,31 @@ document.addEventListener("DOMContentLoaded", function () {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
-        .then(data => {
-            const editModalEl = document.getElementById('editModal');
-            const editModal = bootstrap.Modal.getInstance(editModalEl);
+            .then(response => response.json())
+            .then(data => {
+                const editModalEl = document.getElementById('editModal');
+                const editModal = bootstrap.Modal.getInstance(editModalEl);
 
-            if (data.success) {
-                // Hide the modal first
-                editModal.hide();
+                if (data.success) {
+                    // Hide the modal first
+                    editModal.hide();
 
-                // Wait for the modal to fully hide before showing the alert
-                editModalEl.addEventListener('hidden.bs.modal', function () {
-                    showAlert(data.message, 'success'); // Show success message using custom alert
-                    // Optionally refresh the page to reflect changes
-                    setTimeout(() => {
-                        location.reload(); // Refresh page to reflect changes
-                    }, 1000); // Delay page reload for smoother UX
-                }, { once: true });
-            } else {
-                showAlert(data.message, 'danger'); // Show error message using custom alert
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            showAlert('An unexpected error occurred.', 'danger');
-        });
+                    // Wait for the modal to fully hide before showing the alert
+                    editModalEl.addEventListener('hidden.bs.modal', function () {
+                        showAlert(data.message, 'success'); // Show success message using custom alert
+                        // Optionally refresh the page to reflect changes
+                        setTimeout(() => {
+                            location.reload(); // Refresh page to reflect changes
+                        }, 1000); // Delay page reload for smoother UX
+                    }, { once: true });
+                } else {
+                    showAlert(data.message, 'danger'); // Show error message using custom alert
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An unexpected error occurred.', 'danger');
+            });
     });
 
     // Event listener for delete buttons in the actions column
@@ -119,42 +173,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    console.log('Product deleted successfully');
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Product deleted successfully');
 
-                    // Hide the modal first
-                    const deleteModalEl = document.getElementById('deleteModal');
-                    const deleteModal = bootstrap.Modal.getInstance(deleteModalEl);
-                    deleteModal.hide();
+                        // Hide the modal first
+                        const deleteModalEl = document.getElementById('deleteModal');
+                        const deleteModal = bootstrap.Modal.getInstance(deleteModalEl);
+                        deleteModal.hide();
 
-                    // Wait for the modal to fully hide before removing the row and showing the alert
-                    deleteModalEl.addEventListener('hidden.bs.modal', function () {
-                        // Remove the row after the modal hides
-                        const row = document.querySelector(`tr[data-product-id="${productId}"]`);
-                        if (row) {
-                            row.remove();
-                        }
+                        // Wait for the modal to fully hide before removing the row and showing the alert
+                        deleteModalEl.addEventListener('hidden.bs.modal', function () {
+                            // Remove the row after the modal hides
+                            const row = document.querySelector(`tr[data-product-id="${productId}"]`);
+                            if (row) {
+                                row.remove();
+                            }
 
-                        // Show success alert after the row is removed
-                        showAlert('Product deleted successfully.', 'success');
-                    }, { once: true });
-                } else {
-                    showAlert('Error deleting product: ' + data.message, 'danger');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showAlert('An unexpected error occurred.', 'danger');
-            });
+                            // Show success alert after the row is removed
+                            showAlert('Product deleted successfully.', 'success');
+                        }, { once: true });
+                    } else {
+                        showAlert('Error deleting product: ' + data.message, 'danger');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showAlert('An unexpected error occurred.', 'danger');
+                });
         });
     }
 
     // Event listener for barcode input
     const productBarcodeInput = document.getElementById('productBarcodeInput');
     if (productBarcodeInput) {
-        productBarcodeInput.addEventListener('keypress', function(event) {
+        productBarcodeInput.addEventListener('keypress', function (event) {
             if (event.key === 'Enter') {
                 event.preventDefault(); // Prevent form submission if inside a form
 

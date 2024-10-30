@@ -8,7 +8,6 @@ body {
 	margin: 0;
 	padding: 0;
 	display: flex;
-	background-color: #ecf0f1;
 }
 
 h2 {
@@ -16,11 +15,11 @@ h2 {
 }
 
 .main-content {
-	flex-grow: 1;
+	flex: 1;
 	padding: 20px;
 	margin-left: 200px;
+	background-color: #ecf0f1;
 	transition: margin-left 0.3s ease;
-	min-height: 100vh;
 }
 
 header {
@@ -29,17 +28,14 @@ header {
 	align-items: center;
 	margin-bottom: 20px;
 }
-
 header h1 {
 	margin: 0;
 	font-weight: bold;
 }
-
 .admin-profile {
 	display: flex;
 	align-items: center;
 }
-
 .admin-profile img {
 	width: 40px;
 	border-radius: 50%;
@@ -47,7 +43,7 @@ header h1 {
 }
 
 .dashboard-content {
-	display: flex;
+	flex: 1;
 	flex-direction: column;
 }
 
@@ -58,22 +54,15 @@ header h1 {
 }
 
 .stat-item {
+	display: flex;
 	background-color: white;
-	width: 23%;
-	/* aspect-ratio: 16/9; */
+	width: 22%;
+	min-width: 200.5px;
 	padding: 20px;
 	border-radius: 8px;
-	display: flex;
 	align-items: center;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);	
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-
-.stat-item:hover{
-    cursor: pointer;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-}
-
 
 .stat-icon {
 	width: 50px;
@@ -84,7 +73,6 @@ header h1 {
 	justify-content: center;
 	align-items: center;
 	margin-right: 10px;
-	
 }
 
 .stat-icon img {
@@ -103,24 +91,17 @@ header h1 {
 
 .charts {
 	display: flex;
-	flex-grow: 1;
 	justify-content: space-between;
 	margin-bottom: 20px;
 }
 
 .sales-graph,
 .bestseller-products {
-	display: flex;
-	flex-wrap: wrap;
-	flex-direction: column;
 	background-color: white;
 	width: 49%;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	margin-right: 10px;
-	margin-bottom: 20px;
-	min-width: 414px;
 }
 
 .recently-added-products {
@@ -161,6 +142,6 @@ header h1 {
 	}
 
 	.main-content.active {
-		margin-left: 250px;
+		margin-left: 200px;
 	}
 }

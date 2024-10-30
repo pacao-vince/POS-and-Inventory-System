@@ -99,16 +99,17 @@ header h1 {
 	margin-top: 20px;
 }
 
-.pagination a {
+.pagination a, .pagination span {
 	font-size: 1.4rem;
 	line-height: 1.2;
-	padding: 8px 12px;
-	margin: 0 4px;
+	padding: 8px 16px;
+	margin: 0 2px;
 	background-color: #f1f1f1;
 	border: 1px solid #ddd;
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
+	border-radius: 2px;
 }
 
 .pagination a.active {
@@ -117,9 +118,10 @@ header h1 {
 	border: 1px solid #04619f;
 }
 
-.pagination a.disabled {
-	color: #999;
-	cursor: not-allowed;
+.pagination a.disabled, 
+.pagination span.disabled {
+    color: #999;
+    cursor: not-allowed;
 }
 
 .pagination a:hover {

@@ -1,6 +1,6 @@
 <?php 
 include "db_connection.php";
-include 'sidebar.html'; 
+include 'sidebar.php'; 
 
 // Fetch distinct cashier usernames for the dropdown
 $cashierQuery = "SELECT DISTINCT cashier_username FROM sales";
@@ -33,11 +33,12 @@ if (!$cashierResult) {
                 <span>Administrator</span>
             </div>
         </header>
+        
         <section class="product-list">
 
             <div class="form-row" id="filters">
                 <div class="col-3">
-                    <input type="text" class="form-control" id="searchInput" placeholder="Search Product">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                 </div>
 
                 <div class="form-group row ml-auto mr-3">
@@ -54,7 +55,7 @@ if (!$cashierResult) {
                 </div>
                 <div class="form-group row mr-2">
                     <label for="cashierDropdown" class=" col col-form-label">Cashier:</label>
-                        <select class=" col-auto custom-select" id="cashierDropdown" name="cashierDropdown">
+                        <select class="col-auto form-select" id="cashierDropdown" name="cashierDropdown">
                             <option value="All">All</option>
                             <?php while ($cashierRow = $cashierResult->fetch_assoc()) { ?>
                                 <option value="<?php echo htmlspecialchars($cashierRow['cashier_username']); ?>">

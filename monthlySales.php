@@ -15,7 +15,7 @@ if ($_SESSION['user_type'] !== 'admin') {
 */
 // Database connection
 include_once 'db_connection.php';
-include 'sidebar.html';
+include 'sidebar.php';
 
 // Pagination settings
 $records_per_page = 10; // Set the number of records you want to display per page

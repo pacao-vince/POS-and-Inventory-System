@@ -6,10 +6,13 @@
 body {
 	font-family: Arial, sans-serif;
 	font-size: 1.6rem;
+	line-height: 1.2;
 	margin: 0;
 	padding: 0;
 	display: flex;
-	background-color: #ecf0f1;
+	min-height: 100vh;
+	overflow-x: hidden;
+	/* To prevent horizontal scroll */
 }
 
 /* Header Styles */
@@ -19,26 +22,24 @@ header {
 	align-items: center;
 	margin-bottom: 20px;
 }
-
 header h1 {
 	margin: 0;
+	font-weight: bold;
 }
-
 .admin-profile {
 	display: flex;
 	align-items: center;
 }
-
 .admin-profile img {
 	width: 40px;
 	border-radius: 50%;
 	margin-right: 10px;
 }
-
 .main-content {
-	flex-grow: 1;
 	padding: 20px;
 	margin-left: 200px;
+	background-color: #ecf0f1;
+	width: 100%;
 	transition: margin-left 0.3s ease;
 }
 
@@ -63,12 +64,14 @@ header h1 {
 /* Style the text inside the input boxes and dropdown */
 #filters input[type="text"],
 #filters input[type="date"],
-#filters select {
+#filters select,
+.form-select {
+	flex-wrap: nowrap;
 	font-size: 1.4rem;
 	/* Adjust the font size as needed */
 	color: #333;
 	/* Text color */
-	padding: 8px;
+	padding: 6px 8px;
 	/* Add padding for better spacing */
 	border: 1px solid #ccc;
 	/* Border color */
@@ -85,10 +88,10 @@ header h1 {
 	/* Remove default styling */
 	-moz-appearance: none;
 	appearance: none;
-	background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NSA0NSIgd2lkdGg9IjIwcHgiIGhlaWdodD0iMjBweCIgZmlsbD0iIzMzMyI+PHBhdGggZD0iTTguNSAxNS41bDEyIDEyIDEyLTEyIiAvPjwvc3ZnPg==") no-repeat right 10px center;
+	
 	background-size: 10px;
-	height: fit-content;
-	padding: 8px;
+	width: fit-content;
+	padding: 6px 8px;
 	/* Add padding for better spacing */
 	padding-right: 25px;
 }
@@ -99,11 +102,18 @@ header h1 {
 	border-collapse: collapse;
 }
 
+.product-list th {
+	background-color: #3498db;
+	color: white;
+}
+
 .product-list th,
 .product-list td {
-	padding: 12px;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 12px 8px;
 	border-bottom: 1px solid #ddd;
-	text-align: center;
+	text-align: left;
 }
 
 .dropdown-toggle {
@@ -115,17 +125,14 @@ header h1 {
 	transition: none;
 }
 
-/* Buttons in Actions Column */
-.product-list td .editBtn,
-.deleteBtn {
-	display: inline-block;
-	/* Ensures buttons stay inline */
-	margin-right: 0;
-	/* Adds spacing between buttons */
+#categoryDropdown, #categoryFilter {
+	font-size: 1.4rem;
+	font-weight: 600;
 }
 
 #categoryDropdown:hover,
 #categoryDropdown:focus,
+#categoryDropdown:enabled,
 #categoryDropdown:active {
 	outline: none;
 	/* Remove focus outline */
@@ -187,22 +194,12 @@ form label {
 	font-weight: medium;
 }
 
-form input,
-form select,
-form option {
-	width: calc(100% - 20px);
-	/* Full width minus padding */
-	padding: 10px;
+form .form-control, form .form-select {
+	font-size: 1.6rem;
+	width: calc(100% - 20px); /* Full width minus padding */
 	margin-bottom: 10px;
 	border: 1px solid #ddd;
-	border-radius: 4px;
-	/* Rounded corners */
-}
-
-.form-control,
-.form-select,
-option {
-	font-size: 1.6rem;
+	border-radius: 4px; /* Rounded corners */
 }
 
 /* Keyframes for fade-in animation */
@@ -220,14 +217,14 @@ option {
 .high-stock {
 	background-color: green;
 	color: white;
-	padding: 5px 8px;
+	padding: 8px 12px;
 	border-radius: 4px;
 }
 
 .low-stock {
 	background-color: red;
 	color: white;
-	padding: 5px 8px;
+	padding: 8px 12px;
 	border-radius: 4px;
 }
 
@@ -258,13 +255,15 @@ option {
 
 .pagination a,
 .pagination span {
-	padding: 8px 12px;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 8px 16px;
 	margin: 0 4px;
 	text-decoration: none;
 	background-color: #f4f4f4;
 	border: 1px solid #ddd;
 	color: #333;
-	border-radius: 3px;
+	border-radius: 2px;
 }
 
 .pagination a:hover {
@@ -314,23 +313,31 @@ option {
 
 /* Custom Button Styles */
 button.custom-btn {
-	font-size: 1.6rem;
+	font-size: 1.4rem;
+	line-height: 1.2;
 	background-color: #2980b9;
 	color: white;
-	padding: 5px 8px;
+	padding: 8px 12px;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
 	margin-bottom: 20px;
 }
 
-.editBtn,
-.deleteBtn,
 .btn-close,
-.btn.btn-danger,
+.btn.btn-success,
+.btn.btn-danger, 
+.btn.btn-primary,
 .btn.btn-secondary {
 	font-size: 1.6rem;
-	padding: 5px 8px;
+	line-height: 1.2;
+	padding: 8px 12px;
+}
+
+#add-btn, #editBtn, #deleteBtn {
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 8px 12px;
 }
 
 button.custom-btn:hover {
@@ -338,14 +345,22 @@ button.custom-btn:hover {
 }
 
 .custom-btn-color {
+	line-height: 1.2;
 	background-color: #52b2e1;
-	border: none; /* Remove border */
-	color: white; /* Set the text color */
-	padding: 5px 8px; /* Add padding for a better look */
-	border-radius: 5px; /* Add rounded corners */
-	font-size: 16px; /* Adjust font size */
-	cursor: pointer; /* Show pointer on hover */
-	transition: background-color 0.3s ease; /* Smooth color change on hover */
+	border: none;
+	/* Remove border */
+	color: white;
+	/* Set the text color */
+	padding: 8px 12px;
+	/* Add padding for a better look */
+	border-radius: 5px;
+	/* Add rounded corners */
+	font-size: 1.6rem;
+	/* Adjust font size */
+	cursor: pointer;
+	/* Show pointer on hover */
+	transition: background-color 0.3s ease;
+	/* Smooth color change on hover */
 	border: none;
 }
 
@@ -354,16 +369,26 @@ button.custom-btn:hover {
 }
 
 .custom-alert {
-	position: fixed; /* Fix the position */
-	top: 10px; /* Place at the very top */
-	left: 50%; /* Center horizontally */
-	transform: translateX(-50%); /* Center align the element */
-	z-index: 9999; /* Make sure it's above other elements */
-	width: auto; /* Adjust width as needed */
-	text-align: center; /* Center text */
-	margin: 0; /* Remove any default margin */
-	padding: 15px; /* Add some padding for aesthetics */
+	position: fixed;
+	/* Fix the position */
+	top: 10px;
+	/* Place at the very top */
+	left: 50%;
+	/* Center horizontally */
+	transform: translateX(-50%);
+	/* Center align the element */
+	z-index: 9999;
+	/* Make sure it's above other elements */
+	width: auto;
+	/* Adjust width as needed */
+	text-align: center;
+	/* Center text */
+	margin: 0;
+	/* Remove any default margin */
+	padding: 15px;
+	/* Add some padding for aesthetics */
 	border: 5px;
+}
 
 .hide {
 	opacity: 0;
@@ -371,7 +396,7 @@ button.custom-btn:hover {
 }
 
 
- Responsive Styles 
+/*Responsive Styles 
 @media screen and (max-width: 768px) {
 	.sidebar {
 		transform: translateX(-100%);
@@ -389,5 +414,3 @@ button.custom-btn:hover {
 		margin-left: 250px;
 	}
 }
-
-

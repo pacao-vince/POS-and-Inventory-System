@@ -1,4 +1,6 @@
 <?php
+include 'sidebar.php';
+/*
     session_start();
     if (!isset($_SESSION['username'])) {
         header('Location: login.php');
@@ -9,6 +11,7 @@
         header('Location: login.php');
         exit();
     }
+*/
 ?>
 
 <!DOCTYPE html>
@@ -18,15 +21,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS System Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
+    
     <link rel="stylesheet" href="main.css">
 </head>
+
 <body>
-    <?php include 'sidebar.php'?>
 
     <div class="main-content" id="main-content">
         <header>
-            <h1></h1>
+        <h1>User Management</h1>
             <div class="admin-profile">
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                 <span>Administrator</span>
@@ -34,8 +37,7 @@
         </header>
         <div class="products-content">
             <div class="product-list">
-                <h1>User Management</h1>
-                <button class="btn btn-primary custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Account</button>
+                <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Account</button>
 
                 <table>
                     <thead>
@@ -94,8 +96,8 @@
                                         <td>" . $row["email"] . "</td>
                                         <td>" . $row["user_type"] . "</td>
                                         <td>
-                                            <button class='btn btn-success editBtn' data-id='" . $row['user_id'] . "'>Edit</button> |
-                                            <button class='btn btn-danger deleteBtn' data-id='" . $row['user_id'] . "'>Delete</button>
+                                            <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['user_id'] . "'>Edit</button> |
+                                            <button class='btn btn-danger deleteBtn' id='editBtn' data-id='" . $row['user_id'] . "'>Delete</button>
                                         </td>
                                     </tr>";
                             }

@@ -1,4 +1,7 @@
 <?php
+include 'sidebar.php'; 
+require_once 'db_connection.php';
+/*
  session_start();
  if (!isset($_SESSION['username'])) {
      // Redirect to login page if not logged in
@@ -10,6 +13,15 @@
  if ($_SESSION['user_type'] !== 'admin') {
      header('Location: login.php');
      exit();
+ }*/
+ $categories = [];
+ $query = "SELECT category_id, category_name FROM category"; // Adjust table name and columns
+ $result = $conn->query($query);
+ 
+ if ($result->num_rows > 0) {
+     while ($row = $result->fetch_assoc()) {
+         $categories[] = $row; // Store each category in an array
+     }
  }
 ?>
 
@@ -22,56 +34,63 @@
         <title>POS System Product Management</title>
         
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="sidebar.css">
+
         <link rel="stylesheet" href="main.css">
     
     </head>
     <body>
 
-        <?php include 'sidebar.php'; ?>
-
         <div class="main-content" id="main-content">
             <header>
-                <h1></h1>
+                <h1>Product Management</h1>
                 <div class="admin-profile">
                     <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                     <span>Administrator</span>
                 </div>
             </header>
-            <div class="products-content" id="products">
-                <section class="product-list">
-                    <h1>Product Management</h1>
-                    <button class="btn btn-primary custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Product ID</th>
-                                <th>Product Name</th>
-                                <th>Barcode</th>
-                                <th>Category</th>
-                                <th>Buying Price</th>
-                                <th>Selling Price</th>
-                                <th>Stocks</th>
-                                <th>Threshold</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                               
-                                // Database connection
-                                $servername = "localhost";
-                                $username = "root";
-                                $password = "";
-                                $dbname = "pos&inventory";
+            <!--div class="products-content" id="products"-->
+            <section class="product-list">                
+                <div class="row justify-content-between" id="filters">
+                    <div class="col-md-3">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
+                    </div>
+                    <div class="col-md-3 ml-auto">
+                        <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
+                    </div>
+                </div>
 
-                                // Create connection
-                                $conn = new mysqli($servername, $username, $password, $dbname);
-
-                                // Check connection
-                                if ($conn->connect_error) {
-                                    die("Connection failed: " . $conn->connect_error);
-                                }
+                <table id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>Product ID</th>
+                            <th>Product Name</th>
+                            <th>Barcode</th>
+                            <th>
+                                <div class="dropdown d-inline">
+                                    <button class="btn text-light dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="me-1">Category</span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryFilter">
+                                        <li><a class="dropdown-item" href="#" data-value="">All</a></li>
+                                        <?php foreach ($categories as $category): ?>
+                                            <li>
+                                                <a class="dropdown-item" href="#" data-value="<?php echo htmlspecialchars($category['category_name']); ?>">
+                                                    <?php echo htmlspecialchars($category['category_name']); ?>
+                                                </a>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </th>
+                            <th>Buying Price</th>
+                            <th>Selling Price</th>
+                            <th>Stocks</th>
+                            <th>Threshold</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
                                 
                                 // Pagination variables
                                 $products_per_page = 10; // Number of products per page
@@ -84,18 +103,6 @@
                                 $total_row = $total_result->fetch_assoc();
                                 $total_products = $total_row['total'];
                                 $total_pages = ceil($total_products / $products_per_page);
-
-                                // Fetch categories once and store in a variable
-                                $sql = "SELECT * FROM category";
-                                $category_result = $conn->query($sql);
-                                $categories = [];
-                                if ($category_result->num_rows > 0) {
-                                    while ($category = $category_result->fetch_assoc()) {
-                                        $categories[] = $category;
-                                    }
-                                } else {
-                                    $categories = null; // Handle case where no categories are found
-                                }
 
                                // Process form submission for adding a new product
                                 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_product'])) {
@@ -148,7 +155,7 @@
                                         $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
                                         echo "<tr data-product-id='" . $row["product_id"] . "'>
                                                 <td>" . $row["product_id"] . "</td>
-                                                <td>" . $row["product_name"] . "</td>
+                                                <td class='product-name'>" . $row["product_name"] . "</td>
                                                 <td>" . $row["barcode"] . "</td>
                                                 <td>" . $row["category_name"] . "</td>
                                                 <td>₱" . number_format($row["buying_price"], 2) . "</td>
@@ -156,8 +163,8 @@
                                                 <td><span class='$stockClass'>" . $row["stocks"] . "</span></td>
                                                 <td>" . number_format($row["threshold"]) . "</td>
                                                 <td>
-                                                    <button class='btn btn-success editBtn' data-id='" . $row['product_id'] . "'>Edit</button> |
-                                                    <button class='btn btn-danger deleteBtn' data-id='" . $row['product_id'] . "'>Delete</button>
+                                                    <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'>Edit</button> 
+                                                    <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'>Delete</button>
                                                 </td>
                                             </tr>";
                                     }
@@ -168,19 +175,26 @@
                             ?>
                         </tbody>
                     </table>
+
                     <div class="pagination">
-                        <?php if ($current_page > 1): ?>
-                            <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
-                        <?php endif; ?>
+                    <?php if ($current_page > 1): ?>
+                        <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
 
-                        <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                            <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
-                        <?php endfor; ?>
+                    <?php endif; ?>
 
-                        <?php if ($current_page < $total_pages): ?>
+                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                        <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
+                    <?php endfor; ?>
+                    <?php if ($current_page < $total_pages): ?>
                             <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
+
                         <?php endif; ?>
                     </div>
+
                 </section>
             </div>
 
@@ -205,7 +219,7 @@
                                
                                 <div class="mb-3">
                                     <label for="category_id" class="form-label">Category:</label>
-                                    <select class="form-control" id="category_id" name="category_id" required>
+                                    <select class="form-select" id="category_id" name="category_id" required>
                                         <?php if ($categories): ?>
                                             <?php foreach ($categories as $category): ?>
                                                 <option value="<?php echo htmlspecialchars($category['category_id']); ?>">
@@ -266,7 +280,7 @@
 
                         <div class="mb-3">
                         <label for="category_id" class="form-label">Category:</label>
-                        <select class="form-control" id="edit_category_id" name="category_id" required>
+                        <select class="form-select" id="edit_category_id" name="category_id" required>
                             <?php if ($categories): ?>
                                 <?php foreach ($categories as $category): ?>
                                     <option value="<?php echo htmlspecialchars($category['category_id']); ?>">
