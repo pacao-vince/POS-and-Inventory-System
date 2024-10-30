@@ -1,6 +1,7 @@
 :root {
 	font-size: 62.5%;
 }
+
 body {
 	font-family: Arial, sans-serif;
 	font-size: 1.6rem;
@@ -13,11 +14,13 @@ body {
 h2 {
 	font-weight: 600;
 }
+
 .main-content {
 	flex-grow: 1;
 	padding: 20px;
-	margin-left: 240px;
+	margin-left: 200px;
 	transition: margin-left 0.3s ease;
+	min-height: 100vh;
 }
 
 header {
@@ -56,7 +59,8 @@ header h1 {
 
 .stat-item {
 	background-color: white;
-	width: 22%;
+	width: 23%;
+	/* aspect-ratio: 16/9; */
 	padding: 20px;
 	border-radius: 8px;
 	display: flex;
@@ -106,12 +110,17 @@ header h1 {
 
 .sales-graph,
 .bestseller-products {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
 	background-color: white;
-	width: 48%;
+	width: 49%;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	margin-right: 10px;
+	margin-bottom: 20px;
+	min-width: 414px;
 }
 
 .recently-added-products {

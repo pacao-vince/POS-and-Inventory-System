@@ -100,12 +100,9 @@ $daily_sales_total_pages = ceil($daily_sales_total_data['total'] / $records_per_
     <title>POS System Reports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
-
-    <?php include 'sidebar.php'; ?>
 
     <div class="main-content" id="main-content">
         <header>

@@ -121,7 +121,7 @@
 
     <div class="main-content" id="main-content">
         <header>
-            <h2></h2>
+            <h1>Inventory Management</h1>
             <div class="admin-profile">
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                 <span>Administrator</span>
@@ -150,6 +150,7 @@
                             $username = "root";
                             $password = "";
                             $dbname = "pos&inventory";
+
 
                             // Create connection
                             $conn = new mysqli($servername, $username, $password, $dbname);

@@ -19,7 +19,6 @@
     <title>POS System Category Management</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="sidebar.css">
     <link rel="stylesheet" href="main.css">
 
 </head>
@@ -29,7 +28,7 @@
 
     <div class="main-content" id="main-content">
         <header>
-            <h1></h1>
+        <h1 class= "category-h3"> Category Management </h1>
             <div class="admin-profile">
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
                 <span>Administrator</span>
@@ -108,38 +107,77 @@
                             $sql = "SELECT * FROM category ORDER BY category_id DESC";
                             $result = $conn->query($sql);
 
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    echo  "<tr data-category-id='" . $row["category_id"] . "'>
-                                            <td>" . $row["category_id"] . "</td>
-                                            <td>" . $row["category_name"] . "</td>
-                                            <td>
-                                                 <button class='btn btn-success editBtn' data-id='" . $row['category_id'] . "'>Edit</button> |
-                                                    <button class='btn btn-danger deleteBtn' data-id='" . $row['category_id'] . "'>Delete</button>
-                                            </td>
-                                          </tr>";
-                                }
+                        if ($_SESSION['user_type'] !== 'admin') {
+                            header('Location: login.php');
+                            exit();
+                        }
+                        
+                        $category_per_page = 10;
+                        $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+                        $offset = ($current_page - 1) * $category_per_page;
+
+                        $sql = "SELECT * FROM category ORDER BY category_id DESC LIMIT $offset, $category_per_page";
+                        $result = $conn->query($sql);
+
+                        $total_category_sql = "SELECT COUNT(*) AS total FROM category";
+                        $total_result = $conn->query($total_category_sql);
+                        $total_row = $total_result->fetch_assoc();
+                        $total_category = $total_row['total'];
+                        $total_pages = ceil($total_category / $category_per_page);
+
+                        
+                        // Process form submission for adding a new category
+                        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
+                            $category_name = $_POST['category_name'];
+                            $stmt = $conn->prepare("INSERT INTO category (category_name) VALUES (?)");
+                            $stmt->bind_param("s", $category_name);
+                        
+                            if ($stmt->execute()) {
+                                echo "<script>window.location.href = 'categories.php';</script>";
                             } else {
-                                echo "<tr><td colspan='3'>No categories found</td></tr>";
+                                echo "Error: " . $stmt->error;
                             }
-                            $conn->close();
-                        ?>
-                    </tbody>
-                </table>
-                <div class="pagination">
-                    <!-- Pagination Links -->
-                    <?php if ($current_page > 1): ?>
-                        <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
-                    <?php endif; ?>
+                            $stmt->close();
+                        }
+                        
+                        // Fetch categories from the database in descending order
+                        $result = $conn->query($sql);
 
-                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                        <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
-                    <?php endfor; ?>
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo  "<tr data-category-id='" . $row["category_id"] . "'>
+                                        <td>" . $row["category_id"] . "</td>
+                                        <td>" . $row["category_name"] . "</td>
+                                        <td>
+                                                <button class='btn btn-success editBtn' data-id='" . $row['category_id'] . "'>Edit</button> |
+                                                <button class='btn btn-danger deleteBtn' data-id='" . $row['category_id'] . "'>Delete</button>
+                                        </td>
+                                        </tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='3'>No categories found</td></tr>";
+                        }
+                        $conn->close();
+                    ?>
+                </tbody>
+            </table>
+            <div class="pagination">
+                <!-- Pagination Links -->
+                <?php if ($current_page > 1): ?>
+                    <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
+                <?php else: ?>
+                    <span class="disabled">Previous</span>
+                <?php endif; ?>
 
-                    <?php if ($current_page < $total_pages): ?>
-                        <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
-                    <?php endif; ?>
-                </div>
+                <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                    <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
+                <?php endfor; ?>
+
+                <?php if ($current_page < $total_pages): ?>
+                    <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
+                <?php else: ?>
+                    <span class="disabled">Next</span>
+                <?php endif; ?>
             </div>
         </div>
         
@@ -176,10 +214,10 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="editCategoryForm" action="update_category.php" method="POST">
+                        <form id="editForm" action="update_category.php" method="POST">
                             <input type="hidden" id="edit_category_id" name="category_id">
                             <div class="mb-3">
-                                <label for="edit_category_name" class="form-label">Category Name:</label>
+                                <label for="category_name" class="form-label">Category Name:</label>
                                 <input type="text" id="edit_category_name" name="category_name" class="form-control" required>
                             </div>
                             <div class="modal-footer">

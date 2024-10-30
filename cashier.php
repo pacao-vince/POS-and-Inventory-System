@@ -1,6 +1,6 @@
 <?php
 include('auth.php');
-
+/*
 // Check if the logged-in user is a Cashier
 if ($_SESSION['user_type'] !== 'cashier') {
     header('Location: login.php');
@@ -9,7 +9,7 @@ if ($_SESSION['user_type'] !== 'cashier') {
 
 // Retrieve the session username for display
 $user_name = isset($_SESSION['username']) ? $_SESSION['username'] : 'Cashier';
-
+*/
 if (isset($_GET['barcode'])) {
     $barcode = $_GET['barcode'];
     
