@@ -38,8 +38,8 @@
                     <span>Administrator</span>
                 </div>
             </header>
-            <div class="products-content" id="products">
-                <section class="product-list">
+            <div class="table-content" id="products">
+                <section class="table-list">
                     <h1>Product Management</h1>
                     <button class="btn btn-primary custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
                     <table>

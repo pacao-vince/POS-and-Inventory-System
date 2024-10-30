@@ -32,8 +32,8 @@
                 <span>Administrator</span>
             </div>
         </header>
-        <div class="products-content">
-            <div class="product-list">
+        <div class="table-content">
+            <div class="table-list">
                 <h1>User Management</h1>
                 <button class="btn btn-primary custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Account</button>
 

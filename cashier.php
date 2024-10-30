@@ -168,9 +168,9 @@ if (isset($_GET['barcode'])) {
             
 
         <div class="actions-section">
-            <button class="btn btn-primary updatebtn">QTY</button>
-            <button class="btn btn-danger deletebtn">DELETE</button>
-            <button class="btn btn-success savebtn">Save Sale</button>
+            <button class="btn btn-primary updatebtn" accesskey="u">QTY</button>
+            <button class="btn btn-danger deletebtn" accesskey="d">DELETE</button>
+            <button class="btn btn-success savebtn" accesskey="s">Save Sale</button>
         </div>
     </div>
 

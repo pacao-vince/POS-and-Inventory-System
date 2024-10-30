@@ -70,8 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-   const productId = row.children[1].textContent;
-        const supplier = row.children[2].textContent;
+        const productId = row.children[1].textContent;
+        const supplierId = row.children[2].textContent;
         const date = row.children[3].textContent;
         const purchaseQuantity = row.children[4].textContent;
         const purchaseAmount = row.children[5].textContent.replace('₱', '').replace(',', '');
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Fill the edit modal with purchase details
         document.getElementById("update_purchase_id").value = purchaseId; // Updated to match modal structure
         document.getElementById("edit_product_id").value = productId;
-        document.getElementById("edit_supplier").value = supplier;
+        document.getElementById("edit_supplier_id").value = supplierId;
         document.getElementById("edit_date").value = date;
         document.getElementById("edit_purchase_quantity").value = purchaseQuantity;
         document.getElementById("edit_purchase_amount").value = purchaseAmount;

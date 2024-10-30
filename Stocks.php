@@ -124,6 +124,8 @@ $lowStockJson = json_encode($lowStockProducts);
                 <div class="pagination">
                     <?php if ($out_of_stock_page > 1): ?>
                         <a href="?out_of_stock_page=<?php echo $out_of_stock_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
                     <?php endif; ?>
 
                     <?php for ($i = 1; $i <= $out_of_stock_total_pages; $i++): ?>
@@ -132,31 +134,11 @@ $lowStockJson = json_encode($lowStockProducts);
 
                     <?php if ($out_of_stock_page < $out_of_stock_total_pages): ?>
                         <a href="?out_of_stock_page=<?php echo $out_of_stock_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
                     <?php endif; ?>
                 </div>
             </section>
-
-            <?php
-                // Query to check for products below the threshold
-                $sql = "SELECT product_name, stocks FROM products WHERE stocks < ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $threshold);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                // Initialize an array to hold products below the threshold
-                $lowStockProducts = [];
-
-                while ($row = $result->fetch_assoc()) {
-                    $lowStockProducts[] = [
-                        'name' => $row['product_name'],
-                        'stocks' => $row['stocks']
-                    ];
-                }
-
-                // Pass the low stock products to JavaScript as a JSON object
-                $lowStockJson = json_encode($lowStockProducts);
-            ?>
 
         <script>
             // Pass the PHP variable to JavaScript

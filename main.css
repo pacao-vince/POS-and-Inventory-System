@@ -42,53 +42,49 @@ header h1 {
 	transition: margin-left 0.3s ease;
 }
 
-/* Product List Styles */
-.products-content {
-	margin-top: 20px;
-}
-
-.product-list {
+.table-list {
 	margin-bottom: 20px;
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	margin-top: 20px;
 }
 
-.product-list h1 {
+.table-list h1 {
 	margin-bottom: 10px;
 	font-weight: bold;
 }
 
-.product-list table {
+.table-list table {
 	width: 100%;
 	border-collapse: collapse;
 }
 
-.product-list th,
-.product-list td {
+.table-list th,
+.table-list td {
 	padding: 12px;
 	border-bottom: 1px solid #ddd;
 	text-align: center;
 }
 
-.product-list th {
+.table-list th {
 	background-color: #3498db;
 	color: white;
 }
 
 /* Buttons in Actions Column */
-.product-list td .editBtn,
+.table-list td .editBtn,
 .deleteBtn {
 	display: inline-block; /* Ensures buttons stay inline */
 	margin-right: 8px; /* Adds spacing between buttons */
 }
 
-.product-list td .custom-btn:last-child {
+.table-list td .custom-btn:last-child {
 	margin-right: 0; /* Removes the right margin from the last button */
 }
 
-.product-list tr:hover {
+.table-list tr:hover {
 	background-color: #f1f1f1;
 }
 

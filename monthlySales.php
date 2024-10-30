@@ -110,6 +110,8 @@ $monthly_sales_total_pages = ceil($monthly_sales_total_data['total'] / $records_
                 <div class="pagination">
                     <?php if ($monthly_sales_page > 1): ?>
                         <a href="?monthly_sales_page=<?php echo $monthly_sales_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
                     <?php endif; ?>
 
                     <?php for ($i = 1; $i <= $monthly_sales_total_pages; $i++): ?>
@@ -118,6 +120,8 @@ $monthly_sales_total_pages = ceil($monthly_sales_total_data['total'] / $records_
 
                     <?php if ($monthly_sales_page < $monthly_sales_total_pages): ?>
                         <a href="?monthly_sales_page=<?php echo $monthly_sales_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
                     <?php endif; ?>
                 </div>
             </section>

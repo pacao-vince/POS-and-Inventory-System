@@ -270,4 +270,54 @@ confirmSaveSaleBtn.addEventListener('click', function () {
         var dropdown = document.getElementById('profileDropdown');
         dropdown.classList.toggle('show');
     });
+
+    document.addEventListener('keydown', function(event) {
+        const modalButtons = document.querySelectorAll('.modal-footer .btn');
+        let highlightedButtonIndex = Array.from(modalButtons).findIndex(button => button.classList.contains('highlight'));
+    
+        // Navigate between buttons with arrow keys
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            if (highlightedButtonIndex === -1) {
+                // If no button is highlighted, start with the first one
+                highlightedButtonIndex = 0;
+            } else {
+                // Remove highlight from the current button
+                modalButtons[highlightedButtonIndex].classList.remove('highlight');
+                
+                // Determine the new index
+                if (event.key === 'ArrowLeft') {
+                    highlightedButtonIndex = highlightedButtonIndex > 0 ? highlightedButtonIndex - 1 : modalButtons.length - 1;
+                } else if (event.key === 'ArrowRight') {
+                    highlightedButtonIndex = (highlightedButtonIndex + 1) % modalButtons.length;
+                }
+            }
+    
+            // Highlight the new button
+            modalButtons[highlightedButtonIndex].classList.add('highlight');
+            modalButtons[highlightedButtonIndex].focus(); // Focus on the highlighted button for better UX
+        }
+    
+        // Trigger the highlighted button with the Enter key
+        if (event.key === 'Enter' && highlightedButtonIndex !== -1) {
+            modalButtons[highlightedButtonIndex].click(); // Simulate a click on the highlighted button
+        }
+    
+        // Ctrl + U for Update Quantity
+        if (event.ctrlKey && event.key === 'u') {
+            event.preventDefault(); // Prevent default action
+            document.querySelector('.updatebtn').click(); // Trigger the Update Quantity button
+        }
+        // Ctrl + D for Delete
+        else if (event.ctrlKey && event.key === 'd') {
+            event.preventDefault(); 
+            document.querySelector('.deletebtn').click(); // Trigger the Delete button
+        }
+        // Ctrl + S for Save Sale
+        else if (event.ctrlKey && event.key === 's') {
+            event.preventDefault(); 
+            document.querySelector('.savebtn').click(); // Trigger the Save Sale button
+        }
+    });
+    
+     
 })
