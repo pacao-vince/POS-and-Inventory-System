@@ -23,7 +23,7 @@ include 'sidebar.php';
     <title>POS System Purchases Management</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="main.css">
    
    
@@ -39,10 +39,10 @@ include 'sidebar.php';
             </div>
         </header>
 
-        <div class="products-content" id="products">
-            <section class="product-list">
-                <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
-                <table class="productTable">
+        <div class="table-content">
+            <section class="table-list">
+                <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Purchase</button>
+                <table class="Table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -93,6 +93,19 @@ include 'sidebar.php';
                             }
                         } else {
                             $products = null; // Handle case where no products are found
+                        }
+
+
+                        // Fetch suppliers from the database
+                        $sql = "SELECT * FROM suppliers";
+                        $supplier_result = $conn->query($sql);
+                        $suppliers = [];
+                        if ($supplier_result->num_rows > 0) {
+                            while ($supplier = $supplier_result->fetch_assoc()) {
+                                $suppliers[] = $supplier;
+                            }
+                        } else {
+                            $suppliers = null; // Handle case where no suppliers are found
                         }
 
                         // Process form submission for adding a new purchase
@@ -164,8 +177,8 @@ include 'sidebar.php';
                                         <td>" . htmlspecialchars($row["purchase_quantity"]) . "</td>
                                         <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
                                         <td>
-                                            <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'>Edit</button> |
-                                            <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'>Delete</button>
+                                            <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'> <i class='fas fa-edit me-2'></i>Edit</button> |
+                                            <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'> <i class='fas fa-trash me-2'></i>Delete</button>
                                         </td>
                                     </tr>";
                             }
@@ -223,9 +236,19 @@ include 'sidebar.php';
                         </select>
                 </div>
 
-                    <div class="mb-3">
+                   <div class="mb-3">
                         <label for="supplier" class="form-label">Supplier:</label>
-                        <input type="text" class="form-control" id="supplier" name="supplier" required>
+                        <select class="form-select" id="supplier_id" name="supplier_id" required>
+                            <?php if ($suppliers): ?>
+                                <?php foreach ($suppliers as $supplier): ?>
+                                    <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>">
+                                        <?php echo htmlspecialchars($supplier['name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">No suppliers available</option>
+                            <?php endif; ?>
+                        </select>
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Date:</label>
@@ -276,9 +299,20 @@ include 'sidebar.php';
                     </div>
 
                     <div class="mb-3">
-                        <label for="edit_supplier" class="form-label">Supplier:</label>
-                        <input type="text" class="form-control" id="edit_supplier" name="supplier" required>
+                        <label for="supplier" class="form-label">Supplier:</label>
+                        <select class="form-control" id="edit_supplier_id" name="supplier_id" required>
+                            <?php if ($suppliers): ?>
+                                <?php foreach ($suppliers as $supplier): ?>
+                                    <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>">
+                                        <?php echo htmlspecialchars($supplier['name']); ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <option value="">No suppliers available</option>
+                            <?php endif; ?>
+                        </select>
                     </div>
+
                     <div class="mb-3">
                         <label for="edit_date" class="form-label">Date:</label>
                         <input type="date" class="form-control" id="edit_date" name="date" required>

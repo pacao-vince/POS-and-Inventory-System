@@ -1,6 +1,4 @@
 <?php
-include 'sidebar.php';
-/*
     session_start();
     if (!isset($_SESSION['username'])) {
         header('Location: login.php');
@@ -11,7 +9,8 @@ include 'sidebar.php';
         header('Location: login.php');
         exit();
     }
-*/
+
+    include 'sidebar.php';
 ?>
 
 <!DOCTYPE html>
@@ -21,12 +20,11 @@ include 'sidebar.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS System Users</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-
     <div class="main-content" id="main-content">
         <header>
         <h1>User Management</h1>
@@ -35,9 +33,9 @@ include 'sidebar.php';
                 <span>Administrator</span>
             </div>
         </header>
-        <div class="products-content">
-            <div class="product-list">
-                <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Account</button>
+        <div class="table-content">
+            <div class="table-list">
+                <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Account</button>
 
                 <table>
                     <thead>
@@ -96,8 +94,8 @@ include 'sidebar.php';
                                         <td>" . $row["email"] . "</td>
                                         <td>" . $row["user_type"] . "</td>
                                         <td>
-                                            <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['user_id'] . "'>Edit</button> |
-                                            <button class='btn btn-danger deleteBtn' id='editBtn' data-id='" . $row['user_id'] . "'>Delete</button>
+                                            <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['user_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> |
+                                            <button class='btn btn-danger deleteBtn' id='editBtn' data-id='" . $row['user_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
                                         </td>
                                     </tr>";
                             }
@@ -123,16 +121,21 @@ include 'sidebar.php';
                 <div class="pagination">
                     <?php if ($current_page > 1): ?>
                         <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
+
                     <?php endif; ?>
 
                     <?php for ($page = 1; $page <= $total_pages; $page++): ?>
                         <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>><?php echo $page; ?></a>
                     <?php endfor; ?>
-
                     <?php if ($current_page < $total_pages): ?>
-                        <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
-                    <?php endif; ?>
-                </div>
+                            <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
+
+                        <?php endif; ?>
+                    </div>
              </section>
         </div>
     </div>

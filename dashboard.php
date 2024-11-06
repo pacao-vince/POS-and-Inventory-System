@@ -1,17 +1,46 @@
 <?php 
-include 'sidebar.php'; 
-/*
-    include('auth.php');
 
+    include('auth.php');
+    include 'sidebar.php'; 
     // Only allow Admin access
     if ($_SESSION['user_type'] !== 'admin') {
         header('Location: login.php');
         exit();
-    }*/
+    }
     $username = "root"; 
     $password = ""; 
     $database = "pos&inventory"; 
     $conn = new mysqli("localhost", $username, $password, $database); 
+
+    // Path for notification tracking file
+    $notificationFile = 'notifications.json';
+
+    // Load existing notifications or initialize
+    $notifications = file_exists($notificationFile) ? json_decode(file_get_contents($notificationFile), true) : [];
+
+    // Get today's date
+    $today = date('Y-m-d');
+        // Query to check for products below the threshold
+    $low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks <= threshold";
+    $low_stock_result = $conn->query($low_stock_sql);
+
+    // Initialize an array to hold products below the threshold
+    $lowStockProducts = [];
+    while ($row = $low_stock_result->fetch_assoc()) {
+        // Check if notification has already been sent today for this product
+        $productId = $row['product_id'];
+        if (!isset($notifications[$productId]) || $notifications[$productId] !== $today) {
+            // Update notifications to mark as notified today
+            $notifications[$productId] = $today;
+            // Add to low stock products array
+            $lowStockProducts[] = [
+                'name' => $row['product_name'],
+                'stocks' => $row['stocks']
+            ];
+            $alertAlreadySent = true; // Set the flag to true if we are notifying about low stock
+        }
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -179,9 +208,61 @@ include 'sidebar.php';
             </div>
         </div>
     </div>
-    <script src="dashboard.js"></script>
 
+    <!-- Modal for low stock alert -->
+    <div class="modal fade" id="lowStockModal" tabindex="-1" aria-labelledby="lowStockModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="lowStockModalLabel">Low Stock Alert</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <p id="lowStockMessage"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <a href="stocks.php" class="btn btn-primary">Go to Stocks Page</a>
+        </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        // Pass the PHP variable to JavaScript
+            var lowStockProducts = <?php echo json_encode($lowStockProducts); ?>; 
+
+            if (lowStockProducts.length > 0) {
+                // Create the message for low stock products
+                var message = "Warning! The following stock levels are low:\n";
+                lowStockProducts.forEach(product => {
+                    message += `${product.name}: Only ${product.stocks} left.\n`;
+                    speak(`Warning! Stock for ${product.name} is below threshold. Only ${product.stocks} left.`);
+                });
+
+                // Set the message in the modal
+                document.getElementById("lowStockMessage").innerText = message;
+
+                // Show the modal
+                var lowStockModal = new bootstrap.Modal(document.getElementById('lowStockModal'));
+                lowStockModal.show();
+            }
+
+            // Function to speak a message using Web Speech API
+            function speak(message) {
+                var speech = new SpeechSynthesisUtterance(message);
+                speech.pitch = 2;  // Set the pitch (range: 0 to 2)
+                speech.rate = 1;   // Set the rate of speech (range: 0.1 to 10)
+                speech.voice = window.speechSynthesis.getVoices()[0]; // Set a specific voice
+                speech.lang = 'en-US'; // Set the language
+                window.speechSynthesis.speak(speech);
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="dashboard.js"></script>
 </body>
 </html>
-
 <?php $conn->close(); ?>
+

@@ -71,11 +71,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
 </head>
 <body>
     <div class="container">
-        <div class="left-panel">
-            <h1>Welcome back!</h1>
-            <img src="images/V.png" alt="Grocery Illustration">
-        </div>
-        <div class="right-panel">
             <img src="images/logo.png" alt="Logo" class="logo">
 
             <h2>LOGIN</h2>

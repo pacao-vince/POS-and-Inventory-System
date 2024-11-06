@@ -43,20 +43,16 @@ header h1 {
 	transition: margin-left 0.3s ease;
 }
 
-/* Product List Styles */
-.products-content {
-	margin-top: 20px;
-}
-
-.product-list {
+.table-list {
 	margin-bottom: 20px;
 	background-color: #fff;
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	margin-top: 20px;
 }
 
-.product-list h1 {
+.table-list h1 {
 	margin-bottom: 10px;
 	font-weight: bold;
 }
@@ -97,25 +93,22 @@ header h1 {
 }
 
 
-.product-list table {
+.table-list table {
 	width: 100%;
 	border-collapse: collapse;
 }
-
-.product-list th {
-	background-color: #3498db;
-	color: white;
-}
-
-.product-list th,
-.product-list td {
+.table-list th,
+.table-list td {
 	font-size: 1.4rem;
 	line-height: 1.2;
 	padding: 12px 8px;
 	border-bottom: 1px solid #ddd;
-	text-align: left;
+	text-align: center;
 }
-
+.table-list th {
+	background-color: #3498db;
+	color: white;
+}
 .dropdown-toggle {
 	font-size: 1.4rem;
 	line-height: 1.2;
@@ -129,6 +122,24 @@ header h1 {
 	font-size: 1.4rem;
 	font-weight: 600;
 }
+/* Buttons in Actions Column */
+.table-list td .editBtn,
+.deleteBtn {
+	display: inline-block;
+	/* Ensures buttons stay inline */
+	margin-right: 0;
+	/* Adds spacing between buttons */
+
+}
+
+
+.table-list td .custom-btn:last-child {
+	margin-right: 0; /* Removes the right margin from the last button */
+}
+
+.table-list tr:hover {
+	background-color: #f1f1f1;
+}
 
 #categoryDropdown:hover,
 #categoryDropdown:focus,
@@ -141,7 +152,6 @@ header h1 {
 	border: none;
 	/* Ensure no border appears */
 }
-
 
 /* Modal Styles */
 .modal {
@@ -322,6 +332,7 @@ button.custom-btn {
 	border-radius: 4px;
 	cursor: pointer;
 	margin-bottom: 20px;
+	margin-left: auto;
 }
 
 .btn-close,
@@ -395,8 +406,8 @@ button.custom-btn:hover {
 	transition: opacity 1.5s ease;
 }
 
-
 /*Responsive Styles 
+
 @media screen and (max-width: 768px) {
 	.sidebar {
 		transform: translateX(-100%);
@@ -413,4 +424,10 @@ button.custom-btn:hover {
 	.main-content.active {
 		margin-left: 250px;
 	}
+} */
+
+.legend-item {
+    padding: 5px 10px;
+    border-radius: 4px;
 }
+  

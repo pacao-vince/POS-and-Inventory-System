@@ -45,38 +45,14 @@
 				<a class="submenu-toggle" href="javascript:void(0)"><img src="images/analytics-svgrepo-com.png"
 						class="sidebar-icon" alt="reports-icon" /><span>Reports </span>
 				</a>
-				<!--ul class="submenu">
-                            <li>
-                                <a href="Stocks.php" style="font-size: 1.4rem; padding: 10px 20px 10px 40px;"
-                                    ><!-img
-                                        src="images/stock-out.png"
-                                        class="sidebar-icon"
-                                        
-                                        
-                                    />Stocks Report</a
-                                >
-                            </li>
-                            <li>
-                                <a href="dailySales.php" style="font-size: 1.4rem; padding: 10px 20px 10px 40px;"
-                                    ><-!img
-                                        src="images/daily-sales.png"
-                                        class="sidebar-icon"
-                                        
-                                        
-                                    /->Daily Sales Report</a
-                                >
-                            </li>
-                            <li>
-                                <a href="monthlySales.php" style="font-size: 1.4rem; padding: 10px 20px 10px 40px;"
-                                    ><!-img
-                                        src="images/monthlySales.png"
-                                        class="sidebar-icon"
-                                        
-                                        
-                                    /->Monthly Sales Report</a
-                                >
-                            </li>
-                        </ul-->
+			</li>
+			
+			<li>
+				<a href="supplier.php"><img src="images/supplier.png" class="sidebar-icon"><span>Supplier</span></a>
+			</li>
+
+			<li>
+				<a href="barcode_generator.php"><img src="images/barcode.png" class="sidebar-icon"><span>Barcode Generator</span></a>
 			</li>
 
 			<li>
@@ -138,30 +114,6 @@
 			tooltip.style.opacity = "1"
 			this._tooltip = tooltip // Store the tooltip reference for later use
 		})
-		/*
-		var submenuToggle = document.querySelector(".submenu-toggle")
-		var submenu = submenuToggle.nextElementSibling // Get the submenu element
-
-		submenuToggle.addEventListener("click", function (e) {
-			e.preventDefault() // Prevent default anchor behavior
-
-			this.classList.toggle("active")
-
-			if (submenu.style.display === "block") {
-				submenu.style.display = "none" // Close the submenu when Reports is clicked again
-			} else {
-				submenu.style.display = "block" // Open the submenu
-			}
-		})
-
-		// Prevent the submenu from closing when a submenu item is clicked
-		var submenuItems = document.querySelectorAll(".submenu a")
-		submenuItems.forEach(function (item) {
-			item.addEventListener("click", function (e) {
-				e.stopPropagation() // Prevent the event from bubbling up to the submenu toggle
-			})
-		})
-	*/
 	})
 </script>
 
