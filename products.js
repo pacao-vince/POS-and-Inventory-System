@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryFilterItems = document.querySelectorAll(
     "#categoryFilter .dropdown-item"
   );
-  const productsTable = document.getElementById("Table");
+  const productsTable = document.getElementById("products");
   const tableRows = productsTable
     .getElementsByTagName("tbody")[0]
     .getElementsByTagName("tr");
@@ -77,6 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       const productId = this.getAttribute("data-id");
       const row = this.closest("tr");
+
+      console.log(editButtons); // Check if this logs the button elements
 
       // Get data attributes from the selected row
       const categoryId = row.getAttribute("data-category-id");

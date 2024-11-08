@@ -64,7 +64,6 @@
                         <button class="btn btn-primary custom-btn" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus me-2"></i>Add Product</button>
                     </div>
                 </div>
->>>>>>>>> Temporary merge branch 2
 
                 <table id="productsTable">
                     <thead>
@@ -171,8 +170,8 @@
                                             <td><span class='$stockClass'>" . $row["stocks"] . "</span></td>
                                             <td>" . number_format($row["threshold"]) . "</td>
                                             <td>
-                                                <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'>Edit</button> 
-                                                <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'>Delete</button>
+                                                <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> 
+                                                <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
                                             </td>
                                         </tr>";
                                     }

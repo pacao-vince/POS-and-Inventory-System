@@ -12,7 +12,7 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-
+*/
 include 'sidebar.php';
 
 $servername = "localhost";

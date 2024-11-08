@@ -257,59 +257,6 @@
         });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Modal for low stock alert -->
-    <div class="modal fade" id="lowStockModal" tabindex="-1" aria-labelledby="lowStockModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="lowStockModalLabel">Low Stock Alert</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <p id="lowStockMessage"></p>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <a href="stocks.php" class="btn btn-primary">Go to Stocks Page</a>
-        </div>
-        </div>
-    </div>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        // Pass the PHP variable to JavaScript
-            var lowStockProducts = <?php echo json_encode($lowStockProducts); ?>; 
-
-            if (lowStockProducts.length > 0) {
-                // Create the message for low stock products
-                var message = "Warning! The following stock levels are low:\n";
-                lowStockProducts.forEach(product => {
-                    message += `${product.name}: Only ${product.stocks} left.\n`;
-                    speak(`Warning! Stock for ${product.name} is below threshold. Only ${product.stocks} left.`);
-                });
-
-                // Set the message in the modal
-                document.getElementById("lowStockMessage").innerText = message;
-
-                // Show the modal
-                var lowStockModal = new bootstrap.Modal(document.getElementById('lowStockModal'));
-                lowStockModal.show();
-            }
-
-            // Function to speak a message using Web Speech API
-            function speak(message) {
-                var speech = new SpeechSynthesisUtterance(message);
-                speech.pitch = 2;  // Set the pitch (range: 0 to 2)
-                speech.rate = 1;   // Set the rate of speech (range: 0.1 to 10)
-                speech.voice = window.speechSynthesis.getVoices()[0]; // Set a specific voice
-                speech.lang = 'en-US'; // Set the language
-                window.speechSynthesis.speak(speech);
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="dashboard.js"></script>
 </body>
 </html>

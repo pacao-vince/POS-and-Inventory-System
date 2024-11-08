@@ -62,9 +62,12 @@ header h1 {
   border-radius: 8px;
   align-items: center;
   justify-content: space-between;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   margin-bottom: 20px;
+  transition-property: transform;
+  transition-duration: 0.3s;
 }
+
 .card-title {
   width: 100%;
   margin-bottom: 6px;
@@ -72,8 +75,8 @@ header h1 {
 
 .stat-item:hover {
   cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transform: scale(1.03);
 }
 
 .stat-icon {
@@ -151,38 +154,15 @@ header h1 {
   color: #3ca3e7;
 }
 
-/* Modal Styles */
-.modal {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  left: 0;
-  top: 0;
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */
-  justify-content: center;
-  /* Center the modal horizontally */
-  align-items: center;
-  /* Center the modal vertically */
-}
-
 .modal-content {
   background-color: #fefefe;
   margin: auto;
-  /* Center modal */
   padding: 20px 20px 0px 20px;
   border: 1px solid #888;
-  width: 400px;
-  /* Fixed width for the modal */
-  border-radius: 8px;
-  /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Shadow for depth */
-  animation: fadeIn 0.3s;
-  /* Fade in animation */
+  width: 400px; /* Fixed width for the modal */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+  animation: fadeIn 0.3s; /* Fade in animation */
 }
 
 .btn.btn-primary,

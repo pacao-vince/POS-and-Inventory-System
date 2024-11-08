@@ -181,8 +181,8 @@ include 'sidebar.php';
                                     <td>" . htmlspecialchars($row["purchase_quantity"]) . "</td>
                                     <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
                                     <td>
-                                        <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'>Edit</button> |
-                                        <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'>Delete</button>
+                                        <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> |
+                                        <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
                                     </td>
                                 </tr>";
                             }
