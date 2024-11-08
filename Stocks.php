@@ -68,6 +68,7 @@ $lowStockJson = json_encode($lowStockProducts);
     <title>POS System Reports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
@@ -83,8 +84,8 @@ $lowStockJson = json_encode($lowStockProducts);
             <!-- Out-of-Stock Products Section -->
             <section class="out-of-stock">
                 <h2>Out of Stock Products</h2>
-                <button id="printStocksBtn" class="btn btn-success custom-btn">Print</button>
-                <button id="generateStocksBtn" class="btn btn-primary custom-btn-gen">Generate Report</button>
+                <button id="printStocksBtn" class="btn btn-success custom-btn"><i class="fas fa-print me-2"></i>Print</button>
+                <button id="generateStocksBtn" class="btn btn-primary custom-btn-gen"><i class="fas fa-file-alt me-2"></i>Generate Report</button>
                 <table class="reportTable">
                 <thead>
                         <tr>

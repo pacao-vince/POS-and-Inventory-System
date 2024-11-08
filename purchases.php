@@ -23,7 +23,7 @@ include 'sidebar.php';
     <title>POS System Purchases Management</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="main.css">
    
    
@@ -41,7 +41,7 @@ include 'sidebar.php';
 
         <div class="table-content">
             <section class="table-list">
-                <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
+                <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Purchase</button>
                 <table class="Table">
                     <thead>
                         <tr>
