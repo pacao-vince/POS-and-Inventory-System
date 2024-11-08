@@ -16,7 +16,6 @@ body {
 	padding: 20px;
 	margin-left: 200px;
 	transition: margin-left 0.3s ease;
-
 }
 
 header {
@@ -41,10 +40,6 @@ header h1 {
 	width: 40px;
 	border-radius: 50%;
 	margin-right: 10px;
-}
-
-.reports-content {
-	margin: 20px;
 }
 
 .reportTable {
@@ -92,14 +87,14 @@ header h1 {
 .monthly-sales-report p {
 	margin: 5px 0;
 }
-
 .pagination {
 	display: flex;
 	justify-content: center;
 	margin-top: 20px;
 }
 
-.pagination a, .pagination span {
+.pagination a,
+.pagination span {
 	font-size: 1.4rem;
 	line-height: 1.2;
 	padding: 8px 16px;
@@ -118,10 +113,16 @@ header h1 {
 	border: 1px solid #04619f;
 }
 
-.pagination a.disabled, 
+.pagination a.disabled,
 .pagination span.disabled {
-    color: #999;
-    cursor: not-allowed;
+	color: #999;
+	cursor: not-allowed;
+}
+
+.pagination a.disabled,
+.pagination span.disabled {
+	color: #999;
+	cursor: not-allowed;
 }
 
 .pagination a:hover {
@@ -140,7 +141,6 @@ button.custom-btn {
 	float: right;
 }
 
-
 button.custom-btn-gen {
 	font-size: 1.4rem;
 	line-height: 1.2;
@@ -154,48 +154,47 @@ button.custom-btn-gen {
 	float: right;
 }
 
-.col-md-3{
+.col-md-3 {
 	margin-top: 0;
-	padding:15px;
+	padding: 15px;
 	width: 250px;
 }
 .cashier-cards {
-    margin-bottom: 20px;
+	margin-bottom: 20px;
 	transition: box-shadow 0.3s, transform 0.3s;
-	
 }
 
-.card-body-card{
-    padding: 15px;
-    text-align: center !important;
-    cursor: pointer;
+.card-body-card {
+	padding: 15px;
+	text-align: center !important;
+	cursor: pointer;
+	box-shadow: 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .card-body-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    transform: translateY(-5px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	transform: translateY(-5px);
 }
 
-.card-title{
+.card-title {
 	margin: 0;
-    font-size: 20px;
+	font-size: 20px;
 	font-weight: bold;
 	color: #3498db;
 	margin-bottom: 5px;
 	margin-top: 5px;
 }
 .card-text {
-    margin: 5px 0 0;
-    font-size: 14px;
-    color: #6c757d;
+	margin: 5px 0 0;
+	font-size: 14px;
+	color: #6c757d;
 	font-weight: bold;
-    margin-bottom: 5px; /* Add some space below total sales */
+	margin-bottom: 5px; /* Add some space below total sales */
 }
 
 .separator {
-    border: 0; /* Remove default border */
-    height: 1px; /* Set height for the line */
-    background-color: #6ea7be; /* Set the line color */
-    margin: 10px 0; /* Add some margin above and below the line */
+	border: 0; /* Remove default border */
+	height: 1px; /* Set height for the line */
+	background-color: #6ea7be; /* Set the line color */
+	margin: 10px 0; /* Add some margin above and below the line */
 }
-

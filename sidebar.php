@@ -78,6 +78,10 @@
                             </li>
                         </ul-->
 			</li>
+			
+			<li>
+				<a href="supplier.php"><img src="images/supplier.png" class="sidebar-icon"><span>Supplier</span></a>
+			</li>
 
 			<li>
 				<a href="Users.php"><img src="images/users-svgrepo-com.png" class="sidebar-icon"

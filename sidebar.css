@@ -26,7 +26,7 @@ body {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 30px;
 }
 
 .logo img {
@@ -34,7 +34,8 @@ body {
 	margin-bottom: 10px;
 }
 
-.logo h2 {
+.logo h1 {
+	font-size: 1.5em;
 	font-weight: bold;
 	margin: 0;
 }

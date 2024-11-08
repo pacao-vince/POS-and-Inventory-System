@@ -1,11 +1,10 @@
-
 <?php
 include_once 'db_connection.php';
 
 // Process form submission for adding a new purchase
                     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_purchase'])) {
                         $product_id = $_POST['product_id'];
-                        $supplier = $_POST['supplier'];
+                        $supplier_id = $_POST['supplier_id'];
                         $date = $_POST['date'];
                         $purchase_amount = $_POST['purchase_amount'];
 
@@ -22,8 +21,8 @@ include_once 'db_connection.php';
                             $product_id = $stmt->insert_id; // Get the inserted product ID
                         }
                         // Prepare and bind
-                        $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier, date, purchase_amount) VALUES (?, ?, ?, ?)");
-                        $stmt->bind_param("issd", $product_id, $supplier, $date, $purchase_amount);
+                        $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier_id, date, purchase_amount) VALUES (?, ?, ?, ?)");
+                        $stmt->bind_param("iisd", $product_id, $supplier_id, $date, $purchase_amount);
 
                         if ($stmt->execute()) {
                             echo "<script>window.location.href = 'purchases.php';</script>";

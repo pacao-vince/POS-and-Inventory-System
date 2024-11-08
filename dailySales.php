@@ -1,4 +1,5 @@
 <?php
+
 include 'sidebar.php';
 /*
 session_start();
@@ -60,10 +61,13 @@ $daily_sales_result = $stmt->get_result();
 
 // Get all cashiers with their total sales for today
 $cashier_sql = "
-    SELECT cashier_username, SUM(grand_total) AS total_sales 
-    FROM sales 
-    WHERE DATE(transaction_time) = CURDATE() 
-    GROUP BY cashier_username";
+   SELECT u.username AS cashier_username, 
+           COALESCE(SUM(s.grand_total), 0) AS total_sales 
+    FROM user_management u 
+    LEFT JOIN sales s ON u.username = s.cashier_username 
+                      AND DATE(s.transaction_time) = CURDATE() 
+    WHERE u.user_type = 'cashier' 
+    GROUP BY u.username";
 $cashiers_result = $conn->query($cashier_sql);
 
 // Total pages for pagination
@@ -167,15 +171,19 @@ $daily_sales_total_pages = ceil($daily_sales_total_data['total'] / $records_per_
                 <!-- Pagination -->
                 <div class="pagination">
                     <?php if ($daily_sales_page > 1): ?>
-                        <a href="?daily_sales_page=<?php echo $daily_sales_page - 1; ?>&cashier_username=<?php echo urlencode($cashier_username); ?>">Previous</a>
+                        <a href="?daily_sales_page=<?php echo $daily_sales_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
                     <?php endif; ?>
 
                     <?php for ($i = 1; $i <= $daily_sales_total_pages; $i++): ?>
-                        <a href="?daily_sales_page=<?php echo $i; ?>&cashier_username=<?php echo urlencode($cashier_username); ?>" <?php if ($i == $daily_sales_page) echo 'class="active"'; ?>><?php echo $i; ?></a>
+                        <a href="?daily_sales_page=<?php echo $i; ?>" <?php if ($i == $daily_sales_page) echo 'class="active"'; ?>><?php echo $i; ?></a>
                     <?php endfor; ?>
 
                     <?php if ($daily_sales_page < $daily_sales_total_pages): ?>
-                        <a href="?daily_sales_page=<?php echo $daily_sales_page + 1; ?>&cashier_username=<?php echo urlencode($cashier_username); ?>">Next</a>
+                        <a href="?daily_sales_page=<?php echo $daily_sales_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
                     <?php endif; ?>
                 </div>
             </section>

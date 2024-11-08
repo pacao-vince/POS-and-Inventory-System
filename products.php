@@ -1,6 +1,4 @@
 <?php
-include 'sidebar.php'; 
-require_once 'db_connection.php';
 /*
  session_start();
  if (!isset($_SESSION['username'])) {
@@ -14,6 +12,9 @@ require_once 'db_connection.php';
      header('Location: login.php');
      exit();
  }*/
+ include 'sidebar.php'; 
+ require_once 'db_connection.php';
+ 
  $categories = [];
  $query = "SELECT category_id, category_name FROM category"; // Adjust table name and columns
  $result = $conn->query($query);
@@ -24,7 +25,6 @@ require_once 'db_connection.php';
      }
  }
 ?>
-
 
 <!DOCTYPE html>
     <html lang="en">
@@ -48,9 +48,9 @@ require_once 'db_connection.php';
                     <span>Administrator</span>
                 </div>
             </header>
-            <!--div class="products-content" id="products"-->
-            <section class="product-list">                
-                <div class="row justify-content-between" id="filters">
+            <div class="table-content" id="products">
+                <section class="table-list">
+                    <div class="row justify-content-between" id="filters">
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                     </div>
@@ -58,39 +58,39 @@ require_once 'db_connection.php';
                         <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
                     </div>
                 </div>
-
-                <table id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Product Name</th>
-                            <th>Barcode</th>
-                            <th>
-                                <div class="dropdown d-inline">
-                                    <button class="btn text-light dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="me-1">Category</span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryFilter">
-                                        <li><a class="dropdown-item" href="#" data-value="">All</a></li>
-                                        <?php foreach ($categories as $category): ?>
-                                            <li>
-                                                <a class="dropdown-item" href="#" data-value="<?php echo htmlspecialchars($category['category_name']); ?>">
-                                                    <?php echo htmlspecialchars($category['category_name']); ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
-                            </th>
-                            <th>Buying Price</th>
-                            <th>Selling Price</th>
-                            <th>Stocks</th>
-                            <th>Threshold</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
+                    
+                    <table id="Table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Barcode</th>
+                                <th>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn text-light dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="me-1">Category</span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryFilter">
+                                            <li><a class="dropdown-item" href="#" data-value="">All</a></li>
+                                            <?php foreach ($categories as $category): ?>
+                                                <li>
+                                                    <a class="dropdown-item" href="#" data-value="<?php echo htmlspecialchars($category['category_name']); ?>">
+                                                        <?php echo htmlspecialchars($category['category_name']); ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </th>
+                                <th>Buying Price</th>
+                                <th>Selling Price</th>
+                                <th>Stocks</th>
+                                <th>Threshold</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
                                 
                                 // Pagination variables
                                 $products_per_page = 10; // Number of products per page
@@ -141,7 +141,7 @@ require_once 'db_connection.php';
                             }
 
                                 // Fetch products from database with limit and offset
-                                $sql = "SELECT p.product_id, p.product_name, p.barcode, p.buying_price, p.selling_price, p.stocks, p.threshold, c.category_name
+                                $sql = "SELECT p.product_id, p.product_name, p.barcode, c.category_id, c.category_name, p.buying_price, p.selling_price, p.stocks, p.threshold
                                 FROM products p
                                 JOIN category c ON p.category_id = c.category_id
                                 ORDER BY p.product_id DESC
@@ -153,20 +153,21 @@ require_once 'db_connection.php';
                                     // Output data of each row
                                     while ($row = $result->fetch_assoc()) {
                                         $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
-                                        echo "<tr data-product-id='" . $row["product_id"] . "'>
-                                                <td>" . $row["product_id"] . "</td>
-                                                <td class='product-name'>" . $row["product_name"] . "</td>
-                                                <td>" . $row["barcode"] . "</td>
-                                                <td>" . $row["category_name"] . "</td>
-                                                <td>₱" . number_format($row["buying_price"], 2) . "</td>
-                                                <td>₱" . number_format($row["selling_price"], 2) . "</td>
-                                                <td><span class='$stockClass'>" . $row["stocks"] . "</span></td>
-                                                <td>" . number_format($row["threshold"]) . "</td>
-                                                <td>
-                                                    <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'>Edit</button> 
-                                                    <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'>Delete</button>
-                                                </td>
-                                            </tr>";
+                                        echo "<tr data-product-id='" . $row["product_id"] . "'
+                                            data-category-id='" . $row["category_id"] . "'>
+                                            <td>" . $row["product_id"] . "</td>
+                                            <td class='product-name'>" . $row["product_name"] . "</td>
+                                            <td>" . $row["barcode"] . "</td>
+                                            <td>" . $row["category_name"] . "</td>
+                                            <td>₱" . number_format($row["buying_price"], 2) . "</td>
+                                            <td>₱" . number_format($row["selling_price"], 2) . "</td>
+                                            <td><span class='$stockClass'>" . $row["stocks"] . "</span></td>
+                                            <td>" . number_format($row["threshold"]) . "</td>
+                                            <td>
+                                                <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'>Edit</button> 
+                                                <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'>Delete</button>
+                                            </td>
+                                        </tr>";
                                     }
                                 } else {
                                     echo "<tr><td colspan='9'>No products found</td></tr>";
@@ -220,6 +221,7 @@ require_once 'db_connection.php';
                                 <div class="mb-3">
                                     <label for="category_id" class="form-label">Category:</label>
                                     <select class="form-select" id="category_id" name="category_id" required>
+                                        <option value="" disabled selected>Select Category</option> <!-- Placeholder option -->
                                         <?php if ($categories): ?>
                                             <?php foreach ($categories as $category): ?>
                                                 <option value="<?php echo htmlspecialchars($category['category_id']); ?>">

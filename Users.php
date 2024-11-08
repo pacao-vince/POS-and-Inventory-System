@@ -26,7 +26,6 @@ include 'sidebar.php';
 </head>
 
 <body>
-
     <div class="main-content" id="main-content">
         <header>
         <h1>User Management</h1>
@@ -35,8 +34,8 @@ include 'sidebar.php';
                 <span>Administrator</span>
             </div>
         </header>
-        <div class="products-content">
-            <div class="product-list">
+        <div class="table-content">
+            <div class="table-list">
                 <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Account</button>
 
                 <table>

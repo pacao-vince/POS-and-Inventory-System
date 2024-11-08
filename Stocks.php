@@ -34,7 +34,7 @@ $notifications = file_exists($notificationFile) ? json_decode(file_get_contents(
 $today = date('Y-m-d');
 
 // Query to check for products below the threshold
-$low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks < threshold";
+$low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks <= threshold";
 $low_stock_result = $conn->query($low_stock_sql);
 
 // Initialize an array to hold products below the threshold
@@ -139,6 +139,7 @@ $lowStockJson = json_encode($lowStockProducts);
                     var message = `Warning! Stock for ${product.name} is below threshold. Only ${product.stocks} left.`;
                     speak(message);
                 });
+
             }
 
             // Function to speak a message using Web Speech API

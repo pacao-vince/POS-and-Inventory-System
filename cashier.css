@@ -403,3 +403,8 @@ body {
 #saveSaleConfirmationModal {
     padding: 20px;
 }
+
+.highlight {
+    background-color: #005fa3; /* Or any color to indicate highlight */
+    color: white;
+}
