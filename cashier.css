@@ -246,10 +246,9 @@ body {
 
 .actions-section {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     justify-content: right;
-    margin-right: 40px;
-    margin-right: 90px;
+    margin-right: 34px;
 }
 
 .actions-section button {
@@ -372,22 +371,6 @@ body {
 
 .custom-alert {
     position: fixed;
-    top: 10px; /* Distance from the top */
-    left: 50%; /* Center horizontally */
-    transform: translateX(-50%); /* Adjust horizontal position */
-    z-index: 1050; /* Make sure it is above other elements */
-    opacity: 0; /* Start hidden for fade-in effect */
-    transition: opacity 0.3s ease; /* Smooth transition for fade effect */
-    max-width: 90%; /* Prevents the alert from being too wide on small screens */
-    padding: 19px 40px; /* Adjust padding: vertical | horizontal */
-    font-size: 1.28em; /* Set font size */
-    border-radius: 5px; /* Optional: round the corners */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Optional: add shadow */
-    text-align: center; /* Center text inside the alert */
-}
-
-.custom-alert {
-    position: fixed;
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
@@ -398,8 +381,14 @@ body {
     transition: opacity 0.3s ease;
     font-size: 16px;
     margin: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 #saveSaleConfirmationModal {
     padding: 20px;
+}
+
+.highlight {
+    background-color: #005fa3; /* Or any color to indicate highlight */
+    color: white;
 }

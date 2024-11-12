@@ -72,8 +72,8 @@ if (isset($_GET['barcode'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS System</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="cashier.css">
     
 
@@ -86,13 +86,13 @@ if (isset($_GET['barcode'])) {
                 <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Cashier" id="profilePic">
                 <span>Cashier, <?php echo htmlspecialchars($user_name); ?></span>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="login.php" id="logout">Log out</a>
+                <a id="logout" href="#"><i class="fas fa-sign-out-alt me-2"></i> Log out</a>
                  </div>
             </div>
 
         </div>
 
-        <div class="main-content">
+        <div class="main-content">  
             <div class="left-panel">
                 <div class="search-section">
                     <form id="searchForm">
@@ -168,25 +168,25 @@ if (isset($_GET['barcode'])) {
             
 
         <div class="actions-section">
-            <button class="btn btn-primary updatebtn">QTY</button>
-            <button class="btn btn-danger deletebtn">DELETE</button>
-            <button class="btn btn-success savebtn">Save Sale</button>
+            <button class="btn btn-primary updatebtn" accesskey="u"><i class="fas fa-boxes me-2"></i> QTY</button>
+            <button class="btn btn-danger deletebtn" accesskey="d"><i class="fas fa-trash me-2"></i> DELETE</button>
+            <button class="btn btn-success savebtn" accesskey="s"><i class="fas fa-save me-2"></i> SAVE SALE</button>
         </div>
     </div>
 
 
 <!-- Quantity Modal -->
 <div class="modal fade" id="qtyModal" tabindex="-1" role="dialog" aria-labelledby="qtyModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document"> <!-- Centered modal -->
-        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 320px;"> <!-- Adjusted padding and width -->
-            <div class="modal-header border-0" style="padding: 0 10px;"> <!-- Reduced horizontal padding -->
+    <div class="modal-dialog modal-dialog-centered" role="document"> 
+        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 320px;"> 
+            <div class="modal-header border-0" style="padding: 0 10px;"> 
                 <h5 class="modal-title w-100 text-center text-primary font-weight-bold" id="qtyModalLabel">Update Quantity</h5>
             </div>
-            <div class="modal-body text-left" style="padding: 10px 10px;"> <!-- Reduced padding for compact look -->
+            <div class="modal-body text-left" style="padding: 10px 10px;"> 
                 <label for="newQuantityInput" class="font-weight-bold">New Quantity:</label>
                 <input type="number" id="newQuantityInput" class="form-control mx-auto" min="1" placeholder="1" required>
             </div>
-            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;"> <!-- Footer padding adjustment -->
+            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;"> 
                 <button type="button" id="updateQtyBtn" class="btn btn-primary" style="padding:6px 12px;">Update</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" style="padding:6px 12px;">Cancel</button>
             </div>
@@ -198,16 +198,16 @@ if (isset($_GET['barcode'])) {
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;"> <!-- Adjust width and padding -->
-            <div class="modal-header border-0" style="padding: 0 10px;"> <!-- Adjust header padding -->
+        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;"> 
+            <div class="modal-header border-0" style="padding: 0 10px;"> 
                 <h5 class="modal-title w-100 text-center text-primary font-weight-bold" id="deleteModalLabel">Delete Item</h5>
             </div>
-            <div class="modal-body text-center" style="padding: 10px 10px;"> <!-- Adjust body padding -->
+            <div class="modal-body text-center" style="padding: 10px 10px;"> 
                 <p>Are you sure you want to delete this item? This action cannot be undone.</p>
             </div>
-            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;"> <!-- Footer padding and centering -->
-                <button type="button" id="confirmDeleteBtn" class="btn btn-primary w-25">Delete</button> <!-- Blue delete button -->
-                <button type="button" class="btn btn-secondary w-25" data-dismiss="modal">Cancel</button> <!-- Gray cancel button -->
+            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;"> 
+                <button type="button" id="confirmDeleteBtn" class="btn btn-primary w-25">Delete</button> 
+                <button type="button" class="btn btn-secondary w-25" data-dismiss="modal">Cancel</button> 
             </div>
         </div>
     </div>
@@ -217,24 +217,69 @@ if (isset($_GET['barcode'])) {
   <!-- Save Sale Confirmation Modal -->
 <div class="modal fade" id="saveSaleConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="saveSaleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;"> <!-- Adjust width and padding -->
-            <div class="modal-header border-0" style="padding: 0 10px;"> <!-- Adjust header padding -->
+        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;"> <
+            <div class="modal-header border-0" style="padding: 0 10px;"> 
                 <h5 class="modal-title w-100 text-center text-primary font-weight-bold" id="saveSaleModalLabel">Save Transaction</h5>
             </div>
-            <div class="modal-body text-center" style="padding: 10px 10px;"> <!-- Adjust body padding -->
+            <div class="modal-body text-center" style="padding: 10px 10px;"> 
                 <p>Are you sure you want to save this sale?</p>
             </div>
-            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;"> <!-- Footer padding and centering -->
-                <button type="button" id="confirmSaveSaleBtn" class="btn btn-primary w-25">Save</button> <!-- Blue save button -->
-                <button type="button" class="btn btn-secondary w-25" data-dismiss="modal">Cancel</button> <!-- Gray cancel button -->
+            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;"> 
+                <button type="button" id="confirmSaveSaleBtn" class="btn btn-primary w-25">Save</button> 
+                <button type="button" class="btn btn-secondary w-25" data-dismiss="modal">Cancel</button> 
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Authentication Modal -->
+<div class="modal fade" id="adminAuthModal" tabindex="-1" aria-labelledby="adminAuthLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="adminAuthLabel">Admin Authentication</h5>
+            </div>
+            <div class="modal-body">
+               
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" placeholder="Enter Username">
+                </div>
+        
+                <div class="mb-3">
+                    <label for="adminPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="adminPassword" placeholder="Enter Password">
+                </div>
+
+                <div id="authError" class="text-danger" style="display: none;"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="authConfirmBtn" class="btn btn-primary">Confirm</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logout Confirmation Modal -->
+<div class="modal fade" id="logoutConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;">
+            <div class="modal-header border-0" style="padding: 0 10px;">
+                <h5 class="modal-title w-100 text-center text-danger font-weight-bold" id="logoutModalLabel">Logout</h5>
+            </div>
+            <div class="modal-body text-center" style="padding: 10px 10px;">
+                <p>Are you sure you want to log out?</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0" style="padding: 10px 10px;">
+                <button type="button" id="confirmLogoutBtn" class="btn btn-danger w-25">Logout</button>
+                <button type="button" class="btn btn-secondary w-25" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
 </div>
 
 
-
-    <!-- Ensure the JavaScript files are correctly linked -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

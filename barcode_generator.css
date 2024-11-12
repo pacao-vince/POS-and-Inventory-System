@@ -1,0 +1,162 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: #ecf0f1;
+}
+
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+    margin-left: 200px;
+    transition: margin-left 0.3s ease;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+header h2 {
+    margin: 0;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+}
+
+.admin-profile img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.barcode-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Adjust the width of the form and result sections */
+.form-section {
+    padding: 20px;
+    width: 40%; 
+    border-right: 2px solid #ddd;
+}
+
+.result-section {
+    padding: 20px;
+    width: 55%; 
+    padding-left: 30px;
+}
+
+.form-section label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: medium;
+}
+.form-section input {
+    width:80%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-section button.generate{
+    padding: 10px 15px;
+    background-color: #2876a7;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-section button.generate:hover {
+    background-color: #1d6888;
+}
+
+
+.form-section button.print{
+    padding: 10px 15px;
+    background-color: #28b663;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-section button.print:hover {
+    background-color: green;
+}
+
+.result-section {
+    display: flex;            
+    flex-wrap: wrap;                       
+    margin-top: 10px;
+    gap: 8px;
+}
+
+.result-section h3 {
+    margin: 0;                 /* Remove margin from text */
+    padding: 0;
+}
+.barcode-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;                /* Remove padding */
+    border: 1px solid #545454;
+    border-radius: 5px;
+    width: 150px;
+    height: auto;              /* Ensure box height adjusts */
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
+}
+
+.barcode-box svg {
+    display: block;
+    width: 100%;
+    height: auto;              /* Let SVG resize vertically */
+    margin: 0;                 /* Remove any margins */
+    padding: 0;                /* Remove any padding */
+}
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .result-section, .result-section * {
+        visibility: visible;
+    }
+
+    .result-section {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;  
+        margin: none;
+    }
+}
+
+.custom-alert {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px;
+    z-index: 9999;
+    opacity: 0;
+    border-radius: 5px;
+    transition: opacity 0.3s ease;
+    font-size: 16px;
+    margin: 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

@@ -1,4 +1,17 @@
 <?php
+ session_start();
+ if (!isset($_SESSION['username'])) {
+     // Redirect to login page if not logged in
+     header('Location: login.php');
+     exit();
+ }
+
+ // Only allow Admin access
+ if ($_SESSION['user_type'] !== 'admin') {
+     header('Location: login.php');
+     exit();
+ }
+
 include_once 'sidebar.php'; 
 include_once 'db_connection.php';
 
@@ -34,7 +47,7 @@ $notifications = file_exists($notificationFile) ? json_decode(file_get_contents(
 $today = date('Y-m-d');
 
 // Query to check for products below the threshold
-$low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks < threshold";
+$low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks <= threshold";
 $low_stock_result = $conn->query($low_stock_sql);
 
 // Initialize an array to hold products below the threshold
@@ -68,6 +81,7 @@ $lowStockJson = json_encode($lowStockProducts);
     <title>POS System Reports</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="reports.css">
 </head>
 <body>
@@ -83,8 +97,8 @@ $lowStockJson = json_encode($lowStockProducts);
             <!-- Out-of-Stock Products Section -->
             <section class="out-of-stock">
                 <h2>Out of Stock Products</h2>
-                <button id="printStocksBtn" class="btn btn-success custom-btn">Print</button>
-                <button id="generateStocksBtn" class="btn btn-primary custom-btn-gen">Generate Report</button>
+                <button id="printStocksBtn" class="btn btn-success custom-btn"><i class="fas fa-print me-2"></i>Print</button>
+                <button id="generateStocksBtn" class="btn btn-primary custom-btn-gen"><i class="fas fa-file-alt me-2"></i>Generate Report</button>
                 <table class="reportTable">
                 <thead>
                         <tr>
@@ -139,6 +153,7 @@ $lowStockJson = json_encode($lowStockProducts);
                     var message = `Warning! Stock for ${product.name} is below threshold. Only ${product.stocks} left.`;
                     speak(message);
                 });
+
             }
 
             // Function to speak a message using Web Speech API

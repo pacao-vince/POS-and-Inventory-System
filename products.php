@@ -1,7 +1,4 @@
 <?php
-include 'sidebar.php'; 
-require_once 'db_connection.php';
-/*
  session_start();
  if (!isset($_SESSION['username'])) {
      // Redirect to login page if not logged in
@@ -13,7 +10,11 @@ require_once 'db_connection.php';
  if ($_SESSION['user_type'] !== 'admin') {
      header('Location: login.php');
      exit();
- }*/
+ }
+
+require_once 'db_connection.php';
+include 'sidebar.php'; 
+
  $categories = [];
  $query = "SELECT category_id, category_name FROM category"; // Adjust table name and columns
  $result = $conn->query($query);
@@ -25,7 +26,6 @@ require_once 'db_connection.php';
  }
 ?>
 
-
 <!DOCTYPE html>
     <html lang="en">
     <head>
@@ -34,7 +34,7 @@ require_once 'db_connection.php';
         <title>POS System Product Management</title>
         
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <link rel="stylesheet" href="main.css">
     
     </head>
@@ -48,49 +48,55 @@ require_once 'db_connection.php';
                     <span>Administrator</span>
                 </div>
             </header>
-            <!--div class="products-content" id="products"-->
-            <section class="product-list">                
-                <div class="row justify-content-between" id="filters">
+            <div class="table-content" id="products">
+                <section class="table-list">
+                    <div class="row justify-content-between" id="filters">
                     <div class="col-md-3">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                     </div>
                     <div class="col-md-3 ml-auto">
-                        <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="stock-legend d-flex align-items-center me-5" style="margin-top:-20px;">
+                            <h4 class="me-2 mb-0" style="white-space: nowrap;">Stock Legend:</h4>
+                            <span class="legend-item high-stock me-2" style="background-color: green; color: white;">High</span>
+                            <span class="legend-item low-stock" style="background-color: red; color: white;">Low</span>
+                        </div>
+                        <button class="btn btn-primary custom-btn" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class="fas fa-plus me-2"></i>Add Product</button>
                     </div>
                 </div>
 
-                <table id="productsTable">
-                    <thead>
-                        <tr>
-                            <th>Product ID</th>
-                            <th>Product Name</th>
-                            <th>Barcode</th>
-                            <th>
-                                <div class="dropdown d-inline">
-                                    <button class="btn text-light dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="me-1">Category</span>
-                                    </button>
-                                    <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryFilter">
-                                        <li><a class="dropdown-item" href="#" data-value="">All</a></li>
-                                        <?php foreach ($categories as $category): ?>
-                                            <li>
-                                                <a class="dropdown-item" href="#" data-value="<?php echo htmlspecialchars($category['category_name']); ?>">
-                                                    <?php echo htmlspecialchars($category['category_name']); ?>
-                                                </a>
-                                            </li>
-                                        <?php endforeach; ?>
-                                    </ul>
-                                </div>
-                            </th>
-                            <th>Buying Price</th>
-                            <th>Selling Price</th>
-                            <th>Stocks</th>
-                            <th>Threshold</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
+                    <table id="Table">
+                        <thead>
+                            <tr>
+                                <th>Product ID</th>
+                                <th>Product Name</th>
+                                <th>Barcode</th>
+                                <th>
+                                    <div class="dropdown d-inline">
+                                        <button class="btn text-light dropdown-toggle" type="button" id="categoryDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="me-1">Category</span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="categoryDropdown" id="categoryFilter">
+                                            <li><a class="dropdown-item" href="#" data-value="">All</a></li>
+                                            <?php foreach ($categories as $category): ?>
+                                                <li>
+                                                    <a class="dropdown-item" href="#" data-value="<?php echo htmlspecialchars($category['category_name']); ?>">
+                                                        <?php echo htmlspecialchars($category['category_name']); ?>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach; ?>
+                                        </ul>
+                                    </div>
+                                </th>
+                                <th>Buying Price</th>
+                                <th>Selling Price</th>
+                                <th>Stocks</th>
+                                <th>Threshold</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
                                 
                                 // Pagination variables
                                 $products_per_page = 10; // Number of products per page
@@ -163,8 +169,8 @@ require_once 'db_connection.php';
                                                 <td><span class='$stockClass'>" . $row["stocks"] . "</span></td>
                                                 <td>" . number_format($row["threshold"]) . "</td>
                                                 <td>
-                                                    <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'>Edit</button> 
-                                                    <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'>Delete</button>
+                                                    <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'>  <i class='fas fa-edit me-2'></i>Edit </button> |
+                                                    <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'>  <i class='fas fa-trash me-2'></i>Delete</button>
                                                 </td>
                                             </tr>";
                                     }

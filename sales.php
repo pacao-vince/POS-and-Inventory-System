@@ -1,4 +1,17 @@
 <?php 
+session_start();
+if (!isset($_SESSION['username'])) {
+    // Redirect to login page if not logged in
+    header('Location: login.php');
+    exit();
+}
+
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    header('Location: login.php');
+    exit();
+}
+
 include "db_connection.php";
 include 'sidebar.php'; 
 
@@ -34,9 +47,9 @@ if (!$cashierResult) {
             </div>
         </header>
         
-        <section class="product-list">
-
-            <div class="form-row" id="filters">
+        <div class="table-content" id="products">
+            <section class="table-list">
+                <div class="form-row" id="filters">
                 <div class="col-3">
                     <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                 </div>
@@ -65,25 +78,22 @@ if (!$cashierResult) {
                         </select>  
                 </div>
             </div>
-
-            <table id="productsTable">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>
-                            Transaction Time
-                                
-                        </th>
-                        <th>Product Name</th>
-                        <th>Quantity Sold</th>                            
-                        <th>Amount</th>
-                        <th>Payment</th>
-                        <th>Change</th>
-                        <th>Cashier</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
+                
+                <table class="Table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Transaction Time</th>
+                            <th>Product Name</th>
+                            <th>Quantity Sold</th>                            
+                            <th>Amount</th>
+                            <th>Payment</th>
+                            <th>Change</th>
+                            <th>Cashier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
 
                     // Pagination variables
                     $sales_per_page = 10; // Number of sales per page
@@ -97,23 +107,23 @@ if (!$cashierResult) {
                     $total_sales = $total_row['total'];
                     $total_pages = ceil($total_sales / $sales_per_page);
 
-                    // Fetch sales with limit and offset
-                    $sql = "SELECT 
-                                sales.sale_id,
-                                sales.transaction_time,
-                                products.product_name,
-                                sales_products.quantity,
-                                sales_products.amount,
-                                sales.payment,
-                                sales.change_amount,
-                                sales.cashier_username
-                            FROM sales
-                            JOIN sales_products ON sales.sale_id = sales_products.sale_id
-                            JOIN products ON sales_products.product_id = products.product_id
-                            ORDER BY sales.sale_id DESC 
-                            LIMIT $offset, $sales_per_page";
-                    
-                    $result = $conn->query($sql);
+                        // Fetch sales with limit and offset
+                        $sql = "SELECT 
+                                    sales.sale_id,
+                                    sales.transaction_time,
+                                    products.product_name,
+                                    sales_products.quantity,
+                                    sales_products.amount,
+                                    sales.payment,
+                                    sales.change_amount,
+                                    sales.cashier_username
+                                FROM sales
+                                JOIN sales_products ON sales.sale_id = sales_products.sale_id
+                                JOIN products ON sales_products.product_id = products.product_id
+                                ORDER BY sales.sale_id DESC 
+                                LIMIT $offset, $sales_per_page";
+                        
+                        $result = $conn->query($sql);
 
                     // Check for query errors 
                     if (!$result) {

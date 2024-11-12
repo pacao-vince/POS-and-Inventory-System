@@ -31,7 +31,7 @@ function filterTable() {
 	const endDate = document.getElementById("endDate").value
 	const cashier = document.getElementById("cashierDropdown").value
 
-	const rows = document.querySelectorAll("#productsTable tbody tr")
+	const rows = document.querySelectorAll(".Table tbody tr")
 
 	rows.forEach((row) => {
 		const productName = row
