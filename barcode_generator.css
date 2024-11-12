@@ -98,28 +98,36 @@ header h2 {
 
 .result-section {
     display: flex;            
-    flex-wrap: wrap;          
-    gap: 10px;               
-    margin-top: 20px;
+    flex-wrap: wrap;                       
+    margin-top: 10px;
+    gap: 8px;
 }
 
 .result-section h3 {
-    margin-bottom: 15px;
+    margin: 0;                 /* Remove margin from text */
+    padding: 0;
 }
-
 .barcode-box {
-    padding: 10px;             /* Add space inside the box */
-    border: 1px solid #ccc;    /* Light border around the box */
-    border-radius: 5px;        /* Rounded corners */
-    width: 150px;              /* Set width for the boxes */
-    text-align: center;        /* Center the text and barcode */
-    box-shadow: 0px 2px 5px rgba(0,0,0,0.1); /* Light shadow for effect */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;                /* Remove padding */
+    border: 1px solid #545454;
+    border-radius: 5px;
+    width: 150px;
+    height: auto;              /* Ensure box height adjusts */
+    box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
 }
 
 .barcode-box svg {
-    width: 100%;              
-    height: auto;             
+    display: block;
+    width: 100%;
+    height: auto;              /* Let SVG resize vertically */
+    margin: 0;                 /* Remove any margins */
+    padding: 0;                /* Remove any padding */
 }
+
 @media print {
     body * {
         visibility: hidden;

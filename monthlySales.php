@@ -1,5 +1,5 @@
 <?php
-/*
+
 session_start();
 if (!isset($_SESSION['username'])) {
     // Redirect to login page if not logged in
@@ -12,7 +12,7 @@ if ($_SESSION['user_type'] !== 'admin') {
     header('Location: login.php');
     exit();
 }
-*/
+
 // Database connection
 include_once 'db_connection.php';
 include 'sidebar.php';

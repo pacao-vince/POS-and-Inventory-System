@@ -1,14 +1,17 @@
 <?php 
-/*
+
     include('auth.php');
+    include 'sidebar.php'; 
     include 'sidebar.php'; 
     // Only allow Admin access
     if ($_SESSION['user_type'] !== 'admin') {
         header('Location: login.php');
         exit();
-    }*/
-    include 'sidebar.php'; 
-    include 'db_connection.php';
+    }
+    $username = "root"; 
+    $password = ""; 
+    $database = "pos&inventory"; 
+    $conn = new mysqli("localhost", $username, $password, $database); 
 
     // Path for notification tracking file
     $notificationFile = 'notifications.json';
@@ -210,15 +213,14 @@
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="lowStockModalLabel">Low Stock Alert</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h3 class="modal-title" id="lowStockModalLabel" style="font-weight:bold">Low Stock Alert</h3>
         </div>
         <div class="modal-body">
             <p id="lowStockMessage"></p>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <a href="stocks.php" class="btn btn-primary">Go to Stocks Page</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
         </div>
     </div>
@@ -261,5 +263,4 @@
 </body>
 </html>
 <?php $conn->close(); ?>
-
 

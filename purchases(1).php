@@ -1,4 +1,6 @@
 <?php
+include 'sidebar.php'; 
+/*
     session_start();
     if (!isset($_SESSION['username'])) {
         header('Location: login.php');
@@ -9,8 +11,8 @@
         header('Location: login.php');
         exit();
     }
+*/
     
-    include 'sidebar.php'; 
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +21,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POS System Purchases Management</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="main.css">
@@ -39,7 +42,7 @@
         <div class="table-content">
             <section class="table-list">
                 <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Purchase</button>
-                <table class="Table table-striped">
+                <table class="Table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -101,12 +104,14 @@
                             while ($supplier = $supplier_result->fetch_assoc()) {
                                 $suppliers[] = $supplier;
                             }
+                        } else {
+                            $suppliers = null; // Handle case where no suppliers are found
                         }
 
                         // Process form submission for adding a new purchase
                         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_purchase'])) {
                             $product_id = $_POST['product_id'];
-                            $supplier_id = $_POST['supplier_id'];
+                            $supplier = $_POST['supplier'];
                             $date = $_POST['date'];
                             $purchase_quantity = $_POST['purchase_quantity'];
                             $purchase_amount = $_POST['purchase_amount'];
@@ -124,8 +129,8 @@
                                 $product_id = $stmt->insert_id; // Get the inserted product ID
                             }
                             // Prepare and bind
-                            $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier_id, date, purchase_quantity, purchase_amount) VALUES (?, ?, ?, ?, ?)");
-                            $stmt->bind_param("iisid", $product_id, $supplier_id, $date, $purchase_quantity, $purchase_amount);
+                            $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier, date, purchase_quantity, purchase_amount) VALUES (?, ?, ?, ?)");
+                            $stmt->bind_param("issid", $product_id, $supplier, $date, $purchase_quantity, $purchase_amount);
 
                             if ($stmt->execute()) {
                                 // Trigger JavaScript alert for successful addition
@@ -152,36 +157,30 @@
                         // Fetch products from database
                         $sql = "SELECT 
                                     purchases.purchase_id,
-                                    purchases.product_id,
                                     products.product_name,
-                                    purchases.supplier_id,
-                                    suppliers.name AS supplier_name, 
+                                    purchases.supplier,
                                     purchases.date,
                                     purchase_quantity,
                                     purchases.purchase_amount
                                 FROM purchases 
                                 JOIN products ON purchases.product_id = products.product_id
-                                JOIN suppliers ON suppliers.supplier_id = purchases.supplier_id
                                 ORDER BY purchase_id DESC LIMIT $offset, $purchases_per_page";
                         $result = $conn->query($sql);
 
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                echo "<tr data-purchase-id='" . htmlspecialchars($row['purchase_id']) . "' 
-                                    data-product-id='" . htmlspecialchars($row['product_id']) . "' 
-                                    data-supplier-id='" . htmlspecialchars($row['supplier_id']) . "'>
-                                
-                                    <td>" . htmlspecialchars($row["purchase_id"]) . "</td>
-                                    <td>" . htmlspecialchars($row["product_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["supplier_name"]) . "</td>
-                                    <td>" . htmlspecialchars($row["date"]) . "</td>
-                                    <td>" . htmlspecialchars($row["purchase_quantity"]) . "</td>
-                                    <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
-                                    <td>
-                                        <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'> <i class='fas fa-edit me-2'></i>Edit</button> |
-                                        <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'> <i class='fas fa-trash me-2'></i>Delete</button>
-                                    </td>
-                                </tr>";
+                                echo "<tr data-purchase-id='" . htmlspecialchars($row["purchase_id"]) . "'>
+                                        <td>" . htmlspecialchars($row["purchase_id"]) . "</td>
+                                        <td>" . htmlspecialchars($row["product_name"]) . "</td>
+                                        <td>" . htmlspecialchars($row["supplier"]) . "</td>
+                                        <td>" . htmlspecialchars($row["date"]) . "</td>
+                                        <td>" . htmlspecialchars($row["purchase_quantity"]) . "</td>
+                                        <td>" . htmlspecialchars($row["purchase_amount"]) . "</td>
+                                        <td>
+                                            <button class='btn btn-success editBtn font-size' id='editBtn' data-id='" . $row['purchase_id'] . "'> <i class='fas fa-edit me-2'></i>Edit</button> |
+                                            <button class='btn btn-danger deleteBtn font-size' id='deleteBtn' data-id='" . $row['purchase_id'] . "'> <i class='fas fa-trash me-2'></i>Delete</button>
+                                        </td>
+                                    </tr>";
                             }
                         } else {
                             echo "<tr><td colspan='7'>No purchases found.</td></tr>";
@@ -221,12 +220,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-            
-                <form id="addForm" action="purchases.php" method="POST">
+                <form id="addForm" action="create_purchase.php" method="POST">
                 <div class="mb-3">
                     <label for="product_id" class="form-label">Product:</label>
                         <select class="form-select" id="product_id" name="product_id" required>
-                            <option value="" disabled selected>Select Product</option> <!-- Placeholder option -->
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>
                                     <option value="<?php echo htmlspecialchars($product['product_id']); ?>">
@@ -303,8 +300,7 @@
 
                     <div class="mb-3">
                         <label for="supplier" class="form-label">Supplier:</label>
-                        
-                        <select class="form-select" id="edit_supplier_id" name="supplier_id" required>
+                        <select class="form-control" id="edit_supplier_id" name="supplier_id" required>
                             <?php if ($suppliers): ?>
                                 <?php foreach ($suppliers as $supplier): ?>
                                     <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>">

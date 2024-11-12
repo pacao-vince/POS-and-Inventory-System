@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <table  class="table-striped" id="productsTable">
+                <table id="productsTable">
                     <thead>
                         <tr>
                             <th>Product ID</th>
@@ -149,7 +149,7 @@
                                 // Fetch products from database with limit and offset
                                 $sql = "SELECT p.product_id, p.product_name, p.barcode, c.category_id, c.category_name, p.buying_price, p.selling_price, p.stocks, p.threshold
                                 FROM products p
-                                JOIN category c ON p.category_id = c.category_id
+                                LEFT JOIN category c ON p.category_id = c.category_id
                                 ORDER BY p.product_id DESC
                                 LIMIT $offset, $products_per_page";
                         
@@ -351,9 +351,9 @@
             </div>
         </div>
     </div>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="products.js"></script>
-        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="products.js"></script>
+    </div>
     </body>
     </html>
     <?php

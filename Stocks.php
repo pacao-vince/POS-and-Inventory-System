@@ -1,5 +1,18 @@
 <?php
-include 'sidebar.php'; 
+ session_start();
+ if (!isset($_SESSION['username'])) {
+     // Redirect to login page if not logged in
+     header('Location: login.php');
+     exit();
+ }
+
+ // Only allow Admin access
+ if ($_SESSION['user_type'] !== 'admin') {
+     header('Location: login.php');
+     exit();
+ }
+
+include_once 'sidebar.php'; 
 include_once 'db_connection.php';
 
 // Pagination settings

@@ -57,6 +57,14 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
+document.addEventListener('keydown', function (event) {
+    if (event.ctrlKey && event.key === 'f') {
+        event.preventDefault(); // Prevent the default browser search
+        searchInput.focus(); // Focus on the search input
+        searchInput.select(); // Optionally, select any existing text in the input
+    }
+});
+
 // Function to search products
 function searchProducts(query) {
     if (query.length > 0) {
@@ -78,7 +86,7 @@ function searchProducts(query) {
                         });
                         searchResultsBody.appendChild(row);
                     });
-                    searchResultsPopup.style.display = 'block'; // Show search results
+                    searchResultsPopup.style.display = 'block'; // Show search result
                     selectedSearchResultRow = searchResultsBody.firstElementChild; // Select the first row by default
                     highlightSearchResultRow(selectedSearchResultRow);
                 } else {
@@ -138,6 +146,51 @@ searchInput.addEventListener('keydown', function (event) {
     }
 });
 
+// Function to highlight the current search result row
+function highlightSearchResultRow(row) {
+    Array.from(searchResultsBody.children).forEach(r => r.classList.remove('table-primary')); // Remove highlight from all rows
+    if (row) {
+        row.classList.add('table-primary'); // Highlight the selected row
+    }
+}
+
+// Event listener for keydown on the search input for arrow navigation and Enter to add to table
+searchInput.addEventListener('keydown', function (event) {
+    if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter') {
+        event.stopPropagation(); // Prevent the event from affecting other tables
+    }
+   
+    if (event.key === 'ArrowDown') {
+        event.preventDefault(); // Prevent default scrolling
+        if (selectedSearchResultRow && selectedSearchResultRow.nextElementSibling) {
+            selectedSearchResultRow = selectedSearchResultRow.nextElementSibling;
+        } else {
+            selectedSearchResultRow = searchResultsBody.firstElementChild; // Wrap to the top if at the bottom
+        }
+        highlightSearchResultRow(selectedSearchResultRow);
+    } else if (event.key === 'ArrowUp') {
+        event.preventDefault(); // Prevent default scrolling
+        if (selectedSearchResultRow && selectedSearchResultRow.previousElementSibling) {
+            selectedSearchResultRow = selectedSearchResultRow.previousElementSibling;
+        } else {
+            selectedSearchResultRow = searchResultsBody.lastElementChild; // Wrap to the bottom if at the top
+        }
+        highlightSearchResultRow(selectedSearchResultRow);
+    } else if (event.key === 'Enter') {
+        event.preventDefault(); // Prevent form submission
+        if (selectedSearchResultRow) {
+            // Find the product based on the row's data
+            const productId = selectedSearchResultRow.cells[0].textContent;
+            const productName = selectedSearchResultRow.cells[1].textContent;
+            const productPrice = parseFloat(selectedSearchResultRow.cells[2].textContent.replace('₱', ''));
+            const product = { product_id: productId, product_name: productName, selling_price: productPrice };
+            addToTable(product); // Add selected product to product list
+            searchResultsPopup.style.display = 'none'; // Hide search results
+        }
+    }
+});
+
+// Function to add selected product to the table
 // Function to add selected product to the table
 function addToTable(product) {
     const existingRow = Array.from(productListBody.rows).find(row => row.cells[0].textContent === product.product_id.toString());
@@ -220,7 +273,14 @@ function toggleRowHighlight(row) {
             toggleRowHighlight(targetRow); // Call the function to toggle highlight
         }
     });
+    productListBody.addEventListener('click', function(event) {
+        const targetRow = event.target.closest('tr');
+        if (targetRow && targetRow.parentElement === productListBody) {
+            toggleRowHighlight(targetRow); // Call the function to toggle highlight
+        }
+    });
 
+   
    
   document.querySelector('.updatebtn').addEventListener('click', function() {
         if (selectedRow) {
@@ -243,6 +303,16 @@ function toggleRowHighlight(row) {
         }
     });
 
+   // Event listener for the delete button
+deletebtn.addEventListener('click', function () {
+    console.log('Delete button clicked. Selected row:', selectedRow); // Debugging log
+    if (selectedRow) {
+        $('#adminAuthModal').modal('show'); // Show admin authentication modal first
+    } else {
+        showAlert('Please select a product to delete.', 'danger'); // Alert for no selection
+        return;
+    }
+});
    // Event listener for the delete button
 deletebtn.addEventListener('click', function () {
     console.log('Delete button clicked. Selected row:', selectedRow); // Debugging log
@@ -319,7 +389,86 @@ document.getElementById('confirmDeleteBtn').addEventListener('click', function (
         showAlert('Product deleted successfully!'); // Alert for successful deletion
     }
 });
+// Admin authentication confirmation button listener
+document.getElementById('authConfirmBtn').addEventListener('click', function () {
+    const adminUsername = document.getElementById('username').value;
+    const adminPassword = document.getElementById('adminPassword').value;
 
+    // Hide any previous error message
+    const authError = document.getElementById('authError');
+    authError.style.display = 'none';
+
+    // Check if username and password are entered
+    if (!adminUsername || !adminPassword) {
+        authError.style.display = 'block';
+        authError.textContent = 'Please enter both username and password.';
+        return;
+    }
+
+    // Send credentials to the PHP script for verification
+    fetch('authentication.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            username: adminUsername,
+            password: adminPassword
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Response from server:', data); // Log the server response
+        if (data.success) {
+            // If authentication is successful, hide the admin authentication modal
+            $('#adminAuthModal').modal('hide');
+
+            // Clear the authentication input fields
+            document.getElementById('username').value = '';
+            document.getElementById('adminPassword').value = '';
+
+            // Show the delete confirmation modal after successful authentication
+            $('#deleteConfirmationModal').modal('show');
+        } else {
+            // Show error message if authentication fails
+            authError.style.display = 'block';
+            authError.textContent = data.message;
+        }
+    })
+    .catch(error => {
+        console.error('Error during fetch:', error);
+        authError.style.display = 'block';
+        authError.textContent = 'An error occurred. Please try again.';
+    });
+});
+
+// Confirm delete after authentication
+document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+    if (selectedRow) {
+        selectedRow.remove(); // Remove row
+        updateTotals(); // Update totals
+        $('#deleteConfirmationModal').modal('hide');
+        showAlert('Product deleted successfully!'); // Alert for successful deletion
+    }
+});
+
+    function validatePayment() {
+        const payment = parseFloat(paymentInput.value.trim());
+        const grandTotal = parseFloat(document.getElementById("grandTotal").textContent.replace(/[^\d.-]/g, ''));
+    
+        if (!payment || payment <= 0 || isNaN(payment)) {
+            showAlert('Please enter a valid payment amount.', 'danger');
+            return false;
+        } else if (payment < grandTotal) {
+            showAlert("Payment is insufficient. Please enter a sufficient amount.", 'danger');
+            return false;
+        }
+        return true;
+    }
+    
     function validatePayment() {
         const payment = parseFloat(paymentInput.value.trim());
         const grandTotal = parseFloat(document.getElementById("grandTotal").textContent.replace(/[^\d.-]/g, ''));
@@ -452,5 +601,20 @@ confirmSaveSaleBtn.addEventListener('click', function () {
                 if (firstRow) toggleRowHighlight(firstRow);
             }
         }
-    });    
+    });  
+    
+    // Get the logout button that triggers the modal (assuming it has an ID "logoutButton")
+document.getElementById("logout").addEventListener("click", function() {
+    // Show the logout confirmation modal
+    $("#logoutConfirmationModal").modal("show");
+});
+
+// Handle the confirm logout button in the modal
+document.getElementById("confirmLogoutBtn").addEventListener("click", function() {
+    // Hide the modal
+    $("#logoutConfirmationModal").modal("hide");
+
+    window.location.href = "login.php"; 
+});
+
 });

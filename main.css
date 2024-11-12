@@ -92,17 +92,18 @@ header h1 {
   padding-right: 25px;
 }
 
+
 .table-list table {
-  width: 100%;
-  border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 .table-list th,
 .table-list td {
-  font-size: 1.4rem;
-  line-height: 1.2;
-  padding: 12px 8px;
-  border-bottom: 1px solid #ddd;
-  text-align: center;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 12px 8px;
+	border-bottom: 1px solid #ddd;
+	text-align: center;
 }
 .table-list th {
   background-color: #3498db;
@@ -117,18 +118,18 @@ header h1 {
   transition: none;
 }
 
-#categoryDropdown,
-#categoryFilter {
-  font-size: 1.4rem;
-  font-weight: 600;
+#categoryDropdown, #categoryFilter {
+	font-size: 1.4rem;
+	font-weight: 600;
 }
 /* Buttons in Actions Column */
 .table-list td .editBtn,
 .deleteBtn {
-  display: inline-block;
-  /* Ensures buttons stay inline */
-  margin-right: 0;
-  /* Adds spacing between buttons */
+	display: inline-block;
+	/* Ensures buttons stay inline */
+	margin-right: 0;
+	/* Adds spacing between buttons */
+
 }
 
 .table-list td .custom-btn:last-child {
@@ -303,16 +304,16 @@ form .form-select {
 
 /* Custom Button Styles */
 button.custom-btn {
-  font-size: 1.4rem;
-  line-height: 1.2;
-  background-color: #2980b9;
-  color: white;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  margin-left: auto;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	background-color: #2980b9;
+	color: white;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-bottom: 20px;
+	margin-left: auto;
 }
 
 .btn-close,
@@ -390,6 +391,7 @@ button.custom-btn:hover {
 
 /*Responsive Styles 
 
+
 @media screen and (max-width: 768px) {
 	.sidebar {
 		transform: translateX(-100%);
@@ -409,8 +411,7 @@ button.custom-btn:hover {
 } */
 
 .legend-item {
-  font-size: 1.4rem;
-  line-height: 1.2;
-  padding: 8px 12px;
-  border-radius: 4px;
+    padding: 5px 10px;
+    border-radius: 4px;
 }
+  

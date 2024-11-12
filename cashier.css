@@ -246,10 +246,9 @@ body {
 
 .actions-section {
     display: flex;
-    gap: 25px;
+    gap: 20px;
     justify-content: right;
-    margin-right: 40px;
-    margin-right: 90px;
+    margin-right: 34px;
 }
 
 .actions-section button {
