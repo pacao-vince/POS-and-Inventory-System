@@ -21,70 +21,66 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 3000); // Remove after 3 seconds
   }
 
-  // Fetch purchase details to fill the edit form
-  document.addEventListener("DOMContentLoaded", function () {
-    const productInput = document.getElementById("product_id");
-    const productDatalist = document.getElementById("products");
-
-    // Function to fetch product suggestions
-    function fetchProductSuggestions(query) {
-      fetch("get_suggestion.php?type=products&q=" + encodeURIComponent(query))
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          // Clear previous options
-          productDatalist.innerHTML = "";
-
-          // Populate datalist with new options
-          data.forEach((product) => {
-            const option = document.createElement("option");
-            option.value = product.id; // Use ID as the value
-            option.textContent = product.text; // Use name as display text
-            productDatalist.appendChild(option);
-          });
-        })
-        .catch((error) => {
-          console.error("Error fetching suggestions:", error);
-          productDatalist.innerHTML = ""; // Clear suggestions if there's an error
-        });
-    }
-
-    // Event listener for input
-    productInput.addEventListener("input", function () {
-      const query = productInput.value;
-      if (query.length > 0) {
-        fetchProductSuggestions(query);
-      } else {
-        productDatalist.innerHTML = ""; // Clear suggestions if input is empty
-        // Optional: Clear other relevant fields if needed
-      }
-    });
-  });
   // Function to open the edit modal
   function openEditModal(button) {
-    const purchaseId = button.getAttribute("data-purchase-id");
+    const purchaseId = button.getAttribute("data-id");
     const row = button.closest("tr");
 
-    // Get IDs from data attributes
+    // Fetch purchase details to fill the edit form
+    document.addEventListener("DOMContentLoaded", function () {
+      const productInput = document.getElementById("product_id");
+      const productDatalist = document.getElementById("products");
+
+      // Function to fetch product suggestions
+      function fetchProductSuggestions(query) {
+        fetch("get_suggestion.php?type=products&q=" + encodeURIComponent(query))
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            // Clear previous options
+            productDatalist.innerHTML = "";
+
+            // Populate datalist with new options
+            data.forEach((product) => {
+              const option = document.createElement("option");
+              option.value = product.id; // Use ID as the value
+              option.textContent = product.text; // Use name as display text
+              productDatalist.appendChild(option);
+            });
+          })
+          .catch((error) => {
+            console.error("Error fetching suggestions:", error);
+            productDatalist.innerHTML = ""; // Clear suggestions if there's an error
+          });
+      }
+
+      // Event listener for input
+      productInput.addEventListener("input", function () {
+        const query = productInput.value;
+        if (query.length > 0) {
+          fetchProductSuggestions(query);
+        } else {
+          productDatalist.innerHTML = ""; // Clear suggestions if input is empty
+          // Optional: Clear other relevant fields if needed
+        }
+      });
+    });
     const productId = row.getAttribute("data-product-id");
     const supplierId = row.getAttribute("data-supplier-id");
-
-    // Set the value in the select elements
-    document.getElementById("edit_product_id").value = productId;
-    document.getElementById("edit_supplier_id").value = supplierId;
-
-    // Populate other fields as you were doing before
     const date = row.children[3].textContent;
     const purchaseQuantity = row.children[4].textContent;
-    const purchaseAmount = parseFloat(
-      row.children[5].textContent.replace("₱", "").replace(",", "")
-    );
+    const purchaseAmount = row.children[5].textContent
+      .replace("₱", "")
+      .replace(",", "");
 
-    document.getElementById("update_purchase_id").value = purchaseId;
+    // Fill the edit modal with purchase details
+    document.getElementById("update_purchase_id").value = purchaseId; // Updated to match modal structure
+    document.getElementById("edit_product_id").value = productId;
+    document.getElementById("edit_supplier_id").value = supplierId;
     document.getElementById("edit_date").value = date;
     document.getElementById("edit_purchase_quantity").value = purchaseQuantity;
     document.getElementById("edit_purchase_amount").value = purchaseAmount;
@@ -93,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const editModal = new bootstrap.Modal(document.getElementById("editModal"));
     editModal.show();
   }
+
   // Edit Purchase
   document.querySelectorAll(".editBtn").forEach((button) => {
     button.addEventListener("click", function () {
@@ -107,12 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
       event.preventDefault(); // Prevent form submission from reloading the page
 
       const formData = new FormData(this);
-
-      // Log form data to debug (optional)
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
-
       fetch("update_purchase.php", {
         method: "POST",
         body: formData,
@@ -132,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
               function () {
                 showAlert("Purchase row updated successfully.", "success"); // Show success message using custom alert
                 // Optionally, refresh the page to reflect changes after a slight delay
-                //setTimeout(() => location.reload(), 2000);
+                setTimeout(() => location.reload(), 2000);
               },
               { once: true }
             );
@@ -211,4 +202,16 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
   }
+
+  const addModal = document.getElementById("addModal");
+
+  addModal.addEventListener("show.bs.modal", function () {
+    // Reset the product dropdown to the placeholder
+    const productDropdown = document.getElementById("product_id");
+    productDropdown.value = ""; // Sets to the placeholder "Select Product"
+
+    // Reset the supplier dropdown to the placeholder
+    const supplierDropdown = document.getElementById("supplier_id");
+    supplierDropdown.value = ""; // Sets to the placeholder "Select Supplier"
+  });
 });

@@ -2,6 +2,7 @@
 
     include('auth.php');
     include 'sidebar.php'; 
+    include 'sidebar.php'; 
     // Only allow Admin access
     if ($_SESSION['user_type'] !== 'admin') {
         header('Location: login.php');
@@ -54,7 +55,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-
     <div class="main-content" id="main-content">
         <header>
             <h1>Dashboard</h1>
@@ -66,15 +66,12 @@
             
         <div class="dashboard-content">
             <div class="stats">
-                <div class="stat-item"  data-href="dailySales.php">
-                    <div class="stat-icon">
-                        <img src="images/sales-up-graph-svgrepo-com.png" alt="Sales Icon">
-                    </div>
+                
+                <div class="stat-item"  data-href="dailySales.php"> 
                     <div class="stat-info">
-                        
                         <h2>
-							<?php
-								// Get total sales for the current day
+                            <?php
+                                // Get total sales for the current day
                             $currentDate = date('Y-m-d');
                             $daily_sales_sql = "SELECT SUM(amount) AS daily_sales FROM sales_products 
                                                     JOIN sales ON sales_products.sale_id = sales.sale_id
@@ -89,66 +86,65 @@
                             } else {
                                 echo "₱ 0.00";
                             }
-							?>
-						</h2>
-                        <p>Daily Sales</p>
+                            ?>
+                        </h2> 
+                        <p>Daily Sales</p>   
+                    </div>
+                    <div class="stat-icon">
+                        <img src="images/sales-up-graph-svgrepo-com.png" alt="Sales Icon">
                     </div>
                 </div>
 
                 <div class="stat-item"  data-href="categories.php">
-                    <div class="stat-icon">
-                        <img src="images/category-svgrepo-com.png" alt="Categories Icon">
-                    </div>
                     <div class="stat-info">
                         <?php
                             $query = "SELECT COUNT(*) AS numberOfCategories FROM category;";
 
-                                    if ($result = $conn->query($query)) {
-                                        while ($row = $result->fetch_assoc()) {
-                                            $numberOfCategories = $row["numberOfCategories"];
-                                                        
-                                            echo '<h2>' .$numberOfCategories. '</h2>';
-                                        }}
-                            
+                                if ($result = $conn->query($query)) {
+                                    while ($row = $result->fetch_assoc()) {
+                                        $numberOfCategories = $row["numberOfCategories"];
+                                                    
+                                        echo '<h2>' .$numberOfCategories. '</h2>';
+                                    }}
                         ?>
                         <p>Categories</p>
+                    </div>
+                    <div class="stat-icon">
+                        <img src="images/category-svgrepo-com.png" alt="Categories Icon">
                     </div>
                 </div>
 
                 <div class="stat-item"  data-href="monthlySales.php">
+                    <div class="stat-info">
+                        <h2>
+                            <?php
+                                    // Get total sales for the current month
+                                $currentYear = date('Y');
+                                $currentMonth = date('m');
+                                $monthly_sales_sql = "SELECT SUM(amount) AS monthly_sales FROM sales_products 
+                                                        JOIN sales ON sales_products.sale_id = sales.sale_id
+                                                        WHERE YEAR(sales.transaction_time) = '$currentYear'
+                                                        AND MONTH(sales.transaction_time) = '$currentMonth'";
+
+                                $monthly_sales_result = $conn->query($monthly_sales_sql);
+
+                                if ($monthly_sales_result) {
+                                    $monthly_sales_row = $monthly_sales_result->fetch_assoc();
+                                    $monthly_sales = $monthly_sales_row['monthly_sales'] ? $monthly_sales_row['monthly_sales'] : 0;
+                                    echo "₱ " . number_format($monthly_sales, 2);
+                                } else {
+                                    echo "₱ 0.00";
+                                }
+                            ?>
+                        </h2>
+                        <p>Monthly Sales</p>
+                    </div>
                     <div class="stat-icon">
                         <img src="images/monthlySales.png" alt="Monthly Sales Icon">
-                    </div>
-                    <div class="stat-info">
-                    <h2>
-                        <?php
-                                // Get total sales for the current month
-                            $currentYear = date('Y');
-                            $currentMonth = date('m');
-                            $monthly_sales_sql = "SELECT SUM(amount) AS monthly_sales FROM sales_products 
-                                                    JOIN sales ON sales_products.sale_id = sales.sale_id
-                                                    WHERE YEAR(sales.transaction_time) = '$currentYear'
-                                                    AND MONTH(sales.transaction_time) = '$currentMonth'";
-
-                            $monthly_sales_result = $conn->query($monthly_sales_sql);
-
-                            if ($monthly_sales_result) {
-                                $monthly_sales_row = $monthly_sales_result->fetch_assoc();
-                                $monthly_sales = $monthly_sales_row['monthly_sales'] ? $monthly_sales_row['monthly_sales'] : 0;
-                                echo "₱ " . number_format($monthly_sales, 2);
-                            } else {
-                                echo "₱ 0.00";
-                            }
-                        ?>
-                    </h2>
-                        <p>Monthly Sales</p>
                     </div>
                 </div>
 
                 <div class="stat-item"  data-href="products.php">
-                    <div class="stat-icon">
-                        <img src="images/product-svgrepo-com.png" alt="Products Icon">
-                    </div>
                     <div class="stat-info">
                         <?php
                                 $sql = "SELECT COUNT(*) AS total_products FROM products";
@@ -161,6 +157,9 @@
                                 echo '<h2>'.$total_products.'</h2>';
                         ?>
                         <p>Products</p>
+                    </div>
+                    <div class="stat-icon">
+                        <img src="images/product-svgrepo-com.png" alt="Products Icon">
                     </div>
                 </div>
             </div>

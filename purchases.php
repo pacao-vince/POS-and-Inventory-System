@@ -38,8 +38,7 @@
 
         <div class="table-content">
             <section class="table-list">
-            <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Purchase</button>
-            <table class="Table">
+                <button class="btn btn-primary add-purchase-btn custom-btn float-right" data-bs-toggle="modal" data-bs-target="#addModal">Add Purchase</button>
                 <table class="Table">
                     <thead>
                         <tr>
@@ -222,10 +221,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+            
                 <form id="addForm" action="purchases.php" method="POST">
                 <div class="mb-3">
                     <label for="product_id" class="form-label">Product:</label>
                         <select class="form-select" id="product_id" name="product_id" required>
+                            <option value="" disabled selected>Select Product</option> <!-- Placeholder option -->
                             <?php if ($products): ?>
                                 <?php foreach ($products as $product): ?>
                                     <option value="<?php echo htmlspecialchars($product['product_id']); ?>">
@@ -302,6 +303,7 @@
 
                     <div class="mb-3">
                         <label for="supplier" class="form-label">Supplier:</label>
+                        
                         <select class="form-select" id="edit_supplier_id" name="supplier_id" required>
                             <?php if ($suppliers): ?>
                                 <?php foreach ($suppliers as $supplier): ?>

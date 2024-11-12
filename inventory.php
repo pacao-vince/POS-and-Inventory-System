@@ -157,7 +157,7 @@
                                         COALESCE(SUM(pr.purchase_amount), 0) AS total_purchases
                                     FROM 
                                         products p
-                                    JOIN
+                                    LEFT JOIN
                                         category c
                                         ON p.category_id = c.category_id
                                     LEFT JOIN 
@@ -189,7 +189,7 @@
                                         echo "<tr>
                                                 <td>" . htmlspecialchars($row["product_id"]) . "</td>
                                                 <td>" . htmlspecialchars($row["product_name"]) . "</td>
-                                                <td>" . htmlspecialchars($row["category_name"]) . "</td>
+                                                <td>" . htmlspecialchars($row["category_name"] ?? '') . "</td>
                                                 <td>₱" . number_format($row["total_purchases"], 2) . "</td>
                                                 <td>₱" . number_format($row["total_sales"], 2) . "</td>
                                                 <td><span class='$stockClass'>" . htmlspecialchars($row["stocks"]) . "</span></td>
