@@ -118,7 +118,7 @@
         <div class="table-content" id="tableToPrint">
             <div class="table-list">
                 <button id="printBtn" onclick="printTable()">  <i class='fas fa-print me-2'></i>Print</button>
-                <table class="table-striped">
+                <table>
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -157,7 +157,7 @@
                                         COALESCE(SUM(pr.purchase_amount), 0) AS total_purchases
                                     FROM 
                                         products p
-                                    JOIN
+                                    LEFT JOIN
                                         category c
                                         ON p.category_id = c.category_id
                                     LEFT JOIN 

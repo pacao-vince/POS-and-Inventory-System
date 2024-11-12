@@ -65,7 +65,7 @@
                     </div>
                 </div>
 
-                <table id="productsTable">
+                <table  class="table-striped" id="productsTable">
                     <thead>
                         <tr>
                             <th>Product ID</th>

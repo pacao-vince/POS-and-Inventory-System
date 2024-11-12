@@ -37,7 +37,7 @@
             <div class="table-list">
                 <button class="btn btn-primary custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Account</button>
 
-                <table>
+                <table class="table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>

@@ -1,5 +1,5 @@
 <?php
-include_once 'sidebar.php'; 
+include 'sidebar.php'; 
 include_once 'db_connection.php';
 
 // Pagination settings
@@ -86,7 +86,7 @@ $lowStockJson = json_encode($lowStockProducts);
                 <h2>Out of Stock Products</h2>
                 <button id="printStocksBtn" class="btn btn-success custom-btn"><i class="fas fa-print me-2"></i>Print</button>
                 <button id="generateStocksBtn" class="btn btn-primary custom-btn-gen"><i class="fas fa-file-alt me-2"></i>Generate Report</button>
-                <table class="reportTable">
+                <table class="reportTable table-striped">
                 <thead>
                         <tr>
                             <th>Product ID</th>

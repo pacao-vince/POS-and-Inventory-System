@@ -66,7 +66,7 @@ if (!$cashierResult) {
                 </div>
             </div>
                 
-                <table class="Table">
+                <table class="Table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>

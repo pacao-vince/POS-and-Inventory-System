@@ -42,7 +42,7 @@
             <div class="table-list">
                 <button class="btn btn-primary add-category-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Category</button>
 
-                <table class = "table-striped">
+                <table>
                     <thead>
                         <tr>
                             <th>ID</th>

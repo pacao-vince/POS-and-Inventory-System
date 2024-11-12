@@ -42,7 +42,7 @@ include 'sidebar.php';
         <div class="table-content">
             <section class="table-list">
                 <button class="btn btn-primary add-purchase-btn custom-btn float-right" id="add-btn" data-bs-toggle="modal" data-bs-target="#addModal"><i class='fas fa-add me-2'></i>Add Purchase</button>
-                <table class="Table">
+                <table class="Table table-striped">
                     <thead>
                         <tr>
                             <th>ID</th>
