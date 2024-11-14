@@ -35,4 +35,10 @@ coverage/
 *.orig
 
 # FiveServer configuration file
-fiveserver.config.js
+config/fiveserver.config.js
+
+# json files
+notifications.json
+
+# git folder
+.git/
