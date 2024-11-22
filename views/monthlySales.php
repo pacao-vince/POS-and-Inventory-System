@@ -1,16 +1,9 @@
 <?php
-
-session_start();
-if (!isset($_SESSION['username'])) {
-    // Redirect to login page if not logged in
-    header('Location: login.php');
-    exit();
-}
+require_once '../includes/auth.php';
 
 // Only allow Admin access
 if ($_SESSION['user_type'] !== 'admin') {
-    header('Location: login.php');
-    exit();
+    logout(); // Call logout to clear the session and redirect
 }
 
 // Database connection

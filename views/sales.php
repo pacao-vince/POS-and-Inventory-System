@@ -1,15 +1,9 @@
 <?php 
-session_start();
-if (!isset($_SESSION['username'])) {
-    // Redirect to login page if not logged in
-    header('Location: login.php');
-    exit();
-}
+require_once '../includes/auth.php';
 
 // Only allow Admin access
 if ($_SESSION['user_type'] !== 'admin') {
-    header('Location: login.php');
-    exit();
+    logout(); // Call logout to clear the session and redirect
 }
 
 include "../includes/db_connection.php";
@@ -49,7 +43,7 @@ if (!$cashierResult) {
         
         <div class="table-content" id="products">
             <section class="table-list">
-                <div class="form-row" id="filters">
+                <div class="form-row mb-2" id="filters">
                 <div class="col-3">
                     <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                 </div>
@@ -79,7 +73,7 @@ if (!$cashierResult) {
                 </div>
             </div>
                 
-                <table class="Table table-striped">
+                <table class="Table">
                     <thead>
                         <tr>
                             <th>ID</th>

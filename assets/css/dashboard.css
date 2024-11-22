@@ -1,209 +1,211 @@
 :root {
-  font-size: 62.5%;
+	font-size: 62.5%;
 }
 
 button {
-  font-size: 1.6rem;
+	font-size: 1.6rem;
 }
 
 body {
-  font-size: 1.6rem;
-  font-family: Arial, sans-serif;
-  font-size: 1.6rem;
-  margin: 0;
-  padding: 0;
-  display: flex;
+	font-size: 1.6rem;
+	font-family: Arial, sans-serif;
+	line-height: 1.2;
+	margin: 0;
+	padding: 0;
+	display: flex;
 }
 
 .main-content {
-  flex: 1;
-  padding: 20px;
-  margin-left: 200px;
-  background-color: #ecf0f1;
-  transition: margin-left 0.3s ease;
+	flex: 1;
+	padding: 20px;
+	margin-left: 200px;
+	background-color: #ecf0f1;
+	transition: margin-left 0.3s ease;
 }
 
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
 }
 header h1 {
-  margin: 0;
-  font-weight: bold;
+	margin: 0;
+	font-weight: bold;
 }
 .admin-profile {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 .admin-profile img {
-  width: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+	width: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
 }
 
 .dashboard-content {
-  flex: 1;
-  flex-direction: column;
+	flex: 1;
+	flex-direction: column;
 }
 
 .stats {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .stat-item {
-  display: flex;
-  background-color: white;
-  width: 23.6%;
-  min-width: 200px;
-  padding: 20px;
-  border-radius: 8px;
-  align-items: center;
-  justify-content: space-between;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
-  transition-property: transform;
-  transition-duration: 0.3s;
+	display: flex;
+	background-color: white;
+	width: 23.6%;
+	min-width: 200px;
+	padding: 20px;
+	border-radius: 8px;
+	align-items: center;
+	justify-content: space-between;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	margin-bottom: 20px;
+	transition-property: transform;
+	transition-duration: 0.3s;
 }
 
 .card-title {
-  width: 100%;
-  margin-bottom: 6px;
+	width: 100%;
+	margin-bottom: 6px;
 }
 
 .stat-item:hover {
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transform: scale(1.03);
+	cursor: pointer;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	transform: scale(1.03);
 }
 
 .stat-icon {
-  width: 50px;
-  height: 50px;
-  background-color: #3498db;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+	width: 50px;
+	height: 50px;
+	background-color: #3498db;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .stat-icon img {
-  width: 30px;
-  display: flex;
-  align-items: center;
+	width: 30px;
+	display: flex;
+	align-items: center;
 }
 
 .stat-info h1 {
-  margin: 0;
-  font-weight: 600;
+	margin: 0;
+	font-weight: 600;
 }
 
 .stat-info h2 {
-  text-align: left;
-  margin: 0;
-  font-weight: 600;
+	text-align: left;
+	margin: 0;
+	font-weight: 600;
 }
 .stat-info p {
-  margin: 0;
-  color: #888;
+	margin: 0;
+	color: #888;
 }
 .card-link {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  margin-top: 16px;
+	display: flex;
+	width: 100%;
+	justify-content: center;
+	margin-top: 16px;
 }
 .charts {
-  display: flex;
-  justify-content: space-between;
+	display: flex;
+	justify-content: space-between;
 }
 
 .sales-graph,
 .bestseller-products {
-  background-color: white;
-  width: 49%;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+	background-color: white;
+	width: 49%;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	margin-bottom: 20px;
 }
 
 .recently-added-products {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	background-color: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .recently-added-products ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 
 .recently-added-products li {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+	display: flex;
+	justify-content: space-between;
+	padding: 10px 0;
+	border-bottom: 1px solid #eee;
 }
 
 .recently-added-products li span {
-  color: #3ca3e7;
+	color: #3ca3e7;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px 20px 0px 20px;
-  border: 1px solid #888;
-  width: 400px; /* Fixed width for the modal */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
-  animation: fadeIn 0.3s; /* Fade in animation */
+	background-color: #fefefe;
+	margin: auto;
+	padding: 20px 20px 0px 20px;
+	border: 1px solid #888;
+	width: 400px; /* Fixed width for the modal */
+	border-radius: 8px; /* Rounded corners */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for depth */
+	animation: fadeIn 0.3s; /* Fade in animation */
 }
 
 .btn.btn-primary,
-.btn.btn-secondary {
-  font-size: 1.6rem;
-  line-height: 1.2;
+.btn.btn-secondary,
+.btn.btn-danger {
+	font-size: 1.6rem;
+	line-height: 1.2;
 }
+
 @media screen and (max-width: 768px) {
-  .stats {
-    flex: 1;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  .stat-item {
-    flex: 1;
-    margin-bottom: 0;
-  }
-  .charts {
-    flex: 1;
-    flex-direction: column;
-    margin-top: 20px;
-  }
+	.stats {
+		flex: 1;
+		flex-wrap: wrap;
+		gap: 20px;
+	}
+	.stat-item {
+		flex: 1;
+		margin-bottom: 0;
+	}
+	.charts {
+		flex: 1;
+		flex-direction: column;
+		margin-top: 20px;
+	}
 
-  .sales-graph,
-  .bestseller-products {
-    width: auto;
-  }
+	.sales-graph,
+	.bestseller-products {
+		width: auto;
+	}
 
-  .sidebar {
-    transform: translateX(-100%);
-  }
+	.sidebar {
+		transform: translateX(-100%);
+	}
 
-  .sidebar.active {
-    transform: translateX(0);
-  }
+	.sidebar.active {
+		transform: translateX(0);
+	}
 
-  .main-content {
-    margin-left: 0;
-  }
+	.main-content {
+		margin-left: 0;
+	}
 
-  .main-content.active {
-    margin-left: 200px;
-  }
+	.main-content.active {
+		margin-left: 200px;
+	}
 }

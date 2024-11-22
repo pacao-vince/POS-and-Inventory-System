@@ -1,25 +1,6 @@
 <?php
-// Start the session to verify if the user is logged in as admin
-session_start();
-if (!isset($_SESSION['username']) || $_SESSION['user_type'] !== 'admin') {
-    // Redirect to login page if not logged in as admin
-    header('Location: login.php');
-    exit();
-}
-
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+header('Content-Type: application/json');
+require_once '../includes/db_connection.php';
 
 // Check if the form was submitted
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -39,25 +20,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($check_user_result->num_rows > 0) {
         // Username or email already exists
         $_SESSION['error'] = "Username or email already exists!";
-        header("Location: ..views/Users.php");
-        exit();
-    } else {
-        // Insert the new user into the database
-        $sql = "INSERT INTO user_management (username, email, password, user_type) 
-                VALUES ('$username', '$email', '$hashed_password', '$user_type')";
-
-        if ($conn->query($sql) === TRUE) {
-            $_SESSION['success'] = "New account created successfully!";
-        } else {
-            $_SESSION['error'] = "Error: " . $conn->error;
-        }
-
-        // Redirect back to the Users page
         header("Location: ../views/Users.php");
         exit();
+    } else {
+        try {
+            // Insert the new user into the database
+            $stmt = $conn->prepare("INSERT INTO user_management (username, email, password, user_type) VALUES (?, ?, ?, ?)");
+            $stmt->bind_param("ssss", $username, $email, $hashed_password, $user_type);
+
+            if ($stmt->execute()) {
+                echo json_encode(['success' => true, 'message' => 'New account created successfully!']);
+            } else {
+                // If there was an error executing the query
+                echo json_encode(['success' => false, 'message' => 'Database error: ' . $stmt->error]);
+            }
+
+            // Close the statement and connection
+            $stmt->close();
+            $conn->close();
+        } catch (Exception $e) {
+            // Catch any unexpected exceptions
+            echo json_encode(['success' => false, 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
+        }
     }
+} else {
+    // If it's not a POST request, return an error
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
 }
 
-// Close the connection
-$conn->close();
+exit;
 ?>

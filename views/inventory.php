@@ -1,4 +1,13 @@
-<?php include '../includes/sidebar.php'; ?>
+<?php 
+require_once '../includes/auth.php';
+
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
+
+include '../includes/sidebar.php'; 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,12 +44,12 @@
             background-color: #28a745;
             color: #ffffff;
             border: none;
-            padding: 5px 8px;
-            font-size: 1.6rem;
+            padding: 8px 12px;
+            font-size: 1.4rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
             border-radius: 4px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             float: right;
         }
 

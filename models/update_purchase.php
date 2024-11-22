@@ -1,16 +1,7 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
+header('Content-Type: application/json');
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../includes/db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Ensure all necessary fields are set
@@ -23,17 +14,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $purchase_quantity = $_POST['purchase_quantity'];
         $purchase_amount = $_POST['purchase_amount'];
 
-        // Prepare and execute the update statement
+        // Get the old purchase quantity for the given purchase_id
+        $old_quantity_query = $conn->prepare("SELECT purchase_quantity, product_id FROM purchases WHERE purchase_id = ?");
+        if (!$old_quantity_query) {
+            die("Prepare failed: " . $conn->error);
+        }
+        $old_quantity_query->bind_param("i", $purchase_id);
+        $old_quantity_query->execute();
+        $old_quantity_query->bind_result($old_quantity, $old_product_id);
+        $old_quantity_query->fetch();
+        $old_quantity_query->close();
+
+        if ($old_quantity === null) {
+            echo json_encode(['success' => false, 'message' => 'Purchase not found.']);
+            $conn->close();
+            exit;
+        }
+
+        // Update the purchases table
         $stmt = $conn->prepare("UPDATE purchases SET product_id=?, supplier_id=?, date=?, purchase_quantity=?, purchase_amount=? WHERE purchase_id=?");
         if (!$stmt) {
             die("Prepare failed: " . $conn->error);
         }
-
-        // Bind the parameters
         $stmt->bind_param("iisidi", $product_id, $supplier_id, $date, $purchase_quantity, $purchase_amount, $purchase_id);
 
         if ($stmt->execute()) {
-            echo json_encode(['success' => true, 'message' => 'Purchase updated successfully.']);
+            // Update stocks in the products table
+            $quantity_difference = $purchase_quantity - $old_quantity;
+
+            // If the product_id has changed, adjust stocks for both old and new products
+            if ($product_id != $old_product_id) {
+                // Decrease stock of the old product
+                $update_old_stock = $conn->prepare("UPDATE products SET stocks = stocks - ? WHERE product_id = ?");
+                $update_old_stock->bind_param("ii", $old_quantity, $old_product_id);
+                $update_old_stock->execute();
+                $update_old_stock->close();
+
+                // Increase stock of the new product
+                $update_new_stock = $conn->prepare("UPDATE products SET stocks = stocks + ? WHERE product_id = ?");
+                $update_new_stock->bind_param("ii", $purchase_quantity, $product_id);
+                $update_new_stock->execute();
+                $update_new_stock->close();
+            } else {
+                // Adjust stock for the same product
+                $update_stock = $conn->prepare("UPDATE products SET stocks = stocks + ? WHERE product_id = ?");
+                $update_stock->bind_param("ii", $quantity_difference, $product_id);
+                $update_stock->execute();
+                $update_stock->close();
+            }
+
+            echo json_encode(['success' => true, 'message' => 'Purchase updated and stock adjusted successfully.']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Error updating purchase: ' . $stmt->error]);
         }

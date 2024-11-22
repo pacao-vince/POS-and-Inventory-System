@@ -143,7 +143,7 @@
             
             confirmLogoutBtn.addEventListener("click", function () {
                 // Redirect to the actual logout URL
-                window.location.href = "../controllers/logout.php";
+                window.location.href = "../public/logout.php";
             });
 
 	})

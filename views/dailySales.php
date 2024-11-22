@@ -1,14 +1,9 @@
 <?php
+require_once '../includes/auth.php';
 
-session_start();
-if (!isset($_SESSION['username'])) {
-    header('Location: login.php');
-    exit();
-}
-
+// Only allow Admin access
 if ($_SESSION['user_type'] !== 'admin') {
-    header('Location: login.php');
-    exit();
+    logout(); // Call logout to clear the session and redirect
 }
 
 include '../includes/sidebar.php';
@@ -61,11 +56,11 @@ $daily_sales_result = $stmt->get_result();
 
 // Get all cashiers with their total sales for today
 $cashier_sql = "
-   SELECT u.username AS cashier_username, 
-           COALESCE(SUM(s.grand_total), 0) AS total_sales 
+SELECT u.username AS cashier_username, 
+        COALESCE(SUM(s.grand_total), 0) AS total_sales 
     FROM user_management u 
     LEFT JOIN sales s ON u.username = s.cashier_username 
-                      AND DATE(s.transaction_time) = CURDATE() 
+                    AND DATE(s.transaction_time) = CURDATE() 
     WHERE u.user_type = 'cashier' 
     GROUP BY u.username";
 $cashiers_result = $conn->query($cashier_sql);

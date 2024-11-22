@@ -1,60 +1,60 @@
 /* General Styles */
 :root {
-  font-size: 62.5%;
+	font-size: 62.5%;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  font-size: 1.6rem;
-  line-height: 1.2;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  min-height: 100vh;
-  overflow-x: hidden;
-  /* To prevent horizontal scroll */
+	font-family: Arial, sans-serif;
+	font-size: 1.6rem;
+	line-height: 1.2;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	min-height: 100vh;
+	overflow-x: hidden;
+	/* To prevent horizontal scroll */
 }
 
 /* Header Styles */
 header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
 }
 header h1 {
-  margin: 0;
-  font-weight: bold;
+	margin: 0;
+	font-weight: bold;
 }
 .admin-profile {
-  display: flex;
-  align-items: center;
+	display: flex;
+	align-items: center;
 }
 .admin-profile img {
-  width: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+	width: 40px;
+	border-radius: 50%;
+	margin-right: 10px;
 }
 .main-content {
-  padding: 20px;
-  margin-left: 200px;
-  background-color: #ecf0f1;
-  width: 100%;
-  transition: margin-left 0.3s ease;
+	padding: 20px;
+	margin-left: 200px;
+	background-color: #ecf0f1;
+	width: 100%;
+	transition: margin-left 0.3s ease;
 }
 
 .table-list {
-  margin-bottom: 20px;
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  margin-top: 20px;
+	margin-bottom: 20px;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	margin-top: 20px;
 }
 
 .table-list h1 {
-  margin-bottom: 10px;
-  font-weight: bold;
+	margin-bottom: 10px;
+	font-weight: bold;
 }
 
 /* Style the text inside the input boxes and dropdown */
@@ -62,36 +62,35 @@ header h1 {
 #filters input[type="date"],
 #filters select,
 .form-select {
-  flex-wrap: nowrap;
-  font-size: 1.4rem;
-  /* Adjust the font size as needed */
-  color: #333;
-  /* Text color */
-  padding: 6px 8px;
-  /* Add padding for better spacing */
-  border: 1px solid #ccc;
-  /* Border color */
-  border-radius: 4px;
-  /* Rounded corners */
-  box-sizing: border-box;
-  /* Ensure padding doesn't affect the width */
+	flex-wrap: nowrap;
+	font-size: 1.4rem;
+	/* Adjust the font size as needed */
+	color: #333;
+	/* Text color */
+	padding: 6px 8px;
+	/* Add padding for better spacing */
+	border: 1px solid #ccc;
+	/* Border color */
+	border-radius: 4px;
+	/* Rounded corners */
+	box-sizing: border-box;
+	/* Ensure padding doesn't affect the width */
 }
 
 /* Style the dropdown arrow */
 #filters select {
-  font-style: normal;
-  -webkit-appearance: none;
-  /* Remove default styling */
-  -moz-appearance: none;
-  appearance: none;
+	font-style: normal;
+	-webkit-appearance: none;
+	/* Remove default styling */
+	-moz-appearance: none;
+	appearance: none;
 
-  background-size: 10px;
-  width: fit-content;
-  padding: 6px 8px;
-  /* Add padding for better spacing */
-  padding-right: 25px;
+	background-size: 10px;
+	width: fit-content;
+	padding: 6px 8px;
+	/* Add padding for better spacing */
+	padding-right: 25px;
 }
-
 
 .table-list table {
 	width: 100%;
@@ -106,19 +105,20 @@ header h1 {
 	text-align: center;
 }
 .table-list th {
-  background-color: #3498db;
-  color: white;
+	background-color: #3498db;
+	color: white;
 }
 .dropdown-toggle {
-  font-size: 1.4rem;
-  line-height: 1.2;
-  background-color: #3498db;
-  border: none;
-  font-weight: 600;
-  transition: none;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	background-color: #3498db;
+	border: none;
+	font-weight: 600;
+	transition: none;
 }
 
-#categoryDropdown, #categoryFilter {
+#categoryDropdown,
+#categoryFilter {
 	font-size: 1.4rem;
 	font-weight: 600;
 }
@@ -129,177 +129,176 @@ header h1 {
 	/* Ensures buttons stay inline */
 	margin-right: 0;
 	/* Adds spacing between buttons */
-
 }
 
 .table-list td .custom-btn:last-child {
-  margin-right: 0; /* Removes the right margin from the last button */
+	margin-right: 0; /* Removes the right margin from the last button */
 }
 
 .table-list tr:hover {
-  background-color: #f1f1f1;
+	background-color: #f1f1f1;
 }
 
 #categoryDropdown:hover,
 #categoryDropdown:focus,
 #categoryDropdown:enabled,
 #categoryDropdown:active {
-  outline: none;
-  /* Remove focus outline */
-  box-shadow: none;
-  /* Remove any shadow that might create a border effect */
-  border: none;
-  /* Ensure no border appears */
+	outline: none;
+	/* Remove focus outline */
+	box-shadow: none;
+	/* Remove any shadow that might create a border effect */
+	border: none;
+	/* Ensure no border appears */
 }
 
 /* Modal Styles */
 .modal {
-  display: none;
-  /* Hidden by default */
-  position: fixed;
-  /* Stay in place */
-  z-index: 1;
-  /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%;
-  /* Full width */
-  height: 100%;
-  /* Full height */
-  overflow: auto;
-  /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4);
-  /* Black w/ opacity */
-  justify-content: center;
-  /* Center the modal horizontally */
-  align-items: center;
-  /* Center the modal vertically */
+	display: none;
+	/* Hidden by default */
+	position: fixed;
+	/* Stay in place */
+	z-index: 1;
+	/* Sit on top */
+	left: 0;
+	top: 0;
+	width: 100%;
+	/* Full width */
+	height: 100%;
+	/* Full height */
+	overflow: auto;
+	/* Enable scroll if needed */
+	background-color: rgba(0, 0, 0, 0.4);
+	/* Black w/ opacity */
+	justify-content: center;
+	/* Center the modal horizontally */
+	align-items: center;
+	/* Center the modal vertically */
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  /* Center modal */
-  padding: 20px 20px 0px 20px;
-  border: 1px solid #888;
-  width: 400px;
-  /* Fixed width for the modal */
-  border-radius: 8px;
-  /* Rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  /* Shadow for depth */
-  animation: fadeIn 0.3s;
-  /* Fade in animation */
+	background-color: #fefefe;
+	margin: auto;
+	/* Center modal */
+	padding: 20px 20px 0px 20px;
+	border: 1px solid #888;
+	width: 400px;
+	/* Fixed width for the modal */
+	border-radius: 8px;
+	/* Rounded corners */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	/* Shadow for depth */
+	animation: fadeIn 0.3s;
+	/* Fade in animation */
 }
 
 .modal-title {
-  font-weight: 600;
+	font-weight: 600;
 }
 
 /* Form Styles */
 form label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: medium;
+	display: block;
+	margin-bottom: 5px;
+	font-weight: medium;
 }
 
 form .form-control,
 form .form-select {
-  font-size: 1.6rem;
-  width: calc(100% - 20px); /* Full width minus padding */
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px; /* Rounded corners */
+	font-size: 1.6rem;
+	width: calc(100% - 20px); /* Full width minus padding */
+	margin-bottom: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px; /* Rounded corners */
 }
 
 /* Keyframes for fade-in animation */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
+	from {
+		opacity: 0;
+	}
 
-  to {
-    opacity: 1;
-  }
+	to {
+		opacity: 1;
+	}
 }
 
 /* Stock Indicator Styles */
 .high-stock {
-  background-color: green;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
+	background-color: green;
+	color: white;
+	padding: 8px 12px;
+	border-radius: 4px;
 }
 
 .low-stock {
-  background-color: red;
-  color: white;
-  padding: 8px 12px;
-  border-radius: 4px;
+	background-color: red;
+	color: white;
+	padding: 8px 12px;
+	border-radius: 4px;
 }
 
 .pagination {
-  text-align: center;
-  margin-top: 20px;
-  justify-content: center;
+	text-align: center;
+	margin-top: 20px;
+	justify-content: center;
 }
 
 .pagination a,
 .pagination span {
-  font-size: 1.4rem;
-  line-height: 1.2;
-  padding: 8px 16px;
-  margin: 0 4px;
-  text-decoration: none;
-  background-color: #f4f4f4;
-  border: 1px solid #ddd;
-  color: #333;
-  border-radius: 2px;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 8px 16px;
+	margin: 0 4px;
+	text-decoration: none;
+	background-color: #f4f4f4;
+	border: 1px solid #ddd;
+	color: #333;
+	border-radius: 2px;
 }
 
 .pagination a:hover {
-  background-color: #ddd;
+	background-color: #ddd;
 }
 
 .pagination .active {
-  background-color: #2980b9;
-  color: white;
-  border: 1px solid #2980b9;
+	background-color: #2980b9;
+	color: white;
+	border: 1px solid #2980b9;
 }
 
 .pagination .disabled {
-  color: #999;
-  cursor: not-allowed;
+	color: #999;
+	cursor: not-allowed;
 }
 
 .modal-backdrop {
-  z-index: 1040;
-  /* Ensures it's below the modal */
+	z-index: 1040;
+	/* Ensures it's below the modal */
 }
 
 .modal {
-  z-index: 1050;
-  /* Modal above backdrop */
+	z-index: 1050;
+	/* Modal above backdrop */
 }
 
 .modal-dialog {
-  z-index: 1051;
-  /* Make this slightly higher than the modal */
+	z-index: 1051;
+	/* Make this slightly higher than the modal */
 }
 
 .modal-header {
-  background-color: #f8f9fa;
+	background-color: #f8f9fa;
 }
 
 .float-right {
-  float: right;
+	float: right;
 }
 
 .modal-footer {
-  display: flex;
-  justify-content: center;
-  /* Centers the button horizontally */
-  padding: 10px 8px;
+	display: flex;
+	justify-content: center;
+	/* Centers the button horizontally */
+	padding: 10px 8px;
 }
 
 /* Custom Button Styles */
@@ -312,7 +311,7 @@ button.custom-btn {
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	margin-bottom: 20px;
+	margin-bottom: 16px;
 	margin-left: auto;
 }
 
@@ -321,72 +320,72 @@ button.custom-btn {
 .btn.btn-danger,
 .btn.btn-primary,
 .btn.btn-secondary {
-  font-size: 1.6rem;
-  line-height: 1.2;
-  padding: 8px 12px;
+	font-size: 1.6rem;
+	line-height: 1.2;
+	padding: 8px 12px;
 }
 
 #add-btn,
 #editBtn,
 #deleteBtn {
-  font-size: 1.4rem;
-  line-height: 1.2;
-  padding: 8px 12px;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 8px 12px;
 }
 
 button.custom-btn:hover {
-  background-color: #1f639b;
+	background-color: #1f639b;
 }
 
 .custom-btn-color {
-  line-height: 1.2;
-  background-color: #52b2e1;
-  border: none;
-  /* Remove border */
-  color: white;
-  /* Set the text color */
-  padding: 8px 12px;
-  /* Add padding for a better look */
-  border-radius: 5px;
-  /* Add rounded corners */
-  font-size: 1.6rem;
-  /* Adjust font size */
-  cursor: pointer;
-  /* Show pointer on hover */
-  transition: background-color 0.3s ease;
-  /* Smooth color change on hover */
-  border: none;
+	line-height: 1.2;
+	background-color: #52b2e1;
+	border: none;
+	/* Remove border */
+	color: white;
+	/* Set the text color */
+	padding: 8px 12px;
+	/* Add padding for a better look */
+	border-radius: 5px;
+	/* Add rounded corners */
+	font-size: 1.6rem;
+	/* Adjust font size */
+	cursor: pointer;
+	/* Show pointer on hover */
+	transition: background-color 0.3s ease;
+	/* Smooth color change on hover */
+	border: none;
 }
 
 .custom-btn-color:hover {
-  background-color: #4796bd;
+	background-color: #4796bd;
 }
 
 .custom-alert {
-  position: fixed;
-  /* Fix the position */
-  top: 10px;
-  /* Place at the very top */
-  left: 50%;
-  /* Center horizontally */
-  transform: translateX(-50%);
-  /* Center align the element */
-  z-index: 9999;
-  /* Make sure it's above other elements */
-  width: auto;
-  /* Adjust width as needed */
-  text-align: center;
-  /* Center text */
-  margin: 0;
-  /* Remove any default margin */
-  padding: 15px;
-  /* Add some padding for aesthetics */
-  border: 5px;
+	position: fixed;
+	/* Fix the position */
+	top: 10px;
+	/* Place at the very top */
+	left: 50%;
+	/* Center horizontally */
+	transform: translateX(-50%);
+	/* Center align the element */
+	z-index: 9999;
+	/* Make sure it's above other elements */
+	width: auto;
+	/* Adjust width as needed */
+	text-align: center;
+	/* Center text */
+	margin: 0;
+	/* Remove any default margin */
+	padding: 15px;
+	/* Add some padding for aesthetics */
+	border: 5px;
 }
 
 .hide {
-  opacity: 0;
-  transition: opacity 1.5s ease;
+	opacity: 0;
+	transition: opacity 1.5s ease;
 }
 
 /*Responsive Styles 
@@ -411,24 +410,18 @@ button.custom-btn:hover {
 } */
 
 .legend-item {
-    padding: 5px 10px;
-    border-radius: 4px;
-}
-  
-.custombtn {
-  margin-bottom: 15px;
-  background-color: #2980b9;
-	color: white;
+	padding: 5px 10px;
+	border-radius: 4px;
 }
 
-.cstmbnt{
-  font-size: 1.3rem;
-  line-height: 1.2;
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-bottom: 20px;
-  height: auto;
-  margin-left: calc(100% - 245px);
+#archiveBtn {
+	font-size: 1.4rem;
+	line-height: 1.2;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-bottom: 20px;
+	height: auto;
+	margin-left: calc(100% - 220px);
 }

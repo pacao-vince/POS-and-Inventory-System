@@ -1,16 +1,12 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header('Location: login.php');
-        exit();
-    }
+require_once '../includes/auth.php';
 
-    if ($_SESSION['user_type'] !== 'admin') {
-        header('Location: login.php');
-        exit();
-    }
-    
-    include '../includes/sidebar.php';
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
+
+include '../includes/sidebar.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">

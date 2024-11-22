@@ -1,10 +1,9 @@
 <?php
-include('../includes/auth.php');
+require_once '../includes/auth.php';
 
-// Check if the logged-in user is a Cashier
+// Only allow Admin access
 if ($_SESSION['user_type'] !== 'cashier') {
-    header('Location: ../public/login.php');
-    exit();
+    logout(); // Call logout to clear the session and redirect
 }
 
 // Retrieve the session username for display

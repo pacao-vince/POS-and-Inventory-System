@@ -1,18 +1,26 @@
 <?php
+require_once '../includes/auth.php';
 
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header('Location: login.php');
-        exit();
-    }
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
 
-    if ($_SESSION['user_type'] !== 'admin') {
-        header('Location: login.php');
-        exit();
-    }
+include '../includes/sidebar.php'; 
+require_once '../includes/db_connection.php';    
 
-    include '../includes/sidebar.php'; 
-    include_once '../includes/db_connection.php';    
+$category_per_page = 10;
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $category_per_page;
+
+$sql = "SELECT * FROM category ORDER BY category_id DESC LIMIT $offset, $category_per_page";
+$result = $conn->query($sql);
+
+$total_category_sql = "SELECT COUNT(*) AS total FROM category";
+$total_result = $conn->query($total_category_sql);
+$total_row = $total_result->fetch_assoc();
+$total_category = $total_row['total'];
+$total_pages = ceil($total_category / $category_per_page);
 ?>
 
 <!DOCTYPE html>
@@ -53,133 +61,28 @@
                     <tbody>
                         <!-- PHP code for displaying categories -->
                         <?php
-                           
-                            $servername = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $dbname = "pos&inventory";
-                            $conn = new mysqli($servername, $username, $password, $dbname);
+                        // Fetch categories from the database in descending order
+                        $result = $conn->query($sql);
 
-                            if ($conn->connect_error) {
-                                die("Connection failed: " . $conn->connect_error);
+                        if ($result->num_rows > 0) {
+                            while($row = $result->fetch_assoc()) {
+                                echo  "<tr data-category-id='" . $row["category_id"] . "'>
+                                        <td>" . $row["category_id"] . "</td>
+                                        <td>" . $row["category_name"] . "</td>
+                                        <td>
+                                                <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['category_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> |
+                                                <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['category_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
+                                        </td>
+                                        </tr>";
                             }
-
-                            $category_per_page = 10;
-                            $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                            $offset = ($current_page - 1) * $category_per_page;
-
-                            $sql = "SELECT * FROM category ORDER BY category_id DESC LIMIT $offset, $category_per_page";
-                            $result = $conn->query($sql);
-
-                            $total_category_sql = "SELECT COUNT(*) AS total FROM category";
-                            $total_result = $conn->query($total_category_sql);
-                            $total_row = $total_result->fetch_assoc();
-                            $total_category = $total_row['total'];
-                            $total_pages = ceil($total_category / $category_per_page);
-
-                            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
-                                $category_name = $_POST['category_name'];
-                            $stmt = $conn->prepare("INSERT INTO category (category_name) VALUES (?)");
-                            if ($stmt) {
-                                // Bind the category name to the statement
-                                $stmt->bind_param("s", $category_name);
-                        
-                                if ($stmt->execute()) {
-                                    // Trigger JavaScript alert for successful addition
-                                    echo "<script>
-                                        window.onload = function() {
-                                            showAlert('Category added successfully!', 'success');
-                                        };
-                                        setTimeout(function() {
-                                            window.location.href = 'categories.php'; // Redirect after 3 seconds
-                                        }, 3000);
-                                    </script>";
-                                } else {
-                                    // Show error alert in case of failure
-                                    echo "<script>
-                                        window.onload = function() {
-                                            showAlert('Error: Could not add category.', 'danger');
-                                        };
-                                    </script>";
-                                }
-                            }
-                                // Close the statement
-                                $stmt->close();
-                            }
-                            // Fetch categories from the database in descending order
-                            $sql = "SELECT * FROM category ORDER BY category_id DESC";
-                            $result = $conn->query($sql);
-
-                        if ($_SESSION['user_type'] !== 'admin') {
-                            header('Location: login.php');
-                            exit();
+                        } else {
+                            echo "<tr><td colspan='3'>No categories found</td></tr>";
                         }
-                        
-                        $category_per_page = 10;
-                        $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                        $offset = ($current_page - 1) * $category_per_page;
-
-
-                            $sql = "SELECT * FROM category ORDER BY category_id DESC LIMIT $offset, $category_per_page";
-                            $result = $conn->query($sql);
-
-                            $total_category_sql = "SELECT COUNT(*) AS total FROM category";
-                            $total_result = $conn->query($total_category_sql);
-                            $total_row = $total_result->fetch_assoc();
-                            $total_category = $total_row['total'];
-                            $total_pages = ceil($total_category / $category_per_page);
-
-                            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_category'])) {
-                                $category_name = $_POST['category_name'];
-                            $stmt = $conn->prepare("INSERT INTO category (category_name) VALUES (?)");
-                            if ($stmt) {
-                                // Bind the category name to the statement
-                                $stmt->bind_param("s", $category_name);
-                        
-                                if ($stmt->execute()) {
-                                    // Trigger JavaScript alert for successful addition
-                                    echo "<script>
-                                        window.onload = function() {
-                                            showAlert('Category added successfully!', 'success');
-                                        };
-                                        setTimeout(function() {
-                                            window.location.href = 'categories.php'; // Redirect after 3 seconds
-                                        }, 3000);
-                                    </script>";
-                                } else {
-                                    // Show error alert in case of failure
-                                    echo "<script>
-                                        window.onload = function() {
-                                            showAlert('Error: Could not add category.', 'danger');
-                                        };
-                                    </script>";
-                                }
-                            }
-                                // Close the statement
-                                $stmt->close();
-                            }
-                            // Fetch categories from the database in descending order
-                            $sql = "SELECT * FROM category ORDER BY category_id DESC";
-                            $result = $conn->query($sql);
-
-                            if ($result->num_rows > 0) {
-                                while($row = $result->fetch_assoc()) {
-                                    echo  "<tr data-category-id='" . $row["category_id"] . "'>
-                                            <td>" . $row["category_id"] . "</td>
-                                            <td>" . $row["category_name"] . "</td>
-                                            <td>
-                                                 <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['category_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> |
-                                                    <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['category_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
-                                            </td>
-                                          </tr>";
-                                }
-                            } else {
-                                echo "<tr><td colspan='3'>No categories found</td></tr>";
-                            }
-                            $conn->close();
+                        $conn->close();
                         ?>
                     </tbody>
                 </table>
+
                 <div class="pagination">
                     <?php if ($current_page > 1): ?>
                         <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
@@ -197,7 +100,7 @@
                         <span class="disabled">Next</span>
 
                         <?php endif; ?>
-                    </div>
+                </div>
             </div>
         </div>
         
@@ -210,7 +113,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="addForm" action="categories.php" method="POST">
+                        <form id="addForm" method="POST">
                             <input type="hidden" name="add_category" value="1">
                             <div class="mb-3">
                                 <label for="category_name" class="form-label">Category Name:</label>

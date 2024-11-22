@@ -1,16 +1,47 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header('Location: login.php');
-        exit();
-    }
+require_once '../includes/auth.php';
 
-    if ($_SESSION['user_type'] !== 'admin') {
-        header('Location: login.php');
-        exit();
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
+
+include '../includes/sidebar.php'; 
+require_once '../includes/db_connection.php';
+
+// Pagination variables
+$purchases_per_page = 10; // Number of products per page
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $purchases_per_page;
+
+// Fetch total number of products for pagination
+$total_purchases_sql = "SELECT COUNT(*) AS total FROM purchases";
+$total_result = $conn->query($total_purchases_sql);
+$total_row = $total_result->fetch_assoc();
+$total_purchases = $total_row['total'];
+$total_pages = ceil($total_purchases / $purchases_per_page);
+
+// Fetch products once and store in a variable
+$sql = "SELECT * FROM products";
+$product_result = $conn->query($sql);
+$products = [];
+if ($product_result->num_rows > 0) {
+    while ($product = $product_result->fetch_assoc()) {
+        $products[] = $product;
     }
-    
-    include '../includes/sidebar.php'; 
+} else {
+    $products = null; // Handle case where no products are found
+}
+
+// Fetch suppliers from the database
+$sql = "SELECT * FROM suppliers";
+$supplier_result = $conn->query($sql);
+$suppliers = [];
+if ($supplier_result->num_rows > 0) {
+    while ($supplier = $supplier_result->fetch_assoc()) {
+        $suppliers[] = $supplier;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -52,103 +83,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
-                                             
-                        // Database connection
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "pos&inventory"; // Changed to a valid DB name
-
-                        // Create connection
-                        $conn = new mysqli($servername, $username, $password, $dbname);
-
-                        // Check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
-                        }
-
-                        // Pagination variables
-                        $purchases_per_page = 10; // Number of products per page
-                        $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                        $offset = ($current_page - 1) * $purchases_per_page;
-
-                        // Fetch total number of products for pagination
-                        $total_purchases_sql = "SELECT COUNT(*) AS total FROM purchases";
-                        $total_result = $conn->query($total_purchases_sql);
-                        $total_row = $total_result->fetch_assoc();
-                        $total_purchases = $total_row['total'];
-                        $total_pages = ceil($total_purchases / $purchases_per_page);
-
-                        // Fetch products once and store in a variable
-                        $sql = "SELECT * FROM products";
-                        $product_result = $conn->query($sql);
-                        $products = [];
-                        if ($product_result->num_rows > 0) {
-                            while ($product = $product_result->fetch_assoc()) {
-                                $products[] = $product;
-                            }
-                        } else {
-                            $products = null; // Handle case where no products are found
-                        }
-
-
-                        // Fetch suppliers from the database
-                        $sql = "SELECT * FROM suppliers";
-                        $supplier_result = $conn->query($sql);
-                        $suppliers = [];
-                        if ($supplier_result->num_rows > 0) {
-                            while ($supplier = $supplier_result->fetch_assoc()) {
-                                $suppliers[] = $supplier;
-                            }
-                        }
-
-                        // Process form submission for adding a new purchase
-                        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_purchase'])) {
-                            $product_id = $_POST['product_id'];
-                            $supplier_id = $_POST['supplier_id'];
-                            $date = $_POST['date'];
-                            $purchase_quantity = $_POST['purchase_quantity'];
-                            $purchase_amount = $_POST['purchase_amount'];
-
-                            // Handle new product
-                            if (is_numeric($product_id)) {
-                                // Existing product
-                                $product_id = intval($product_id);
-                            } else {
-                                // New product
-                                $product_name = $_POST['new_product']; // From hidden input
-                                $stmt = $conn->prepare("INSERT INTO products (product_name) VALUES (?)");
-                                $stmt->bind_param('s', $product_name);
-                                $stmt->execute();
-                                $product_id = $stmt->insert_id; // Get the inserted product ID
-                            }
-                            // Prepare and bind
-                            $stmt = $conn->prepare("INSERT INTO purchases (product_id, supplier_id, date, purchase_quantity, purchase_amount) VALUES (?, ?, ?, ?, ?)");
-                            $stmt->bind_param("iisid", $product_id, $supplier_id, $date, $purchase_quantity, $purchase_amount);
-
-                            if ($stmt->execute()) {
-                                // Trigger JavaScript alert for successful addition
-                                echo "<script>
-                                    window.onload = function() {
-                                        showAlert('Purchase added successfully!', 'success');
-                                    };
-                                    setTimeout(function() {
-                                        window.location.href = 'purchases.php'; // Redirect after 3 seconds
-                                    }, 3000);
-                                </script>";
-                            } else {
-                                // Show error alert in case of failure
-                                echo "<script>
-                                    window.onload = function() {
-                                        showAlert('Error: Could not add purchase.', 'danger');
-                                    };
-                                </script>";
-                            }
-                        
-                            $stmt->close();
-                        }
-
+                        <?php         
                         // Fetch products from database
                         $sql = "SELECT 
                                     purchases.purchase_id,
@@ -222,7 +157,8 @@
             </div>
             <div class="modal-body">
             
-                <form id="addForm" action="purchases.php" method="POST">
+                <form id="addForm" method="POST">
+                <input type="hidden" name="add_purchase" value="1"> <!-- Hidden input -->
                 <div class="mb-3">
                     <label for="product_id" class="form-label">Product:</label>
                         <select class="form-select" id="product_id" name="product_id" required>
@@ -242,6 +178,7 @@
                    <div class="mb-3">
                         <label for="supplier" class="form-label">Supplier:</label>
                         <select class="form-select" id="supplier_id" name="supplier_id" required>
+                        <option value="" disabled selected>Select Supplier</option> <!-- Placeholder option -->
                             <?php if ($suppliers): ?>
                                 <?php foreach ($suppliers as $supplier): ?>
                                     <option value="<?php echo htmlspecialchars($supplier['supplier_id']); ?>">

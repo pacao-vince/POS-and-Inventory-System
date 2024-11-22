@@ -1,16 +1,10 @@
 <?php
- session_start();
- if (!isset($_SESSION['username'])) {
-     // Redirect to login page if not logged in
-     header('Location: login.php');
-     exit();
- }
+ require_once '../includes/auth.php';
 
- // Only allow Admin access
- if ($_SESSION['user_type'] !== 'admin') {
-     header('Location: login.php');
-     exit();
- }
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
 
 include_once '../includes/sidebar.php'; 
 include_once '../includes/db_connection.php';
@@ -58,17 +52,22 @@ while ($row = $low_stock_result->fetch_assoc()) {
     if (!isset($notifications[$productId]) || $notifications[$productId] !== $today) {
         // Update notifications to mark as notified today
         $notifications[$productId] = $today;
+
         // Add to low stock products array
         $lowStockProducts[] = [
             'name' => $row['product_name'],
             'stocks' => $row['stocks']
         ];
+        
+        // Set the flag if a low stock product notification is triggered
+        $alertAlreadySent = true;
     }
 }
 
-// Save updated notifications back to the file
+// Save the updated notifications to the file (this will persist the notification dates)
 file_put_contents($notificationFile, json_encode($notifications));
 
+// Optionally, you could use $lowStockProducts and $alertAlreadySent to display the low stock products and trigger an alert
 // Pass the low stock products to JavaScript as a JSON object
 $lowStockJson = json_encode($lowStockProducts);
 ?>

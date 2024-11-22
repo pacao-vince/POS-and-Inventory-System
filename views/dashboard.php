@@ -1,47 +1,51 @@
 <?php 
+require_once '../includes/auth.php';
 
-    include('../includes/auth.php');
-    include('../includes/sidebar.php');
-    
-    // Only allow Admin access
-    if ($_SESSION['user_type'] !== 'admin') {
-        header('Location: ../public/login.php');
-        exit();
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
+
+include('../includes/sidebar.php'); 
+require_once '../includes/db_connection.php';
+
+// Path for notification tracking file
+$notificationFile = 'notifications.json';
+
+// Load existing notifications or initialize
+$notifications = file_exists($notificationFile) ? json_decode(file_get_contents($notificationFile), true) : [];
+
+// Get today's date
+$today = date('Y-m-d');
+
+// Query to check for products below the threshold
+$low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks <= threshold";
+$low_stock_result = $conn->query($low_stock_sql);
+
+// Initialize an array to hold products below the threshold
+$lowStockProducts = [];
+while ($row = $low_stock_result->fetch_assoc()) {
+    // Check if notification has already been sent today for this product
+    $productId = $row['product_id'];
+    if (!isset($notifications[$productId]) || $notifications[$productId] !== $today) {
+        // Update notifications to mark as notified today
+        $notifications[$productId] = $today;
+
+        // Add to low stock products array
+        $lowStockProducts[] = [
+            'name' => $row['product_name'],
+            'stocks' => $row['stocks']
+        ];
+        
+        // Set the flag if a low stock product notification is triggered
+        $alertAlreadySent = true;
     }
-    $username = "root"; 
-    $password = ""; 
-    $database = "pos&inventory"; 
-    $conn = new mysqli("localhost", $username, $password, $database); 
+}
 
-    // Path for notification tracking file
-    $notificationFile = 'notifications.json';
+// Save the updated notifications to the file (this will persist the notification dates)
+file_put_contents($notificationFile, json_encode($notifications));
 
-    // Load existing notifications or initialize
-    $notifications = file_exists($notificationFile) ? json_decode(file_get_contents($notificationFile), true) : [];
-
-    // Get today's date
-    $today = date('Y-m-d');
-        // Query to check for products below the threshold
-    $low_stock_sql = "SELECT product_id, product_name, stocks, threshold FROM products WHERE stocks <= threshold";
-    $low_stock_result = $conn->query($low_stock_sql);
-
-    // Initialize an array to hold products below the threshold
-    $lowStockProducts = [];
-    while ($row = $low_stock_result->fetch_assoc()) {
-        // Check if notification has already been sent today for this product
-        $productId = $row['product_id'];
-        if (!isset($notifications[$productId]) || $notifications[$productId] !== $today) {
-            // Update notifications to mark as notified today
-            $notifications[$productId] = $today;
-            // Add to low stock products array
-            $lowStockProducts[] = [
-                'name' => $row['product_name'],
-                'stocks' => $row['stocks']
-            ];
-            $alertAlreadySent = true; // Set the flag to true if we are notifying about low stock
-        }
-    }
-
+// Optionally, you could use $lowStockProducts and $alertAlreadySent to display the low stock products and trigger an alert
 ?>
 <!DOCTYPE html>
 <html lang="en">

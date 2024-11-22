@@ -99,6 +99,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
             </form>
         </div>
     </div>
-    <script src="../controllers/LOGIN.js"></script> 
+    <script src="../controllers/LOGIN.js"></script>
 </body>
 </html>

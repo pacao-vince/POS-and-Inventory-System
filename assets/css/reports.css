@@ -5,6 +5,7 @@
 body {
 	font-size: 1.4rem;
 	font-family: Arial, sans-serif;
+	line-height: 1.2;
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -169,11 +170,6 @@ button.custom-btn-gen {
 	text-align: center !important;
 	cursor: pointer;
 	box-shadow: 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.card-body-card:hover {
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	transform: translateY(-5px);
 }
 
 .card-title {

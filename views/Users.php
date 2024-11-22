@@ -1,16 +1,30 @@
 <?php
-    session_start();
-    if (!isset($_SESSION['username'])) {
-        header('Location: ../public/login.php');
-        exit();
-    }
+require_once '../includes/auth.php';
 
-    if ($_SESSION['user_type'] !== 'admin') {
-        header('Location: ../public/login.php');
-        exit();
-    }
+// Only allow Admin access
+if ($_SESSION['user_type'] !== 'admin') {
+    logout(); // Call logout to clear the session and redirect
+}
 
-    include '../includes/sidebar.php';
+include '../includes/sidebar.php';
+require_once '../includes/db_connection.php';
+
+// Pagination variables
+$user_management_per_page = 10; // Number of users per page
+$current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($current_page - 1) * $user_management_per_page;
+
+// Fetch users with limit and offset
+$sql = "SELECT * FROM user_management WHERE archived = 0 ORDER BY user_id DESC LIMIT $offset, $user_management_per_page";
+$result = $conn->query($sql);
+
+// Fetch total number of users for pagination
+$total_user_management_sql = "SELECT COUNT(*) AS total FROM user_management";
+$total_result = $conn->query($total_user_management_sql);
+$total_row = $total_result->fetch_assoc();
+$total_user_management = $total_row['total'];
+$total_pages = ceil($total_user_management / $user_management_per_page);
+
 ?>
 
 <!DOCTYPE html>
@@ -54,37 +68,6 @@
                     </thead>
                     <tbody>
                         <?php
-                    
-                        // Database connection
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "pos&inventory";
-
-                        // Create connection
-                        $conn = new mysqli($servername, $username, $password, $dbname);
-
-                        // Check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
-                        }
-
-                        // Pagination variables
-                        $user_management_per_page = 10; // Number of users per page
-                        $current_page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-                        $offset = ($current_page - 1) * $user_management_per_page;
-
-                        // Fetch users with limit and offset
-                        $sql = "SELECT * FROM user_management WHERE archived = 0 ORDER BY user_id DESC LIMIT $offset, $user_management_per_page";
-                        $result = $conn->query($sql);
-
-                        // Fetch total number of users for pagination
-                        $total_user_management_sql = "SELECT COUNT(*) AS total FROM user_management";
-                        $total_result = $conn->query($total_user_management_sql);
-                        $total_row = $total_result->fetch_assoc();
-                        $total_user_management = $total_row['total'];
-                        $total_pages = ceil($total_user_management / $user_management_per_page);
-
                         // Fetch users from database
                         $sql = "SELECT * FROM user_management WHERE archived = 0 ORDER BY user_id DESC";
                         $result = $conn->query($sql);
@@ -122,6 +105,7 @@
                         ?>
                     </tbody>
                 </table>
+
                 <div class="pagination">
                     <?php if ($current_page > 1): ?>
                         <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
@@ -139,8 +123,7 @@
                         <span class="disabled">Next</span>
 
                         <?php endif; ?>
-                    </div>
-             </section>
+                </div>
         </div>
     </div>
     
@@ -206,9 +189,8 @@
         </div>
     </div>
 </div>
-
     
-   <!-- Modal Structure -->
+<!-- Modal Structure -->
 <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -217,7 +199,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="../models/add_users.php" method="POST">
+                <form id="addForm" action="../models/add_users.php" method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>

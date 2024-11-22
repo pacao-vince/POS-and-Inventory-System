@@ -36,7 +36,7 @@
         <div class="table-content">
             <div class="table-list" id="userTableContainer">
                 <a href="Users.php">
-                    <button class="btn btn-primary custombtn" id="backBtn">
+                    <button class="btn btn-primary mb-3" id="backBtn">
                         <i class="fas fa-arrow-left me-2"></i> Back to Users
                     </button>
                 </a>
