@@ -48,14 +48,11 @@ $total_pages = ceil($total_products / $products_per_page);
     <div class="main-content" id="main-content">
         <header>
             <h1>Product Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="table-content" id="products">
             <section class="table-list">
-                <div class="row justify-content-between mb-3" id="filters">
+                <div class="d-flex row justify-content-between mb-3 align-self-end" id="filters">
                     <div class="col-3">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                     </div>

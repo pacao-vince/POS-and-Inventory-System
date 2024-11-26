@@ -2,18 +2,7 @@
 header('Content-Type: application/json');
 
 // Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../includes/db_connection.php';
 
 // Query to fetch daily sales data
 $query = "SELECT 

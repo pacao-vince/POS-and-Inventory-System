@@ -5,18 +5,7 @@ error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory"; 
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../includes/db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['purchase_id'])) {
     $purchase_id = $_POST['purchase_id'];

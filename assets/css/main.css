@@ -11,6 +11,7 @@ body {
 	padding: 0;
 	display: flex;
 	min-height: 100vh;
+	background-color: #ecf0f1;
 	overflow-x: hidden;
 	/* To prevent horizontal scroll */
 }
@@ -26,20 +27,67 @@ header h1 {
 	margin: 0;
 	font-weight: bold;
 }
-.admin-profile {
-	display: flex;
-	align-items: center;
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0; /* Ensure it covers the entire width of the profile */
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	padding: 10px;
+	border-radius: 5px;
+	min-width: 130px;
 }
+
+.dropdown-item {
+	text-decoration: none;
+	color: #333;
+	padding: 8px 16px;
+	display: block;
+	font-size: 20px;
+}
+
+.dropdown-menu:hover,
+.dropdown-item:hover {
+	background-color: #86bbf5;
+	color: #fff;
+}
+
+/* Profile Image Hover */
 .admin-profile img {
-	width: 40px;
-	border-radius: 50%;
-	margin-right: 10px;
+	border: 3px solid #007bff;
+	transition: all 0.3s ease;
 }
+
+.admin-profile img:hover {
+	transform: scale(1.1);
+	border-color: #0056b3;
+}
+
+/* Profile Name Styling */
+.admin-profile span {
+	font-weight: bold;
+	font-size: 16px;
+	color: #333;
+	transition: color 0.3s ease;
+}
+
+.admin-profile:hover span {
+	color: #007bff;
+}
+
+.dashboard-content {
+	flex: 1;
+	flex-direction: column;
+}
+
 .main-content {
 	padding: 20px;
 	margin-left: 200px;
 	background-color: #ecf0f1;
-	width: 100%;
+	width: max-content;
+	overflow-x: auto; /* Add horizontal scrolling */
 	transition: margin-left 0.3s ease;
 }
 
@@ -50,11 +98,19 @@ header h1 {
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	margin-top: 20px;
+	overflow-x: auto; /* Enable horizontal scrolling */
+	white-space: nowrap; /* Prevent table rows from wrapping */
 }
 
 .table-list h1 {
 	margin-bottom: 10px;
 	font-weight: bold;
+}
+
+#filters {
+	display: flex;
+	overflow-x: auto;
+	white-space: nowrap; /* Prevent table rows from wrapping */
 }
 
 /* Style the text inside the input boxes and dropdown */
@@ -93,7 +149,7 @@ header h1 {
 }
 
 .table-list table {
-	width: 100%;
+	width: 1200px;
 	border-collapse: collapse;
 }
 .table-list th,
@@ -388,28 +444,7 @@ button.custom-btn:hover {
 	transition: opacity 1.5s ease;
 }
 
-/*Responsive Styles 
-
-
-@media screen and (max-width: 768px) {
-	.sidebar {
-		transform: translateX(-100%);
-	}
-
-	.sidebar.active {
-		transform: translateX(0);
-	}
-
-	.main-content {
-		margin-left: 0;
-	}
-
-	.main-content.active {
-		margin-left: 250px;
-	}
-} */
-
-.legend-item {
+*/ .legend-item {
 	padding: 5px 10px;
 	border-radius: 4px;
 }
@@ -424,4 +459,16 @@ button.custom-btn:hover {
 	margin-bottom: 20px;
 	height: auto;
 	margin-left: calc(100% - 220px);
+}
+
+@media screen and (max-width: 768px) {
+	.main-content {
+		display: block;
+		margin-left: 30px;
+	}
+
+	th,
+	td {
+		white-space: nowrap; /* Prevents text wrapping */
+	}
 }

@@ -7,17 +7,7 @@ if ($_SESSION['user_type'] !== 'admin') {
 }
 
 include '../includes/sidebar.php';
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../includes/db_connection.php';
 
 $records_per_page = 10;
 
@@ -106,10 +96,7 @@ $daily_sales_total_pages = ceil($daily_sales_total_data['total'] / $records_per_
     <div class="main-content" id="main-content">
         <header>
             <h1>Reports</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="reports-content">
 

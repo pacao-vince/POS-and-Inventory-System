@@ -9,23 +9,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     $username = isset($_POST["username"]) ? $_POST['username'] : '';
     $password = isset($_POST["password"]) ? $_POST['password'] : '';
 
-    // Database connection details
-    $servername = "localhost";
-    $db_username = "root";
-    $db_password = "";
-    $dbname = "pos&inventory";
+    include('includes/db_connection.php');
 
-    // Create a connection using mysqli with error handling
-    $conn = new mysqli($servername, $db_username, $db_password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+    // // Prepare the SQL query to prevent SQL injection
+    // $stmt = $conn->prepare("SELECT * FROM user_management WHERE username = ?");
+    // $stmt->bind_param("s", $username);
+    // $stmt->execute();
+    // $result = $stmt->get_result();
 
-    // Prepare the SQL query to prevent SQL injection
-    $stmt = $conn->prepare("SELECT * FROM user_management WHERE username = ?");
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Direct SQL query WITHOUT prepared statement
+    $query = "SELECT * FROM user_management WHERE username = '$username'";
+    $result = $conn->query($query);
+
+    echo "<script>console.log(" . json_encode($username) . ");</script>";
 
     if ($result->num_rows > 0) {
         $user_data = $result->fetch_assoc();
@@ -42,12 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
                 $user_type = $user_data['user_type'];
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
-
+                $_SESSION['user_id'] = $user_data['user_id'];
+                
                 // Redirect based on user type
                 if ($user_type === 'admin') {
-                    header("Location: ../views/dashboard.php");
+                    header("Location: views/dashboard.php");
                 } elseif ($user_type === 'cashier') {
-                    header("Location: ../views/cashier.php");
+                    header("Location: views/cashier.php");
                 } 
                 exit;
             } else {
@@ -61,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     }
 
     // Close the database connection
-    $stmt->close();
+    // $stmt->close();
     $conn->close();
 }
 ?>
@@ -73,14 +70,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Smart Inventory System</title>
-    <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="assets/css/login.css">
 </head>
 <body>
     <div class="container">
-            <img src="../assets/images/logo.png" alt="Logo" class="logo">
+            <img src="assets/images/logo.png" alt="Logo" class="logo">
 
             <h2>LOGIN</h2>
-            <form action="login.php" method="POST">
+            <form action="index.php" method="POST">
                 <div class="input-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required value="<?php echo htmlspecialchars($username); ?>">
@@ -89,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
                 </div>
                 <div class="input-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required>
+                    <input type="password" id="password" name="password">
                     <!-- Display password error message -->
                     <p class="error"><?php echo $passwordError; ?></p>
                     <span class="toggle-password"></span>
@@ -99,6 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
             </form>
         </div>
     </div>
-    <script src="../controllers/LOGIN.js"></script> 
+    <!-- <script src="controllers/LOGIN.js"></script>  -->
 </body>
 </html>

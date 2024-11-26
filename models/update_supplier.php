@@ -3,18 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory"; 
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../includes/db_connection.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if all required POST variables are set

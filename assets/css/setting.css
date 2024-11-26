@@ -1,0 +1,147 @@
+body {
+	font-family: Arial, sans-serif;
+	font-size: 1.4rem;
+	line-height: 1.2;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	min-height: 100vh;
+	overflow-x: hidden;
+	background-color: #ecf0f1;
+}
+
+h2.mb-4 {
+	color: #000000;
+	text-align: center;
+	font-weight: bold;
+	font-size: 2.1rem;
+}
+
+.card {
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border: none;
+	margin-left: 120px;
+}
+
+.card-body h5 {
+	color: #333;
+	margin-bottom: 15px;
+}
+
+.card-body input {
+	font-size: 12px;
+}
+.form-label {
+	font-weight: bold;
+	color: #555;
+	font-size: 14px;
+}
+
+.btn-primary {
+	margin-bottom: 10px;
+	background-color: #2980b9;
+	color: white;
+	border: none;
+	float: right;
+	padding: 8px 12px;
+	font-size: 12px;
+}
+
+.btn-primary:hover {
+	background-color: #116399;
+}
+
+/* Add spacing between sections */
+.card + .card {
+	margin-top: 30px;
+}
+
+.custom-alert {
+	position: fixed;
+	top: 10px;
+	left: 50%;
+	transform: translateX(-50%);
+	padding: 15px;
+	z-index: 9999;
+	opacity: 0;
+	border-radius: 5px;
+	transition: opacity 0.3s ease;
+	font-size: 16px;
+	margin: 0;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+
+/* General styling for smaller screens */
+@media (max-width: 768px) {
+	body {
+		font-size: 1.4rem;
+		flex-direction: column;
+		padding: 10px;
+	}
+
+	h2.mb-4 {
+		font-size: 1.8rem;
+	}
+
+	.card {
+		margin-left: 200px;
+		margin-top: 15px;
+	}
+
+	.btn-primary {
+		font-size: 10px;
+		padding: 6px 10px;
+	}
+
+	.custom-alert {
+		font-size: 14px;
+		padding: 10px;
+	}
+}
+
+/* Styling for very small screens (mobile devices) */
+@media (max-width: 480px) {
+	h2.mb-4 {
+		font-size: 1.6rem;
+	}
+
+	.card-body h5 {
+		font-size: 1.2rem;
+	}
+
+	.card-body input {
+		font-size: 10px;
+	}
+
+	.btn-primary {
+		font-size: 9px;
+		padding: 5px 8px;
+	}
+
+	.custom-alert {
+		font-size: 12px;
+		padding: 8px;
+	}
+}
+
+/* Styling for larger screens */
+@media (min-width: 1024px) {
+	body {
+		font-size: 1.8rem;
+	}
+
+	h2.mb-4 {
+		font-size: 2.5rem;
+	}
+
+	.card {
+		margin-left: 100px;
+	}
+
+	.btn-primary {
+		font-size: 14px;
+		padding: 10px 14px;
+	}
+}

@@ -11,6 +11,16 @@
 </head>
 
 <body>
+	 <!-- Hamburger Button -->
+	 <button class="hamburger-btn" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+	<!-- Overlay -->
+    <div class="overlay"></div>
+	
 	<div class="sidebar" id="sidebar">
 		<div class="logo">
 			<img src="../assets/images/logo.png" alt="Logo" />
@@ -104,6 +114,9 @@
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		const submenuToggle = document.querySelector(".submenu-toggle")
+		const hamburgerBtn = document.querySelector('.hamburger-btn');
+		const sidebar = document.querySelector('.sidebar');
+		const overlay = document.querySelector('.overlay');
 
 		submenuToggle.addEventListener("click", function (e) {
 			e.preventDefault() // Prevent the default anchor behavior
@@ -146,6 +159,34 @@
                 window.location.href = "../public/logout.php";
             });
 
+            function toggleMenu() {
+                hamburgerBtn.classList.toggle('active');
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+            }
+
+            // Toggle menu when hamburger button is clicked
+            hamburgerBtn.addEventListener('click', toggleMenu);
+
+            // Close menu when overlay is clicked
+            overlay.addEventListener('click', toggleMenu);
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                const isClickInside = sidebar.contains(event.target) || 
+                                    hamburgerBtn.contains(event.target);
+                
+                if (!isClickInside && sidebar.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
+
+            // Close menu on escape key
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && sidebar.classList.contains('active')) {
+                    toggleMenu();
+                }
+            });
 	})
 
 </script>

@@ -1,7 +1,0 @@
-{
- "name": "example/pos-system",
- "description": "A project to handle sales",
- "require": {
-   "mike42/escpos-php": "^4.0"
- }
-}

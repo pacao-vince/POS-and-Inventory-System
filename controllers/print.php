@@ -105,14 +105,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $printer->text(str_repeat("-", 32) . "\n\n");
 
+        // Print the disclaimer centered, but without emphasis
+        $printer->setJustification(Printer::JUSTIFY_CENTER);
+        $printer->text("This will not serve as your\n");
+        $printer->text("official receipt!\n\n\n\n");
+
         $printer->setJustification(Printer::JUSTIFY_CENTER);
         $printer->setEmphasis(true); // Emphasize "THANK YOU" message
-        $printer->text("THANK YOU, COME AGAIN!\n\n\n\n");
+        $printer->text("THANK YOU, COME AGAIN!\n");
         $printer->setEmphasis(false); // Remove emphasis
-
-        // Print the disclaimer centered, but without emphasis
-        $printer->text("This will not serve as your\n");
-        $printer->text("official receipt!\n");
 
         // Feed some extra lines for spacing
         $printer->feed(2);

@@ -61,10 +61,7 @@ if ($supplier_result->num_rows > 0) {
     <div class="main-content" id="main-content">
         <header>
             <h1>Purchases Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
 
         <div class="table-content">

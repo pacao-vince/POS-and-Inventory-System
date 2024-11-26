@@ -1,13 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once '../includes/db_connection.php';
 
 // Check connection
 if ($conn->connect_error) {

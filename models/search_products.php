@@ -4,13 +4,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once '../includes/db_connection.php';
 
 // Check connection
 if ($conn->connect_error) {

@@ -2,18 +2,7 @@
 header('Content-Type: application/json');
 
 // Database connection parameters
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die(json_encode(["error" => "Connection failed: " . $conn->connect_error]));
-}
+require_once '../includes/db_connection.php';
 
 // Query to fetch aggregated bestseller data
 $query = "SELECT p.product_name, SUM(sp.amount) AS total_amount 

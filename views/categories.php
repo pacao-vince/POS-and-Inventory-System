@@ -40,10 +40,7 @@ $total_pages = ceil($total_category / $category_per_page);
     <div class="main-content" id="main-content">
         <header>
             <h1>Category Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         
         <div class="table-content">
@@ -61,8 +58,6 @@ $total_pages = ceil($total_category / $category_per_page);
                     <tbody>
                         <!-- PHP code for displaying categories -->
                         <?php
-                        // Fetch categories from the database in descending order
-                        $result = $conn->query($sql);
 
                         if ($result->num_rows > 0) {
                             while($row = $result->fetch_assoc()) {
