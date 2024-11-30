@@ -53,10 +53,7 @@ $monthly_sales_total_pages = ceil($monthly_sales_total_data['total'] / $records_
     <div class="main-content" id="main-content">
         <header>
             <h1>Reports</h1>
-            <div class="admin-profile">
-                <img src="images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="reports-content">
             <section class="monthly-sales-report">

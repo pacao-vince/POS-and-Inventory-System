@@ -27,20 +27,63 @@ header {
 }
 
 header h1 {
-	font-size: 2.8rem;
+	font-size: 2.4rem;
 	margin: 0;
 	font-weight: bold;
 }
-
-.admin-profile {
-	display: flex;
-	align-items: center;
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0; /* Ensure it covers the entire width of the profile */
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	padding: 10px;
+	border-radius: 5px;
+	min-width: 130px;
 }
 
+.dropdown-item {
+	text-decoration: none;
+	color: #333;
+	padding: 8px 16px;
+	display: block;
+	font-size: 20px;
+}
+
+.dropdown-menu:hover,
+.dropdown-item:hover {
+	background-color: #86bbf5;
+	color: #fff;
+}
+
+/* Profile Image Hover */
 .admin-profile img {
-	width: 40px;
-	border-radius: 50%;
-	margin-right: 10px;
+	border: 3px solid #007bff;
+	transition: all 0.3s ease;
+}
+
+.admin-profile img:hover {
+	transform: scale(1.0333);
+	border-color: #0056b3;
+}
+
+/* Profile Name Styling */
+.admin-profile span {
+	font-weight: bold;
+	font-size: 16px;
+	color: #333;
+	transition: color 0.3s ease;
+}
+
+.admin-profile:hover span {
+	color: #007bff;
+}
+
+.dashboard-content {
+	flex: 1;
+	flex-direction: column;
 }
 
 .reportTable {
@@ -157,9 +200,9 @@ button.custom-btn-gen {
 
 .col-md-3 {
 	margin-top: 0;
-	padding: 15px;
 	width: 250px;
 }
+
 .cashier-cards {
 	margin-bottom: 20px;
 	transition: box-shadow 0.3s, transform 0.3s;
@@ -193,4 +236,15 @@ button.custom-btn-gen {
 	height: 1px; /* Set height for the line */
 	background-color: #6ea7be; /* Set the line color */
 	margin: 10px 0; /* Add some margin above and below the line */
+}
+@media screen and (max-width: 768px) {
+	.main-content {
+		display: block;
+		margin-left: 30px;
+		overflow-x: auto; /* Add horizontal scrolling */
+	}
+	.table-list {
+		overflow-x: auto; /* Enable horizontal scrolling */
+		white-space: nowrap; /* Prevent table rows from wrapping */
+	}
 }

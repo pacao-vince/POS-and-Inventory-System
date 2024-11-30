@@ -1,13 +1,7 @@
 <?php
 header('Content-Type: application/json');
 
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+require_once '../includes/db_connection.php';
 
 // Check connection
 if ($conn->connect_error) {
@@ -24,8 +18,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     error_log('Received data: ' . print_r($data, true)); // Log received data
 
+    // Step 1: Fetch user_id for the given cashier_username
+    $stmt = $conn->prepare("SELECT user_id FROM user_management WHERE username = ?");
+    if (!$stmt) {
+        throw new Exception("Prepare failed: " . $conn->error);
+    }
+
+    $stmt->bind_param('s', $data['cashier_username']);
+    $stmt->execute();
+    $stmt->bind_result($user_id);
+    $stmt->fetch();
+    $stmt->close();
+
     // Prepare the SQL statement to insert sale data
-    $stmt = $conn->prepare("INSERT INTO sales (sub_total, grand_total, payment, change_amount, transaction_time, cashier_username) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO sales (sub_total, grand_total, payment, change_amount, transaction_time, cashier_username, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         error_log('Prepare failed: ' . $conn->error);
         echo json_encode(['success' => false, 'message' => 'Prepare failed: ' . $conn->error]);
@@ -33,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Bind parameters
-    if (!$stmt->bind_param('ddddss', $data['subTotal'], $data['grandTotal'], $data['payment'], $data['change'], $data['transactionTime'], $data['cashier_username'])) {
+    if (!$stmt->bind_param('ddddssi', $data['subTotal'], $data['grandTotal'], $data['payment'], $data['change'], $data['transactionTime'], $data['cashier_username'], $user_id)) {
         error_log('Binding parameters failed: ' . $stmt->error);
         echo json_encode(['success' => false, 'message' => 'Binding parameters failed: ' . $stmt->error]);
         exit;

@@ -20,22 +20,23 @@ include '../includes/sidebar.php';
     <link rel="stylesheet" href="../assets/css/main.css">
     <script>
         function printTable() {
-            // Hide elements that shouldn't be printed
-            var printButton = document.getElementById('printBtn');
-            var sidebar = document.getElementById('sidebar');
-            var header = document.querySelector('header');
+            // Display the current date in the print header
+            const currentDate = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('printDate').innerText = `Date: ${currentDate.toLocaleDateString('en-US', options)}`;
+            
+            // Hide elements that shouldn't appear in the printout
+            document.getElementById('printBtn').style.display = 'none';
+            document.getElementById('sidebar').style.display = 'none';
+            document.querySelector('header').style.display = 'none';
 
-            printButton.style.display = 'none';
-            sidebar.style.display = 'none';
-            header.style.display = 'none';
-
-            // Print the content
+            // Trigger print
             window.print();
 
             // Restore the visibility of hidden elements after printing
-            printButton.style.display = 'block';
-            sidebar.style.display = 'flex';
-            header.style.display = 'flex';
+            document.getElementById('printBtn').style.display = 'block';
+            document.getElementById('sidebar').style.display = 'flex';
+            document.querySelector('header').style.display = 'flex';
         }
     </script>
     <style>
@@ -44,8 +45,8 @@ include '../includes/sidebar.php';
             background-color: #28a745;
             color: #ffffff;
             border: none;
-            padding: 8px 12px;
-            font-size: 1.4rem;
+            padding: 5px 8px;
+            font-size: 1.6rem;
             cursor: pointer;
             transition: background-color 0.3s ease;
             border-radius: 4px;
@@ -56,74 +57,92 @@ include '../includes/sidebar.php';
         #printBtn:hover {
             background-color: #218838;
         }
+
+        .print-header {
+            display: none; 
+        }
+
+        .print-header h1 {
+            font-size: 16pt;
+            font-weight: bold; 
+            margin: 5px 0; 
+        }
+
+        #printDate {
+            font-size: 14pt; 
+            font-weight: normal; 
+            margin-top: 5px; 
+        }
+
         @media print {
-        /* Hide everything except the table and its contents */
-        body * {
-            visibility: hidden;
-        }
+            body * {
+                visibility: hidden;
+            }
 
-        #tableToPrint, #tableToPrint * {
-            visibility: visible;
-        }
+            #tableToPrint, #tableToPrint * {
+                visibility: visible;
+            }
 
-        #tableToPrint {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-        }
+            #tableToPrint {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
 
-        /* Make sure the table is displayed correctly with borders */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
+            .print-header {
+                display: block; 
+                text-align: center;
+                font-size: 16pt;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
 
-        table, th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
+            /* Ensure the table is displayed correctly with borders */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
 
-        th, td {
-            font-size: 12pt; /* Ensure font size is appropriate for printing */
-        }
+            table, th, td {
+                border: 1px solid black;
+                padding: 8px;
+                text-align: left;
+                border-bottom: 1px solid black !important;
+            }
 
-        /* Hide the print button */
-        .printBtn {
-            display: none;
-        }
+            table tr:first-child {
+                background-color: white !important;
+            }
 
-        /* Additional styling for a cleaner print appearance */
-        h1 {
-            font-size: 18pt; /* Adjust heading size for print */
-        }
+            th, td {
+                font-size: 12pt; /* Standardize font size for printing */
+                color: black;    /* Remove color for text */
+                background-color: transparent; /* Ensure a clean appearance */
+            }
 
-        /* Ensure the page background is white */
-        body {
-            background-color: white;
-        }
-
-        /* Remove padding/margins that might affect print layout */
-        .main-content, .inventory-content {
-            margin: 0;
-            padding: 0;
-        }
+            /* Remove the print button */
+            #printBtn {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="main-content" id="main-content">
         <header>
             <h1>Inventory Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
 
         <div class="table-content" id="tableToPrint">
+            <!-- Store Name and Date -->
+            <div class="print-header">
+                <h1>Sheila Grocery Store</h1>
+                <h1>Inventory List</h1>
+                <p id="printDate"></p>
+            </div>
+
             <div class="table-list">
                 <button id="printBtn" onclick="printTable()">  <i class='fas fa-print me-2'></i>Print</button>
                 <table>
@@ -138,72 +157,52 @@ include '../includes/sidebar.php';
                         </tr>
                     </thead>
                     <tbody>
-                            <?php
-                            // Database connection parameters
-                            $servername = "localhost";
-                            $username = "root";
-                            $password = "";
-                            $dbname = "pos&inventory";
+                        <?php
+                        include '../includes/db_connection.php'; 
+                        
+                        $sql = "SELECT 
+                                    p.product_id, 
+                                    p.product_name, 
+                                    c.category_name,
+                                    p.stocks,
+                                    p.threshold,
+                                    COALESCE(s.total_sales, 0) AS total_sales,
+                                    COALESCE(pr.total_purchases, 0) AS total_purchases
+                                FROM 
+                                    products p
+                                LEFT JOIN
+                                    category c
+                                    ON p.category_id = c.category_id
+                                LEFT JOIN 
+                                    (SELECT product_id, SUM(amount) AS total_sales FROM sales_products GROUP BY product_id) s
+                                    ON p.product_id = s.product_id
+                                LEFT JOIN 
+                                    (SELECT product_id, SUM(purchase_amount) AS total_purchases FROM purchases GROUP BY product_id) pr
+                                    ON p.product_id = pr.product_id;";
 
+                        $result = $conn->query($sql);
 
-                            // Create connection
-                            $conn = new mysqli($servername, $username, $password, $dbname);
-
-                            // Check connection
-                            if ($conn->connect_error) {
-                                die("Connection failed: " . $conn->connect_error);
-                            }
-
-                            // Fetch products from database
-                            $sql = "SELECT 
-                                        p.product_id, 
-                                        p.product_name, 
-                                        c.category_name,
-                                        p.stocks,
-                                        p.threshold,
-                                        COALESCE(s.total_sales, 0) AS total_sales,
-                                        COALESCE(pr.total_purchases, 0) AS total_purchases
-                                    FROM 
-                                        products p
-                                    LEFT JOIN
-                                        category c
-                                        ON p.category_id = c.category_id
-                                    LEFT JOIN 
-                                        (SELECT product_id, SUM(amount) AS total_sales FROM sales_products GROUP BY product_id) s
-                                        ON p.product_id = s.product_id
-                                    LEFT JOIN 
-                                        (SELECT product_id, SUM(purchase_amount) AS total_purchases FROM purchases GROUP BY product_id) pr
-                                        ON p.product_id = pr.product_id;
-                                    ";
-
-                            $result = $conn->query($sql);
-
-                            // Check if the query was successful
-                            if ($result === false) {
-                                echo "Error: " . $conn->error;
-                            } else {
-                                // Check if there are any rows
-                                if ($result->num_rows > 0) {
-                                    // Output data of each row
-                                    while ($row = $result->fetch_assoc()) {
-                                        // Set the threshold value for low stock
-                                        $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
-                                        echo "<tr>
-                                                <td>" . htmlspecialchars($row["product_id"]) . "</td>
-                                                <td>" . htmlspecialchars($row["product_name"]) . "</td>
-                                                <td>" . htmlspecialchars($row["category_name"]) . "</td>
-                                                <td>₱" . number_format($row["total_purchases"], 2) . "</td>
-                                                <td>₱" . number_format($row["total_sales"], 2) . "</td>
-                                                <td><span class='$stockClass'>" . htmlspecialchars($row["stocks"]) . "</span></td>
-                                            </tr>";
-                                    }
-                                } else {
-                                    echo "<tr><td colspan='6'>No products found</td></tr>";
+                        if ($result === false) {
+                            echo "Error: " . $conn->error;
+                        } else {
+                            if ($result->num_rows > 0) {
+                                while ($row = $result->fetch_assoc()) {
+                                    echo "<tr>
+                                            <td>" . htmlspecialchars($row["product_id"]) . "</td>
+                                            <td>" . htmlspecialchars($row["product_name"]) . "</td>
+                                            <td>" . htmlspecialchars($row["category_name"]) . "</td>
+                                            <td>₱" . number_format($row["total_purchases"], 2) . "</td>
+                                            <td>₱" . number_format($row["total_sales"], 2) . "</td>
+                                            <td>" . htmlspecialchars($row["stocks"]) . "</td>
+                                        </tr>";
                                 }
+                            } else {
+                                echo "<tr><td colspan='6'>No products found</td></tr>";
                             }
+                        }
 
-                            $conn->close();
-                            ?>
+                        $conn->close();
+                        ?>
                     </tbody>
                 </table>
             </div>

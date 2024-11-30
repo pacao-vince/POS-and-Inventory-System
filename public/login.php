@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once '../includes/db_connection.php';
 
 // Initialize variables to avoid undefined variable errors
 $username = $usernameError = $passwordError = $archivedError = "";  // Initialize error variables
@@ -8,18 +9,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
     // Retrieve form data
     $username = isset($_POST["username"]) ? $_POST['username'] : '';
     $password = isset($_POST["password"]) ? $_POST['password'] : '';
-
-    // Database connection details
-    $servername = "localhost";
-    $db_username = "root";
-    $db_password = "";
-    $dbname = "pos&inventory";
-
-    // Create a connection using mysqli with error handling
-    $conn = new mysqli($servername, $db_username, $db_password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
 
     // Prepare the SQL query to prevent SQL injection
     $stmt = $conn->prepare("SELECT * FROM user_management WHERE username = ?");
@@ -42,7 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["login"])) {
                 $user_type = $user_data['user_type'];
                 $_SESSION['username'] = $username;
                 $_SESSION['user_type'] = $user_type;
-
+                $_SESSION['user_id'] = $user_data['user_id'];
+                
                 // Redirect based on user type
                 if ($user_type === 'admin') {
                     header("Location: ../views/dashboard.php");

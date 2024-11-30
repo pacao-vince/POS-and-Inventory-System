@@ -28,10 +28,7 @@
     <div class="main-content" id="main-content">
         <header>
             <h1>Archived Users</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="table-content">
             <div class="table-list" id="userTableContainer">
@@ -52,18 +49,7 @@
                     <tbody>
                         <?php
                         // Database connection
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $dbname = "pos&inventory";
-
-                        // Create connection
-                        $conn = new mysqli($servername, $username, $password, $dbname);
-
-                        // Check connection
-                        if ($conn->connect_error) {
-                            die("Connection failed: " . $conn->connect_error);
-                        }
+                        include '../includes/db_connection.php';
 
                         // Pagination variables
                         $archived_users_per_page = 10; // Number of users per page

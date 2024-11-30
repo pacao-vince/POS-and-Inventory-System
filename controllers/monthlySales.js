@@ -29,9 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Add Bootstrap for styling the table and custom styles
         printWindow.document.write('<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">');
-        printWindow.document.write('<style>table { width: 100%; } th, td { padding: 8px; text-align: center;  border: 1px solid black; } h2 {margin-bottom:10px;} p {float:right}</style>');
+        printWindow.document.write('<style>table { width: 100%; } th, td { padding: 8px; text-align: center;  border: 1px solid black; } h2 {text-align: center; margin-bottom: 10px; font-size: 16px } p {float:right}</style>');
         
         printWindow.document.write('</head><body>');
+        printWindow.document.write('<h2>Sheila Grocery Store</h2>');
         printWindow.document.write('<h2>Monthly Sales Report</h2>'); // Adding a report header
         printWindow.document.write('<p>Date: ' + date + '</p>');
         printWindow.document.write(printContent); // Include only the table
@@ -63,22 +64,28 @@ function generateMonthlySalesReportPDF() {
     // Temporarily add styles for PDF generation
     const style = document.createElement('style');
     style.innerHTML = `
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { padding: 10px; text-align: center; border: 1px solid black; font-family: Arial, sans-serif; font-size: 14px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; border: 1px solid black; }
+        th, td { padding: 10px; text-align: center; border: 1px solid black !important; font-family: Arial, sans-serif; font-size: 14px;  box-sizing: border-box; }
         th { background-color: #f2f2f2; font-weight: bold; }
-        h2 { font-family: Arial, sans-serif; font-size: 22px; font-weight: bold; text-align:center; margin-bottom: 10px; }
-        p { text-align: right; font-family: Arial, sans-serif; margin-top: 10px; margin-bottom: 0; }
+        h2 { font-family: Arial, sans-serif; font-size: 14px; font-weight: bold; text-align: center; margin-bottom: 10px; }
+        p { text-align: right; font-family: Arial, sans-serif; margin-top: 10px; margin-bottom: 0; font-size: 14px; }
     `;
     document.head.appendChild(style);
 
     // Create a temporary container with only the <h2> and table
-    const h2 = document.querySelector('.monthly-sales-report h2').cloneNode(true); // Clone the h2 element
-    const table = document.querySelector('.monthly-sales-report table').cloneNode(true); // Clone the table element
+        const tempContainer = document.createElement('div');
+        const storeName = document.createElement('h2');
+        storeName.textContent = 'Sheila Grocery Store'; // Store name
+        const h2 = document.createElement('h2');
+        h2.textContent = 'Monthly Sales Report';
+        const date = document.createElement('p');
+        date.textContent = `Date: ${new Date().toLocaleDateString()}`;
+        const table = document.querySelector('.monthly-sales-report table').cloneNode(true);
 
-    const tempContainer = document.createElement('div'); // Create a temporary container
-    tempContainer.appendChild(h2); // Append the cloned h2
-    tempContainer.appendChild(table); // Append the cloned table
-
+        tempContainer.appendChild(storeName);
+        tempContainer.appendChild(h2);
+        tempContainer.appendChild(date);
+        tempContainer.appendChild(table);
     // Use the temporary container for generating the PDF
     html2pdf()
         .from(tempContainer)

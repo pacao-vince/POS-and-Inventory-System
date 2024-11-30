@@ -1,16 +1,6 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die(json_encode(["Error" => "Connection failed: " . $conn->connect_error]));
-}
+require_once '../includes/db_connection.php';
 
 // Fetch product details
 if (isset($_GET['supplier_id'])) {

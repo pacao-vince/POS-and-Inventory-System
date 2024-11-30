@@ -10,13 +10,17 @@ include "../includes/db_connection.php";
 include '../includes/sidebar.php'; 
 
 // Fetch distinct cashier usernames for the dropdown
-$cashierQuery = "SELECT DISTINCT cashier_username FROM sales";
+$cashierQuery = "SELECT DISTINCT username FROM sales
+                JOIN user_management ON sales.user_id = user_management.user_id";
 $cashierResult = $conn->query($cashierQuery);
 
 // Check for query errors
 if (!$cashierResult) {
     die("Query failed: " . $conn->error);
 }
+// Query to fetch cashier usernames 
+$cashierQuery = "SELECT cashier_username FROM sales"; // Adjust the table name and column name as needed 
+$cashierResult = $conn->query($cashierQuery);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,51 +31,73 @@ if (!$cashierResult) {
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/main.css">
-    
+    <style>
+        @media screen and (max-width: 768px) {
+            #filters {
+                display: grid; /* Use grid layout */
+                grid-template-columns: 1fr 1fr 1fr; /* Two columns: first column for search and second for other filters */
+                gap: 10px; /* Spacing between filters */
+                width: 100%;
+            }
+
+            /* Ensure the first filter (search input) occupies the full width of the row */
+            #filters .col-4 {
+                grid-column: span 3; /* Take full width in the first row */
+                width: 100%;
+            }
+
+            /* Allow the other filters to stay in one grid column */
+            #filters .col-2 {
+                grid-column: span 1;
+                width: 100% !important; /* Ensure they take full width */
+                max-width: none; /* Remove any max-width restrictions */
+                flex-shrink: 0; /* Prevent shrinking */
+            }
+
+            .col-form-label{
+                padding: 0;
+            }
+            
+        }
+    </style>
 </head>
 
 <body>
-
     <div class="main-content" id="main-content">
         <header>
             <h1>Sales Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         
         <div class="table-content" id="products">
             <section class="table-list">
-                <div class="form-row mb-2" id="filters">
-                <div class="col-3">
-                    <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
-                </div>
+                <div class="form-row mb-3" id="filters">
+                    <div class="col-4">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
+                    </div>
 
-                <div class="form-group row ml-auto mr-3">
-                    <label for="startDate" class="col col-form-label">From:</label>
-                    <div class="col-auto">
+                    <div class="col-2 d-flex align-items-center ml-auto mr-5">
+                        <label for="startDate" class="col-auto col-form-label mr-2">From:</label>
                         <input type="date" class="form-control" id="startDate" name="startDate">
                     </div>
-                </div>
-                <div class="form-group row mr-3">
-                    <label for="endDate" class="col col-form-label">To:</label>
-                    <div class="col-auto">
+                    
+                    <div class="col-2 d-flex align-items-center mr-3">
+                        <label for="endDate" class="col-auto col-form-label mr-2">To:</label>
                         <input type="date" class="form-control" id="endDate" name="endDate">
                     </div>
+
+                    <div class="col-2 d-flex align-items-center">
+                        <label for="cashierDropdown" class="col-auto col-form-label mr-2">Cashier:</label>
+                            <select class="form-select w-100" id="cashierDropdown" name="cashierDropdown">
+                                <option value="All">All</option>
+                                <?php while ($cashierRow = $cashierResult->fetch_assoc()) { ?>
+                                    <option value="<?php echo htmlspecialchars($cashierRow['cashier_username']); ?>">
+                                        <?php echo htmlspecialchars($cashierRow['cashier_username']); ?>
+                                    </option>
+                                <?php } ?>
+                            </select>  
+                    </div>
                 </div>
-                <div class="form-group row mr-2">
-                    <label for="cashierDropdown" class=" col col-form-label">Cashier:</label>
-                        <select class="col-auto form-select" id="cashierDropdown" name="cashierDropdown">
-                            <option value="All">All</option>
-                            <?php while ($cashierRow = $cashierResult->fetch_assoc()) { ?>
-                                <option value="<?php echo htmlspecialchars($cashierRow['cashier_username']); ?>">
-                                    <?php echo htmlspecialchars($cashierRow['cashier_username']); ?>
-                                </option>
-                            <?php } ?>
-                        </select>  
-                </div>
-            </div>
                 
                 <table class="Table">
                     <thead>
@@ -83,11 +109,23 @@ if (!$cashierResult) {
                             <th>Amount</th>
                             <th>Payment</th>
                             <th>Change</th>
-                            <th>Cashier</th>
+                            <th> Cashier
+                                <!-- <div class="form-group row mr-2"> 
+                                    <label for="cashierDropdown" class="col col-form-label">Cashier:</label> 
+                                    <select class="col-auto form-select" id="cashierDropdown" name="cashierDropdown"> 
+                                        <option value="All">All</option> 
+                                        <?php while ($cashierRow = $cashierResult->fetch_assoc()) { ?> 
+                                            <option value="<?php echo htmlspecialchars($cashierRow['username']); ?>"> 
+                                                <?php echo htmlspecialchars($cashierRow['username']); ?> 
+                                            </option> 
+                                        <?php } ?> 
+                                    </select> 
+                                </div> -->
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php
+                    <?php
 
                     // Pagination variables
                     $sales_per_page = 10; // Number of sales per page
@@ -101,23 +139,24 @@ if (!$cashierResult) {
                     $total_sales = $total_row['total'];
                     $total_pages = ceil($total_sales / $sales_per_page);
 
-                        // Fetch sales with limit and offset
-                        $sql = "SELECT 
-                                    sales.sale_id,
-                                    sales.transaction_time,
-                                    products.product_name,
-                                    sales_products.quantity,
-                                    sales_products.amount,
-                                    sales.payment,
-                                    sales.change_amount,
-                                    sales.cashier_username
-                                FROM sales
-                                JOIN sales_products ON sales.sale_id = sales_products.sale_id
-                                JOIN products ON sales_products.product_id = products.product_id
-                                ORDER BY sales.sale_id DESC 
-                                LIMIT $offset, $sales_per_page";
-                        
-                        $result = $conn->query($sql);
+                    // Fetch sales with limit and offset
+                    $sql = "SELECT 
+                                sales.sale_id,
+                                sales.transaction_time,
+                                products.product_name,
+                                sales_products.quantity,
+                                sales_products.amount,
+                                sales.payment,
+                                sales.change_amount,
+                                user_management.username 
+                            FROM sales
+                            JOIN sales_products ON sales.sale_id = sales_products.sale_id
+                            JOIN products ON sales_products.product_id = products.product_id
+                            LEFT JOIN user_management ON sales.user_id = user_management.user_id
+                            ORDER BY sales.sale_id DESC 
+                            LIMIT $offset, $sales_per_page";
+                    
+                    $result = $conn->query($sql);
 
                     // Check for query errors 
                     if (!$result) {
@@ -141,7 +180,7 @@ if (!$cashierResult) {
                                     <td>₱ " . $row["amount"] . "</td>
                                     <td>₱ " . $row["payment"] . "</td>
                                     <td>₱ " . $row["change_amount"] . "</td>
-                                    <td class='cashier'>" . $row["cashier_username"] . "</td>
+                                    <td class='cashier'>" . $row["username"] . "</td>
                                 </tr>";
                         }
                     } else {
@@ -151,30 +190,30 @@ if (!$cashierResult) {
                     $conn->close();
                     
                     ?>
-                </tbody>
-            </table>
-            <div class="pagination">
-                <?php if ($current_page > 1): ?>
-                    <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
-                <?php else: ?>
-                    <span class="disabled">Previous</span>
-                <?php endif; ?>
+                    </tbody>
+                </table>
+                <div class="pagination">
+                    <?php if ($current_page > 1): ?>
+                        <a href="?page=<?php echo $current_page - 1; ?>">Previous</a>
+                    <?php else: ?>
+                        <span class="disabled">Previous</span>
+                    <?php endif; ?>
 
-                <?php for ($page = 1; $page <= $total_pages; $page++): ?>
-                    <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>>
-                        <?php echo $page; ?>
-                    </a>
-                <?php endfor; ?>
+                    <?php for ($page = 1; $page <= $total_pages; $page++): ?>
+                        <a href="?page=<?php echo $page; ?>"<?php echo $page == $current_page ? ' class="active"' : ''; ?>>
+                            <?php echo $page; ?>
+                        </a>
+                    <?php endfor; ?>
 
-                <?php if ($current_page < $total_pages): ?>
-                    <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
-                <?php else: ?>
-                    <span class="disabled">Next</span>
-                <?php endif; ?>
-            </div>
-        </section>
+                    <?php if ($current_page < $total_pages): ?>
+                        <a href="?page=<?php echo $current_page + 1; ?>">Next</a>
+                    <?php else: ?>
+                        <span class="disabled">Next</span>
+                    <?php endif; ?>
+                </div>
+            </section>
+        </div>
     </div>
-
     <script src="../controllers/sales.js"></script>
 </body>
 </html>

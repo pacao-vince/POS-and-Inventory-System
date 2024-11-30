@@ -214,7 +214,7 @@ if (isset($_GET['barcode'])) {
   <!-- Save Sale Confirmation Modal -->
 <div class="modal fade" id="saveSaleConfirmationModal" tabindex="-1" role="dialog" aria-labelledby="saveSaleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;"> <
+        <div class="modal-content rounded-3 shadow-lg" style="padding: 20px; width: 350px;"> 
             <div class="modal-header border-0" style="padding: 0 10px;"> 
                 <h5 class="modal-title w-100 text-center text-primary font-weight-bold" id="saveSaleModalLabel">Save Transaction</h5>
             </div>

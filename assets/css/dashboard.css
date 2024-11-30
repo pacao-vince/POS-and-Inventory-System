@@ -13,6 +13,7 @@ body {
 	margin: 0;
 	padding: 0;
 	display: flex;
+	background-color: #ecf0f1;
 }
 
 .main-content {
@@ -30,17 +31,61 @@ header {
 	margin-bottom: 20px;
 }
 header h1 {
-	margin: 0;
+	align-items: center;
 	font-weight: bold;
 }
-.admin-profile {
-	display: flex;
-	align-items: center;
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0; /* Ensure it covers the entire width of the profile */
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	padding: 10px 16px;
+	border-radius: 5px;
+	min-width: max-content;
 }
+
+.dropdown-item {
+	text-decoration: none;
+	color: #333;
+	display: block;
+	font-size: 20px;
+}
+
+.dropdown-menu:hover,
+.dropdown-item:hover {
+	background-color: #86bbf5;
+	color: #fff;
+}
+
+/* Profile Image Hover */
 .admin-profile img {
-	width: 40px;
-	border-radius: 50%;
-	margin-right: 10px;
+	border: 2px solid #007bff;
+	transition: all 0.3s ease;
+}
+
+.admin-profile img:hover {
+	transform: scale(1.0333);
+	border-color: #0056b3;
+}
+
+/* Profile Name Styling */
+.admin-profile span {
+	font-weight: bold;
+	font-size: 16px;
+	color: #333;
+	transition: color 0.3s ease;
+}
+
+.admin-profile:hover span {
+	color: #007bff;
+}
+
+.dashboard-content {
+	flex: 1;
+	flex-direction: column;
 }
 
 .dashboard-content {
@@ -173,13 +218,17 @@ header h1 {
 }
 
 @media screen and (max-width: 768px) {
+	.main-content {
+		margin-left: 30px;
+		width: 100%;
+	}
 	.stats {
 		flex: 1;
 		flex-wrap: wrap;
 		gap: 20px;
 	}
 	.stat-item {
-		flex: 1;
+		flex: 1 1 calc(50% - 10px); /* 50% width minus half the gap */
 		margin-bottom: 0;
 	}
 	.charts {
@@ -191,21 +240,5 @@ header h1 {
 	.sales-graph,
 	.bestseller-products {
 		width: auto;
-	}
-
-	.sidebar {
-		transform: translateX(-100%);
-	}
-
-	.sidebar.active {
-		transform: translateX(0);
-	}
-
-	.main-content {
-		margin-left: 0;
-	}
-
-	.main-content.active {
-		margin-left: 200px;
 	}
 }

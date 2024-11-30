@@ -42,21 +42,24 @@ $total_pages = ceil($total_products / $products_per_page);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../assets/css/main.css">
-
+    <style>
+        @media screen and (max-width: 768px) {
+            #filters {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="main-content" id="main-content">
         <header>
             <h1>Product Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="table-content" id="products">
             <section class="table-list">
-                <div class="row justify-content-between mb-3" id="filters">
-                    <div class="col-3">
+                <div class="d-flex row justify-content-between mb-3 align-self-end" id="filters">
+                    <div class="col-4">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                     </div>
                     <div class="col-3 ml-auto">

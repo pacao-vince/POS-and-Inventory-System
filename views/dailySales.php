@@ -7,17 +7,7 @@ if ($_SESSION['user_type'] !== 'admin') {
 }
 
 include '../includes/sidebar.php';
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "pos&inventory";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once '../includes/db_connection.php';
 
 $records_per_page = 10;
 
@@ -32,21 +22,23 @@ $daily_sales_offset = ($daily_sales_page - 1) * $records_per_page;
 if ($cashier_username) {
     // If a specific cashier is selected, show their transactions
     $daily_sales_sql = "
-        SELECT transaction_time, grand_total 
-        FROM sales 
-        WHERE DATE(transaction_time) = CURDATE() 
-        AND cashier_username = ? 
-        ORDER BY transaction_time DESC  
+        SELECT s.transaction_time, s.grand_total 
+        FROM sales s
+        JOIN user_management u ON s.user_id = u.user_id
+        WHERE DATE(s.transaction_time) = CURDATE() 
+        AND u.username = ? 
+        ORDER BY s.transaction_time DESC  
         LIMIT $records_per_page OFFSET $daily_sales_offset";
     $stmt = $conn->prepare($daily_sales_sql);
     $stmt->bind_param('s', $cashier_username);
 } else {
     // If no cashier is selected, show all transactions for today
     $daily_sales_sql = "
-        SELECT transaction_time, grand_total 
-        FROM sales 
-        WHERE DATE(transaction_time) = CURDATE() 
-        ORDER BY transaction_time DESC  
+        SELECT s.transaction_time, s.grand_total 
+        FROM sales s
+        JOIN user_management u ON s.user_id = u.user_id
+        WHERE DATE(s.transaction_time) = CURDATE() 
+        ORDER BY s.transaction_time DESC  
         LIMIT $records_per_page OFFSET $daily_sales_offset";
     $stmt = $conn->prepare($daily_sales_sql);
 }
@@ -59,7 +51,7 @@ $cashier_sql = "
 SELECT u.username AS cashier_username, 
         COALESCE(SUM(s.grand_total), 0) AS total_sales 
     FROM user_management u 
-    LEFT JOIN sales s ON u.username = s.cashier_username 
+    LEFT JOIN sales s ON u.user_id = s.user_id 
                     AND DATE(s.transaction_time) = CURDATE() 
     WHERE u.user_type = 'cashier' 
     GROUP BY u.username";
@@ -106,10 +98,7 @@ $daily_sales_total_pages = ceil($daily_sales_total_data['total'] / $records_per_
     <div class="main-content" id="main-content">
         <header>
             <h1>Reports</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+            <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="reports-content">
 

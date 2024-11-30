@@ -11,6 +11,7 @@ body {
 	padding: 0;
 	display: flex;
 	min-height: 100vh;
+	background-color: #ecf0f1;
 	overflow-x: hidden;
 	/* To prevent horizontal scroll */
 }
@@ -20,27 +21,73 @@ header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	margin-bottom: 20px;
+	margin-bottom: 16px;
 }
 header h1 {
 	margin: 0;
 	font-weight: bold;
 }
-.admin-profile {
-	display: flex;
-	align-items: center;
+.dropdown-menu {
+	display: none;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	right: 0; /* Ensure it covers the entire width of the profile */
+	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	padding: 10px 16px;
+	border-radius: 5px;
+	min-width: 130px;
 }
+
+.dropdown-item {
+	text-decoration: none;
+	color: #333;
+	display: block;
+	font-size: 20px;
+}
+
+.dropdown-menu:hover,
+.dropdown-item:hover {
+	background-color: #86bbf5;
+	color: #fff;
+}
+
+/* Profile Image Hover */
 .admin-profile img {
-	width: 40px;
-	border-radius: 50%;
-	margin-right: 10px;
+	border: 2px solid #007bff;
+	transition: all 0.3s ease;
 }
+
+.admin-profile img:hover {
+	transform: scale(1.0333);
+	border-color: #0056b3;
+}
+
+/* Profile Name Styling */
+.admin-profile span {
+	font-weight: bold;
+	font-size: 16px;
+	color: #333;
+	transition: color 0.3s ease;
+}
+
+.admin-profile:hover span {
+	color: #007bff;
+}
+
+.dashboard-content {
+	flex: 1;
+	flex-direction: column;
+}
+
 .main-content {
 	padding: 20px;
 	margin-left: 200px;
 	background-color: #ecf0f1;
 	width: 100%;
 	transition: margin-left 0.3s ease;
+	overflow-x: hidden; /* Add horizontal scrolling */
 }
 
 .table-list {
@@ -49,7 +96,7 @@ header h1 {
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	margin-top: 20px;
+	margin-top: 16px;
 }
 
 .table-list h1 {
@@ -205,7 +252,7 @@ form label {
 form .form-control,
 form .form-select {
 	font-size: 1.6rem;
-	width: calc(100% - 20px); /* Full width minus padding */
+	width: calc(100%); /* Full width minus padding */
 	margin-bottom: 10px;
 	border: 1px solid #ddd;
 	border-radius: 4px; /* Rounded corners */
@@ -239,7 +286,7 @@ form .form-select {
 
 .pagination {
 	text-align: center;
-	margin-top: 20px;
+	margin-top: 16px;
 	justify-content: center;
 }
 
@@ -388,27 +435,6 @@ button.custom-btn:hover {
 	transition: opacity 1.5s ease;
 }
 
-/*Responsive Styles 
-
-
-@media screen and (max-width: 768px) {
-	.sidebar {
-		transform: translateX(-100%);
-	}
-
-	.sidebar.active {
-		transform: translateX(0);
-	}
-
-	.main-content {
-		margin-left: 0;
-	}
-
-	.main-content.active {
-		margin-left: 250px;
-	}
-} */
-
 .legend-item {
 	padding: 5px 10px;
 	border-radius: 4px;
@@ -421,7 +447,25 @@ button.custom-btn:hover {
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
-	margin-bottom: 20px;
+	margin-bottom: 16px;
 	height: auto;
 	margin-left: calc(100% - 220px);
+}
+
+@media screen and (max-width: 768px) {
+	.main-content {
+		display: block;
+		margin-left: 30px;
+		overflow-x: auto; /* Add horizontal scrolling */
+	}
+
+	.table-list {
+		overflow-x: auto; /* Enable horizontal scrolling */
+		white-space: nowrap; /* Prevent table rows from wrapping */
+	}
+
+	th,
+	td {
+		white-space: nowrap; /* Prevents text wrapping */
+	}
 }

@@ -38,10 +38,7 @@ $total_pages = ceil($total_supplier / $supplier_per_page);
     <div class="main-content" id="main-content">
         <header>
         <h1>Supplier Management</h1>
-            <div class="admin-profile">
-                <img src="../assets/images/account-avatar-profile-user-14-svgrepo-com.png" alt="Admin">
-                <span>Administrator</span>
-            </div>
+         <?php include '../views/settings_dropdown.php'; ?>
         </header>
         <div class="table-content" id="supplier">
             <section class="table-list">
