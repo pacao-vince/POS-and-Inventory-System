@@ -65,7 +65,7 @@ header h1 {
 }
 
 .admin-profile img:hover {
-	transform: scale(1.0333);
+	transform: scale(1.1);
 	border-color: #0056b3;
 }
 

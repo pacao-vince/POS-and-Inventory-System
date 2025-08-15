@@ -24,13 +24,13 @@ function checkSessionTimeout() {
 function logout() {
     session_unset();
     session_destroy();
-    header('Location: ../public/login.php');
+    header('Location: ../index.php');
     exit();
 }
 
 // Run session checks if user is logged in
 if (!isLoggedIn()) {
-    header('Location: ../public/login.php');
+    header('Location: ../index.php');
     exit();
 } else {
     checkSessionTimeout();

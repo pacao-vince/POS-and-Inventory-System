@@ -50,7 +50,7 @@ include '../includes/sidebar.php';
             cursor: pointer;
             transition: background-color 0.3s ease;
             border-radius: 4px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             float: right;
         }
 

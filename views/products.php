@@ -59,8 +59,8 @@ $total_pages = ceil($total_products / $products_per_page);
         </header>
         <div class="table-content" id="products">
             <section class="table-list">
-                <div class="d-flex row g-0 justify-content-between mb-3 align-self-end" id="filters">
-                    <div class="col-4">
+                <div class="d-flex row justify-content-between mb-3 align-self-end" id="filters">
+                    <div class="col-3">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                     </div>
                     <div class="col-3 ml-auto">

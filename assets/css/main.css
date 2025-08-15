@@ -11,7 +11,7 @@ body {
 	padding: 0;
 	display: flex;
 	min-height: 100vh;
-	background-color: #2c3e50;
+	background-color: #ecf0f1;
 	overflow-x: hidden;
 	/* To prevent horizontal scroll */
 }
@@ -35,7 +35,7 @@ header h1 {
 	right: 0; /* Ensure it covers the entire width of the profile */
 	box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
 	z-index: 1;
-	padding: 10px 16px;
+	padding: 10px;
 	border-radius: 5px;
 	min-width: 130px;
 }
@@ -43,6 +43,7 @@ header h1 {
 .dropdown-item {
 	text-decoration: none;
 	color: #333;
+	padding: 8px 16px;
 	display: block;
 	font-size: 20px;
 }
@@ -55,12 +56,12 @@ header h1 {
 
 /* Profile Image Hover */
 .admin-profile img {
-	border: 2px solid #007bff;
+	border: 3px solid #007bff;
 	transition: all 0.3s ease;
 }
 
 .admin-profile img:hover {
-	transform: scale(1.0333);
+	transform: scale(1.1);
 	border-color: #0056b3;
 }
 
@@ -85,7 +86,8 @@ header h1 {
 	padding: 20px;
 	margin-left: 200px;
 	background-color: #ecf0f1;
-	width: 100%;
+	width: max-content;
+	overflow-x: auto; /* Add horizontal scrolling */
 	transition: margin-left 0.3s ease;
 	overflow-x: hidden; /* Add horizontal scrolling */
 }
@@ -96,12 +98,20 @@ header h1 {
 	padding: 20px;
 	border-radius: 8px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	margin-top: 16px;
+	margin-top: 20px;
+	overflow-x: auto; /* Enable horizontal scrolling */
+	white-space: nowrap; /* Prevent table rows from wrapping */
 }
 
 .table-list h1 {
 	margin-bottom: 10px;
 	font-weight: bold;
+}
+
+#filters {
+	display: flex;
+	overflow-x: auto;
+	white-space: nowrap; /* Prevent table rows from wrapping */
 }
 
 /* Style the text inside the input boxes and dropdown */
@@ -140,7 +150,7 @@ header h1 {
 }
 
 .table-list table {
-	width: 100%;
+	width: 1200px;
 	border-collapse: collapse;
 }
 .table-list th,
@@ -435,7 +445,7 @@ button.custom-btn:hover {
 	transition: opacity 1.5s ease;
 }
 
-.legend-item {
+*/ .legend-item {
 	padding: 5px 10px;
 	border-radius: 4px;
 }
@@ -455,13 +465,7 @@ button.custom-btn:hover {
 @media screen and (max-width: 768px) {
 	.main-content {
 		display: block;
-		margin-left: 50px;
-		overflow-x: auto; /* Add horizontal scrolling */
-	}
-
-	.table-list {
-		overflow-x: auto; /* Enable horizontal scrolling */
-		white-space: nowrap; /* Prevent table rows from wrapping */
+		margin-left: 30px;
 	}
 
 	th,
