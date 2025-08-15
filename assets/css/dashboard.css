@@ -219,7 +219,7 @@ header h1 {
 
 @media screen and (max-width: 768px) {
 	.main-content {
-		margin-left: 30px;
+		margin-left: 50px;
 		width: 100%;
 	}
 	.stats {

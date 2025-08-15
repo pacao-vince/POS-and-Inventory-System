@@ -51,7 +51,7 @@ $cashier_sql = "
 SELECT u.username AS cashier_username, 
         COALESCE(SUM(s.grand_total), 0) AS total_sales 
     FROM user_management u 
-    LEFT JOIN sales s ON u.user_id = s.user_id 
+    JOIN sales s ON u.user_id = s.user_id 
                     AND DATE(s.transaction_time) = CURDATE() 
     WHERE u.user_type = 'cashier' 
     GROUP BY u.username";
@@ -61,9 +61,10 @@ $cashiers_result = $conn->query($cashier_sql);
 if ($cashier_username) {
     $daily_sales_total_sql = "
         SELECT COUNT(grand_total) AS total 
-        FROM sales 
+        FROM sales s
+        JOIN user_management u ON s.user_id = u.user_id
         WHERE DATE(transaction_time) = CURDATE() 
-        AND cashier_username = ?";
+        AND u.username = ?";
     $stmt_total = $conn->prepare($daily_sales_total_sql);
     $stmt_total->bind_param('s', $cashier_username);
 } else {

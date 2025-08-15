@@ -1,59 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
 	const editButtons = document.querySelectorAll(".editBtn");
-	const searchInput = document.getElementById("searchInput");
-	const categoryDropdown = document.getElementById("categoryDropdown");
-	const categoryFilterItems = document.querySelectorAll(
-		"#categoryFilter .dropdown-item"
-	);
-	const productsTable = document.getElementById("products");
-	const tableRows = productsTable
-		.getElementsByTagName("tbody")[0]
-		.getElementsByTagName("tr");
-
-	// Function to filter products based on search and category
-	function filterProducts() {
-		const searchTerm = searchInput.value.toLowerCase();
-		const selectedCategory =
-			categoryDropdown.getAttribute("data-selected-category") || "";
-
-		Array.from(tableRows).forEach((row) => {
-			const productName = row
-				.querySelector(".product-name")
-				.textContent.toLowerCase();
-			const category = row.cells[3].textContent.toLowerCase();
-
-			const matchesSearch = productName.includes(searchTerm);
-			const matchesCategory =
-				!selectedCategory || category === selectedCategory;
-
-			row.style.display = matchesSearch && matchesCategory ? "" : "none";
-		});
-	}
-
-	// Event Listener for Search Input
-	searchInput.addEventListener("input", filterProducts);
-
-	// Event Listener for Category Dropdown
-	categoryFilterItems.forEach((item) => {
-		item.addEventListener("click", function (event) {
-			event.preventDefault(); // Prevent default link behavior
-			const selectedCategory = item
-				.getAttribute("data-value")
-				.toLowerCase();
-			const selectedCategoryText = item.textContent;
-
-			// Update button text and data attribute
-			categoryDropdown.querySelector("span.me-1").textContent =
-				selectedCategoryText;
-			categoryDropdown.setAttribute(
-				"data-selected-category",
-				selectedCategory
-			);
-
-			// Filter products based on the new selection
-			filterProducts();
-		});
-	});
 
 	// Function to show alerts
 	function showAlert(message, type = "success") {
@@ -327,4 +273,47 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		});
 	}
+});
+function filterProducts() {
+	const searchInput = document.getElementById("searchInput").value;
+	const categoryFilter =
+		document.querySelector("#categoryFilter .dropdown-item.active")?.dataset
+			.value || "";
+
+	fetch(
+		`../models/filter_products.php?search=${encodeURIComponent(
+			searchInput
+		)}&category=${encodeURIComponent(categoryFilter)}`
+	)
+		.then((response) => response.text())
+		.then((data) => {
+			document.querySelector("tbody").innerHTML = data;
+		})
+		.catch((error) => console.error("Error:", error));
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+	// Add enter key event listener to search input
+	const searchInput = document.getElementById("searchInput");
+	searchInput.addEventListener("keypress", function (e) {
+		// Check if the pressed key is Enter (key code 13)
+		if (e.key === "Enter" || e.keyCode === 13) {
+			e.preventDefault(); // Prevent form submission if it's in a form
+			filterProducts();
+		}
+	});
+
+	// Category filter dropdown event listeners
+	document
+		.querySelectorAll("#categoryFilter .dropdown-item")
+		.forEach((item) => {
+			item.addEventListener("click", (e) => {
+				e.preventDefault();
+				document
+					.querySelectorAll("#categoryFilter .dropdown-item")
+					.forEach((i) => i.classList.remove("active"));
+				item.classList.add("active");
+				filterProducts();
+			});
+		});
 });

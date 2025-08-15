@@ -12,22 +12,7 @@ $user_name = isset($_SESSION['username']) ? $_SESSION['username'] : 'Cashier';
 if (isset($_GET['barcode'])) {
     $barcode = $_GET['barcode'];
     
-    // Database credentials
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "pos&inventory";
-
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-
-    // Check connection
-    if ($conn->connect_error) {
-        error_log('Connection failed: ' . $conn->connect_error);
-        header('Content-Type: application/json');
-        echo json_encode(['error' => 'Database connection failed']);
-        exit();
-    }
+    include '../includes/db_connection.php';
 
     // Prepare SQL statement
     $sql = "SELECT product_id, product_name, selling_price FROM products WHERE barcode = ?";

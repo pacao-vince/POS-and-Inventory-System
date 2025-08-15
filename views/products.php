@@ -30,6 +30,7 @@ $total_result = $conn->query($total_products_sql);
 $total_row = $total_result->fetch_assoc();
 $total_products = $total_row['total'];
 $total_pages = ceil($total_products / $products_per_page);
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +59,7 @@ $total_pages = ceil($total_products / $products_per_page);
         </header>
         <div class="table-content" id="products">
             <section class="table-list">
-                <div class="d-flex row justify-content-between mb-3 align-self-end" id="filters">
+                <div class="d-flex row g-0 justify-content-between mb-3 align-self-end" id="filters">
                     <div class="col-4">
                         <input type="text" class="form-control" id="searchInput" placeholder="Search Product Name...">
                     </div>
@@ -104,22 +105,20 @@ $total_pages = ceil($total_products / $products_per_page);
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    // Fetch products from database with limit and offset
-                    $sql = "SELECT p.product_id, p.product_name, p.barcode, c.category_id, c.category_name, p.buying_price, p.selling_price, p.stocks, p.threshold
-                    FROM products p
-                    LEFT JOIN category c ON p.category_id = c.category_id
-                    ORDER BY p.product_id DESC
-                    LIMIT $offset, $products_per_page";
-            
-                    $result = $conn->query($sql);
+                <?php
+                // Load the initial data (all products)
+                $sql = "SELECT p.product_id, p.product_name, p.barcode, c.category_name, 
+                            p.buying_price, p.selling_price, p.stocks, p.threshold
+                        FROM products p
+                        LEFT JOIN category c ON p.category_id = c.category_id
+                        ORDER BY p.product_id DESC";
 
-                    if ($result->num_rows > 0) {
-                        // Output data of each row
-                        while ($row = $result->fetch_assoc()) {
-                            $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
-                            echo "<tr data-product-id='" . $row["product_id"] . "'
-                                data-category-id='" . $row["category_id"] . "'>
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $stockClass = ($row["stocks"] <= $row["threshold"]) ? "low-stock" : "high-stock";
+                        echo "<tr data-product-id='" . $row["product_id"] . "'>
                                 <td>" . $row["product_id"] . "</td>
                                 <td class='product-name'>" . $row["product_name"] . "</td>
                                 <td>" . $row["barcode"] . "</td>
@@ -129,15 +128,15 @@ $total_pages = ceil($total_products / $products_per_page);
                                 <td><span class='$stockClass'>" . $row["stocks"] . "</span></td>
                                 <td>" . number_format($row["threshold"]) . "</td>
                                 <td>
-                                    <button class='btn btn-success editBtn' id='editBtn' data-id='" . $row['product_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> |
-                                    <button class='btn btn-danger deleteBtn' id='deleteBtn' data-id='" . $row['product_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
+                                    <button class='btn btn-success editBtn' data-id='" . $row['product_id'] . "'><i class='fas fa-edit me-2'></i>Edit</button> |
+                                    <button class='btn btn-danger deleteBtn' data-id='" . $row['product_id'] . "'><i class='fas fa-trash me-2'></i>Delete</button>
                                 </td>
                             </tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='9'>No products found</td></tr>";
                     }
-                    ?>
+                } else {
+                    echo "<tr><td colspan='9'>No products found</td></tr>";
+                }
+                ?>
                 </tbody>
             </table>
 

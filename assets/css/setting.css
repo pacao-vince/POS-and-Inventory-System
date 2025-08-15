@@ -83,7 +83,7 @@ h2.mb-3 {
 	.container,
 	.card {
 		margin: 20px;
-		margin-left: 20px;
+		margin-left: 30px;
 		max-width: 100%;
 		overflow-x: auto;
 	}

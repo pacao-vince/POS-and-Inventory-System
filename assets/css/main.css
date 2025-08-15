@@ -11,7 +11,7 @@ body {
 	padding: 0;
 	display: flex;
 	min-height: 100vh;
-	background-color: #ecf0f1;
+	background-color: #2c3e50;
 	overflow-x: hidden;
 	/* To prevent horizontal scroll */
 }
@@ -455,7 +455,7 @@ button.custom-btn:hover {
 @media screen and (max-width: 768px) {
 	.main-content {
 		display: block;
-		margin-left: 30px;
+		margin-left: 50px;
 		overflow-x: auto; /* Add horizontal scrolling */
 	}
 

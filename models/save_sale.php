@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 
     // Prepare the SQL statement to insert sale data
-    $stmt = $conn->prepare("INSERT INTO sales (sub_total, grand_total, payment, change_amount, transaction_time, cashier_username, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt = $conn->prepare("INSERT INTO sales (sub_total, grand_total, payment, change_amount, transaction_time, user_id) VALUES (?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         error_log('Prepare failed: ' . $conn->error);
         echo json_encode(['success' => false, 'message' => 'Prepare failed: ' . $conn->error]);
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     // Bind parameters
-    if (!$stmt->bind_param('ddddssi', $data['subTotal'], $data['grandTotal'], $data['payment'], $data['change'], $data['transactionTime'], $data['cashier_username'], $user_id)) {
+    if (!$stmt->bind_param('ddddsi', $data['subTotal'], $data['grandTotal'], $data['payment'], $data['change'], $data['transactionTime'], $user_id)) {
         error_log('Binding parameters failed: ' . $stmt->error);
         echo json_encode(['success' => false, 'message' => 'Binding parameters failed: ' . $stmt->error]);
         exit;

@@ -69,11 +69,9 @@
 				<a href="Users.php"><img src="../assets/images/users-svgrepo-com.png" class="sidebar-icon"
 						alt="users-icon" /><span>Users</span></a>
 			</li>
-		</ul>
-
-		<ul>
+		
 			<li>
-				<a href="#" data-toggle="modal" data-target="#logoutConfirmationModal">
+				<a class="logout" href="#" data-toggle="modal" data-target="#logoutConfirmationModal">
 					<img src="../assets/images/log-out-svgrepo-com.png" class="sidebar-icon" />
 					<span>Log Out</span>
 				</a>

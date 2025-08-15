@@ -240,7 +240,7 @@ button.custom-btn-gen {
 @media screen and (max-width: 768px) {
 	.main-content {
 		display: block;
-		margin-left: 30px;
+		margin-left: 50px;
 		overflow-x: auto; /* Add horizontal scrolling */
 	}
 	.table-list {
